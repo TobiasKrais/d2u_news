@@ -1,0 +1,52 @@
+@font-face{
+	font-family:'FontAwesome';
+	src:url("./assets/addons/be_style/fonts/fontawesome-webfont.eot?v=4.6.3");
+	src:url("./assets/addons/be_style/fonts/fontawesome-webfont.eot?#iefix&v=4.6.3") format('embedded-opentype'),
+		url("./assets/addons/be_style/fonts/fontawesome-webfont.woff2?v=4.6.3") format('woff2'),
+		url("./assets/addons/be_style/fonts/fontawesome-webfont.woff?v=4.6.3") format('woff'),
+		url("./assets/addons/be_style/fonts/fontawesome-webfont.ttf?v=4.6.3") format('truetype'),
+		url("./assets/addons/be_style/fonts/fontawesome-webfont.svg?v=4.6.3#fontawesomeregular") format('svg');
+}
+
+.reference-box img {
+	padding-bottom: 1em;
+}
+.reference-box-heading {
+	font-size: 1.25em;
+	text-align: center;
+}
+
+.tag-list {
+	float: left;
+    list-style: none;
+	padding-left: 0px;
+}
+.tag-list li {
+	background-color: article_color_box;
+	border-radius: 0.5em;
+	float: left;
+    list-style: none;
+	margin: 0 1em 1em 0;
+	padding: 0.5em 0.75em;
+}
+.tag-list li a, .tag-list li .icon {
+	color: subhead_color_bg;
+}
+.tag-list li.active {
+	background-color: navi_color_bg;
+}
+.tag-list li.active a, .tag-list li.active a:hover, .tag-list li.active a:focus, .tag-list li.active a:visited, .tag-list li.active .icon {
+	color: navi_color_font;
+}
+.icon {
+	font-family: FontAwesome;
+	font-weight: normal;
+	line-height: 1em;
+	padding-right: 0.25em;
+}
+.tag:before {
+	content: "\f02b";
+}
+.tags:before {
+	content: "\f02c";
+}

@@ -1,0 +1,16 @@
+package: d2u_news/fairs
+version: '1.0.0'
+author: Tobias Krais
+supportpage: http://github.com/tobiaskrais/d2u_news
+
+page:
+    title: 'translate:d2u_news_fairs'
+    perm: d2u_news[]
+    icon: rex-icon fa-university
+
+requires:
+    redaxo: '>=5.1.0'
+    php:
+        version: '>=5.3'
+    packages:
+        sprog: '>=1.0.0'

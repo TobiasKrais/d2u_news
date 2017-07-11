@@ -1,0 +1,22 @@
+d2u_news = D2U News
+d2u_news_news_title = Nachrichten
+d2u_news_settings = Einstellungen
+d2u_news_setup = Setup
+
+d2u_news_article = Redaxo Artikel
+d2u_news_could_not_delete = Löschen fehlgeschlagen.
+d2u_news_date = Datum
+d2u_news_link_type = Link zu ...
+d2u_news_name = Name
+d2u_news_no_link = Kein Link
+d2u_news_machine = D2U Machinery Maschine
+d2u_news_no_news_found = Es wurden noch keine News angelegt.
+d2u_news_news = Nachricht
+d2u_news_online_status = Online
+d2u_news_picture = Bild
+d2u_news_teaser = Kurzbeschreibung
+
+d2u_news_rights = D2U News Addon
+d2u_news_rights_edit_data = D2U News Addon: Editierrechte für Daten und sprachübergreifende Inhalte
+d2u_news_rights_edit_lang = D2U News Addon: Editierrechte für Übersetzungen und sprachspezifische Inhalte (es gelten die Sprachen der Rolleneinstellungen)
+d2u_news_rights_settings = D2U News Addon: Einstellungen
