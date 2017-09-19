@@ -23,7 +23,9 @@ $sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_news_n
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci AUTO_INCREMENT=1;");
 
 // Insert frontend translations
-d2u_news_lang_helper::factory()->install();
+if(class_exists(d2u_news_lang_helper)) {
+	d2u_news_lang_helper::factory()->install();
+}
 
 // Init Config
 if (!$this->hasConfig()) {
