@@ -197,9 +197,9 @@ class News {
 		$error = 0;
 
 		// Save the not language specific part
-		$pre_save_reference = new News($this->news_id, $this->clang_id);
+		$pre_save_news = new News($this->news_id, $this->clang_id);
 	
-		if($this->news_id == 0 || $pre_save_reference != $this) {
+		if($this->news_id == 0 || $pre_save_news != $this) {
 			$query = rex::getTablePrefix() ."d2u_news_news SET "
 					."online_status = '". $this->online_status ."', "
 					."picture = '". $this->picture ."', "
@@ -225,8 +225,8 @@ class News {
 		
 		if($error == 0) {
 			// Save the language specific part
-			$pre_save_reference = new News($this->news_id, $this->clang_id);
-			if($pre_save_reference != $this) {
+			$pre_save_news = new News($this->news_id, $this->clang_id);
+			if($pre_save_news != $this) {
 				$query = "REPLACE INTO ". rex::getTablePrefix() ."d2u_news_news_lang SET "
 						."news_id = '". $this->news_id ."', "
 						."clang_id = '". $this->clang_id ."', "
