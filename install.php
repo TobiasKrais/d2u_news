@@ -26,8 +26,3 @@ $sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_news_n
 if(class_exists(d2u_news_lang_helper)) {
 	d2u_news_lang_helper::factory()->install();
 }
-
-// Init Config
-if (!$this->hasConfig()) {
-	$this->setConfig('default_lang', rex_clang::getStartId());
-}

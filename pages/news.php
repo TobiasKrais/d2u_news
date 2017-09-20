@@ -68,7 +68,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 		$form = (array) rex_post('form', 'array', array());
 		$news_id = $form['news_id'];
 	}
-	$news = new News($news_id, rex_config::get("d2u_news", "default_lang"));
+	$news = new News($news_id, rex_config::get("d2u_helper", "default_lang"));
 	$news->delete();
 	
 	$func = '';
@@ -76,7 +76,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 // Change online status of news
 else if($func == 'changestatus') {
 	$news_id = $entry_id;
-	$news = new News($news_id, rex_config::get("d2u_news", "default_lang"));
+	$news = new News($news_id, rex_config::get("d2u_helper", "default_lang"));
 	$news->changeStatus();
 	
 	header("Location: ". rex_url::currentBackendPage());
@@ -94,7 +94,7 @@ if ($func == 'edit' || $func == 'add') {
 				<?php
 					foreach(rex_clang::getAll() as $rex_clang) {
 						$news = new News($entry_id, $rex_clang->getId());
-						$required = $rex_clang->getId() == rex_config::get("d2u_news", "default_lang") ? TRUE : FALSE;
+						$required = $rex_clang->getId() == rex_config::get("d2u_helper", "default_lang") ? TRUE : FALSE;
 						
 						$readonly_lang = TRUE;
 						if(rex::getUser()->isAdmin() || (rex::getUser()->hasPerm('d2u_news[edit_lang]') && rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId()))) {
@@ -105,7 +105,7 @@ if ($func == 'edit' || $func == 'add') {
 						<legend><?php echo rex_i18n::msg('d2u_helper_text_lang') .' "'. $rex_clang->getName() .'"'; ?></legend>
 						<div class="panel-body-wrapper slide">
 							<?php
-								if($rex_clang->getId() != rex_config::get("d2u_news", "default_lang")) {
+								if($rex_clang->getId() != rex_config::get("d2u_helper", "default_lang")) {
 									$options_translations = [];
 									$options_translations["yes"] = rex_i18n::msg('d2u_helper_translation_needs_update');
 									$options_translations["no"] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
@@ -129,21 +129,21 @@ if ($func == 'edit' || $func == 'add') {
 					<div class="panel-body-wrapper slide">
 						<?php
 							// Do not use last object from translations, because you don't know if it exists in DB
-							$news = new News($entry_id, rex_config::get("d2u_news", "default_lang"));
+							$news = new News($entry_id, rex_config::get("d2u_helper", "default_lang"));
 							$readonly = TRUE;
 							if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_news[edit_data]')) {
 								$readonly = FALSE;
 							}
 							
 							d2u_addon_backend_helper::form_mediafield('d2u_news_picture', '1', $news->picture, $readonly);
-							if(rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_news", "default_lang"), TRUE)) > 0) {
+							if(rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
 								$options_link_type = [];
 								$options_link_type["none"] = rex_i18n::msg('d2u_news_no_link');
 								$options_link_type["article"] = rex_i18n::msg('d2u_news_article');
 								$options_link_type["machine"] = rex_i18n::msg('d2u_news_machine');
 								d2u_addon_backend_helper::form_select('d2u_news_link_type', 'form[link_type]', $options_link_type, array($news->link_type), 1, FALSE, $readonly_lang);
 								$options_machines = [];
-								foreach(Machine::getAll(rex_config::get("d2u_news", "default_lang"), TRUE) as $machine) {
+								foreach(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE) as $machine) {
 									$options_machines[$machine->machine_id] = $machine->name;
 								}
 								d2u_addon_backend_helper::form_select('d2u_news_machine', 'form[d2u_machines_machine_id]', $options_machines, array($news->d2u_machines_machine_id), 1, FALSE, $readonly_lang);
@@ -176,7 +176,7 @@ if ($func == 'edit' || $func == 'add') {
 							else {
 								print '<input type="hidden" name="form[link_type]" value="article">';
 							}
-							d2u_addon_backend_helper::form_linkfield('d2u_news_article', '1', $news->article_id, $this->getConfig('default_lang'));
+							d2u_addon_backend_helper::form_linkfield('d2u_news_article', '1', $news->article_id, rex_config::get("d2u_helper", "default_lang", rex_clang::getStartId()));
 							d2u_addon_backend_helper::form_checkbox('d2u_news_online_status', 'form[online_status]', 'online', $news->online_status == "online", $readonly);
 							d2u_addon_backend_helper::form_input('d2u_news_date', "form[date]", $news->date, TRUE, $readonly, "date");
 						?>
@@ -205,7 +205,7 @@ if ($func == '') {
 	$query = 'SELECT refs.news_id, name, online_status, `date` '
 		. 'FROM '. rex::getTablePrefix() .'d2u_news_news AS refs '
 		. 'LEFT JOIN '. rex::getTablePrefix() .'d2u_news_news_lang AS lang '
-			. 'ON refs.news_id = lang.news_id AND lang.clang_id = '. rex_config::get("d2u_news", "default_lang") .' '
+			. 'ON refs.news_id = lang.news_id AND lang.clang_id = '. rex_config::get("d2u_helper", "default_lang") .' '
 		.'ORDER BY `date` DESC';
     $list = rex_list::factory($query);
 

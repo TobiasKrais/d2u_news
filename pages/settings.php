@@ -24,21 +24,6 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 		<header class="panel-heading"><div class="panel-title"><?php print rex_i18n::msg('d2u_news_settings'); ?></div></header>
 		<div class="panel-body">
 			<fieldset>
-				<legend><small><i class="rex-icon rex-icon-system"></i></small> <?php echo rex_i18n::msg('d2u_news_settings'); ?></legend>
-				<div class="panel-body-wrapper slide">
-					<?php
-						// Default language for translations
-						if(count(rex_clang::getAll()) > 1) {
-							$lang_options = [];
-							foreach(rex_clang::getAll() as $rex_clang) {
-								$lang_options[$rex_clang->getId()] = $rex_clang->getName();
-							}
-							d2u_addon_backend_helper::form_select('d2u_helper_defaultlang', 'settings[default_lang]', $lang_options, array($this->getConfig('default_lang')));
-						}
-					?>
-				</div>
-			</fieldset>
-			<fieldset>
 				<legend><small><i class="rex-icon rex-icon-language"></i></small> <?php echo rex_i18n::msg('d2u_helper_lang_replacements'); ?></legend>
 				<div class="panel-body-wrapper slide">
 					<?php

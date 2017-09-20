@@ -17,3 +17,8 @@ if(class_exists(D2UModuleManager)) {
 	$d2u_module_manager = new D2UModuleManager($modules, "", "d2u_news");
 	$d2u_module_manager->autoupdate();
 }
+
+// remove default lang setting
+if (!$this->hasConfig()) {
+	$this->removeConfig('default_lang');
+}
