@@ -1,7 +1,5 @@
 d2u_news = D2U News
 d2u_news_news_title = Nachrichten
-d2u_news_settings = Einstellungen
-d2u_news_setup = Setup
 
 d2u_news_article = Redaxo Artikel
 d2u_news_could_not_delete = Löschen fehlgeschlagen.

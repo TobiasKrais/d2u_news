@@ -6,4 +6,4 @@ $sql->setQuery('DROP TABLE IF EXISTS ' . rex::getTablePrefix() . 'd2u_news_news'
 $sql->setQuery('DROP TABLE IF EXISTS ' . rex::getTablePrefix() . 'd2u_news_news_lang');
 
 // Delete language replacements
-d2u_references_lang_helper::factory()->uninstall();
+d2u_news_lang_helper::factory()->uninstall();

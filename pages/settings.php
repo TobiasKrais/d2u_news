@@ -21,7 +21,7 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 ?>
 <form action="<?php print rex_url::currentBackendPage(); ?>" method="post">
 	<div class="panel panel-edit">
-		<header class="panel-heading"><div class="panel-title"><?php print rex_i18n::msg('d2u_news_settings'); ?></div></header>
+		<header class="panel-heading"><div class="panel-title"><?php print rex_i18n::msg('d2u_helper_settings'); ?></div></header>
 		<div class="panel-body">
 			<fieldset>
 				<legend><small><i class="rex-icon rex-icon-language"></i></small> <?php echo rex_i18n::msg('d2u_helper_lang_replacements'); ?></legend>
