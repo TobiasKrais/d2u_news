@@ -143,43 +143,43 @@ class d2u_news_lang_helper {
 
 			foreach (rex_clang::getAllIds() as $clang_id) {
 				// Load values for input
-				if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'chinese'
+				if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'chinese'
 					&& isset($this->replacements_chinese) && isset($this->replacements_chinese[$key])) {
 					$value = $this->replacements_chinese[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'czech'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'czech'
 					&& isset($this->replacements_czech) && isset($this->replacements_czech[$key])) {
 					$value = $this->replacements_czech[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'dutch'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'dutch'
 					&& isset($this->replacements_dutch) && isset($this->replacements_dutch[$key])) {
 					$value = $this->replacements_dutch[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'french'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'french'
 					&& isset($this->replacements_french) && isset($this->replacements_french[$key])) {
 					$value = $this->replacements_french[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'german'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'german'
 					&& isset($this->replacements_german) && isset($this->replacements_german[$key])) {
 					$value = $this->replacements_german[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'italian'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'italian'
 					&& isset($this->replacements_italian) && isset($this->replacements_italian[$key])) {
 					$value = $this->replacements_italian[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'polish'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'polish'
 					&& isset($this->replacements_polish) && isset($this->replacements_polish[$key])) {
 					$value = $this->replacements_polish[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'portuguese'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'portuguese'
 					&& isset($this->replacements_portuguese) && isset($this->replacements_portuguese[$key])) {
 					$value = $this->replacements_portuguese[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'russian'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'russian'
 					&& isset($this->replacements_russian) && isset($this->replacements_russian[$key])) {
 					$value = $this->replacements_russian[$key];
 				}
-				else if($d2u_machinery->hasConfig('lang_replacement_'. $clang_id) && $d2u_machinery->getConfig('lang_replacement_'. $clang_id) == 'spanish'
+				else if($d2u_news->hasConfig('lang_replacement_'. $clang_id) && $d2u_news->getConfig('lang_replacement_'. $clang_id) == 'spanish'
 					&& isset($this->replacements_spanish) && isset($this->replacements_spanish[$key])) {
 					$value = $this->replacements_spanish[$key];
 				}
