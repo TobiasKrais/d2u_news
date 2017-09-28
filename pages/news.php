@@ -70,6 +70,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 		$news_id = $form['news_id'];
 	}
 	$news = new News($news_id, rex_config::get("d2u_helper", "default_lang"));
+	$news->news_id = $news_id; // Ensure correct ID in case first language has no object
 	$news->delete();
 	
 	$func = '';
@@ -78,6 +79,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 else if($func == 'changestatus') {
 	$news_id = $entry_id;
 	$news = new News($news_id, rex_config::get("d2u_helper", "default_lang"));
+	$news->news_id = $news_id; // Ensure correct ID in case first language has no object
 	$news->changeStatus();
 	
 	header("Location: ". rex_url::currentBackendPage());

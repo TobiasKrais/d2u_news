@@ -52,7 +52,7 @@ class News {
 	/**
 	 * @var int machine ID if linktype is "machine"
 	 */
-	var $d2u_machines_news_id = 0;
+	var $d2u_machines_machine_id = 0;
 	
 	/**
 	 * @var string "yes" if translation needs update
@@ -96,7 +96,7 @@ class News {
 			$this->teaser = stripslashes(htmlspecialchars_decode($result->getValue("teaser")));
 			$this->link_type = $result->getValue("link_type");
 			$this->article_id = $result->getValue("article_id");
-			$this->d2u_machines_news_id = $result->getValue("d2u_machines_news_id");
+			$this->d2u_machines_machine_id = $result->getValue("d2u_machines_machine_id");
 			$this->online_status = $result->getValue("online_status");
 			$this->picture = $result->getValue("picture");
 			if($result->getValue("translation_needs_update") != "") {
@@ -205,7 +205,7 @@ class News {
 					."picture = '". $this->picture ."', "
 					."link_type = '". $this->link_type ."', "
 					."article_id = ". $this->article_id .", "
-					."d2u_machines_news_id = ". $this->d2u_machines_news_id .", "
+					."d2u_machines_machine_id = ". $this->d2u_machines_machine_id .", "
 					."`date` = '". $this->date ."' ";
 
 			if($this->news_id == 0) {
