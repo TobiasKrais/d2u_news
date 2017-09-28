@@ -52,7 +52,7 @@ class News {
 	/**
 	 * @var int machine ID if linktype is "machine"
 	 */
-	var $d2u_machines_machine_id = 0;
+	var $d2u_machines_news_id = 0;
 	
 	/**
 	 * @var string "yes" if translation needs update
@@ -96,7 +96,7 @@ class News {
 			$this->teaser = stripslashes(htmlspecialchars_decode($result->getValue("teaser")));
 			$this->link_type = $result->getValue("link_type");
 			$this->article_id = $result->getValue("article_id");
-			$this->d2u_machines_machine_id = $result->getValue("d2u_machines_machine_id");
+			$this->d2u_machines_news_id = $result->getValue("d2u_machines_news_id");
 			$this->online_status = $result->getValue("online_status");
 			$this->picture = $result->getValue("picture");
 			if($result->getValue("translation_needs_update") != "") {
@@ -140,22 +140,22 @@ class News {
 	 * FALSE, only this translation will be deleted.
 	 */
 	public function delete($delete_all = TRUE) {
-		if($delete_all) {
-			$query_lang = "DELETE FROM ". rex::getTablePrefix() ."d2u_news_news_lang "
-				."WHERE news_id = ". $this->news_id;
-			$result_lang = rex_sql::factory();
-			$result_lang->setQuery($query_lang);
-
+		$query_lang = "DELETE FROM ". rex::getTablePrefix() ."d2u_news_news_lang "
+			."WHERE news_id = ". $this->news_id
+			. ($delete_all ? '' : ' AND clang_id = '. $this->clang_id) ;
+		$result_lang = rex_sql::factory();
+		$result_lang->setQuery($query_lang);
+		
+		// If no more lang objects are available, delete
+		$query_main = "SELECT * FROM ". rex::getTablePrefix() ."d2u_news_news_lang "
+			."WHERE news_id = ". $this->news_id;
+		$result_main = rex_sql::factory();
+		$result_main->setQuery($query_main);
+		if($result_main->getRows() == 0) {
 			$query = "DELETE FROM ". rex::getTablePrefix() ."d2u_news_news "
 				."WHERE news_id = ". $this->news_id;
 			$result = rex_sql::factory();
 			$result->setQuery($query);
-		}
-		else {
-			$query_lang = "DELETE FROM ". rex::getTablePrefix() ."d2u_news_news_lang "
-				."WHERE news_id = ". $this->news_id ." AND clang_id = ". $this->clang_id;
-			$result_lang = rex_sql::factory();
-			$result_lang->setQuery($query_lang);
 		}
 	}
 	
@@ -205,7 +205,7 @@ class News {
 					."picture = '". $this->picture ."', "
 					."link_type = '". $this->link_type ."', "
 					."article_id = ". $this->article_id .", "
-					."d2u_machines_machine_id = ". $this->d2u_machines_machine_id .", "
+					."d2u_machines_news_id = ". $this->d2u_machines_news_id .", "
 					."`date` = '". $this->date ."' ";
 
 			if($this->news_id == 0) {
