@@ -31,6 +31,7 @@ $d2u_module_manager->showManagerList();
 <ul>
 	<li>Bugfix: Speichern wenn zweite Sprache Standardsprache ist schlug fehl.</li>
 	<li>Bugfix: Deinstallieren der Übersetzungen beim deinstallieren des Addons schlug fehl.</li>
+	<li>Editierrechte für Übersetzer eingeschränkt.</li>
 </ul>
 <p>1.0.0:</p>
 <ul>

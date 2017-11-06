@@ -5,7 +5,7 @@ supportpage: http://github.com/tobiaskrais/d2u_news
 
 page:
     title: 'translate:d2u_news_fairs'
-    perm: d2u_news[]
+    perm: d2u_news[edit_data]
     icon: rex-icon fa-university
 
 requires:

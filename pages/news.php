@@ -138,7 +138,7 @@ if ($func == 'edit' || $func == 'add') {
 								$readonly = FALSE;
 							}
 							
-							d2u_addon_backend_helper::form_mediafield('d2u_news_picture', '1', $news->picture, $readonly);
+							d2u_addon_backend_helper::form_mediafield('d2u_helper_picture', '1', $news->picture, $readonly);
 							if(rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
 								$options_link_type = [];
 								$options_link_type["none"] = rex_i18n::msg('d2u_news_no_link');
@@ -180,7 +180,7 @@ if ($func == 'edit' || $func == 'add') {
 								print '<input type="hidden" name="form[link_type]" value="article">';
 							}
 							d2u_addon_backend_helper::form_linkfield('d2u_news_article', '1', $news->article_id, rex_config::get("d2u_helper", "default_lang", rex_clang::getStartId()));
-							d2u_addon_backend_helper::form_checkbox('d2u_news_online_status', 'form[online_status]', 'online', $news->online_status == "online", $readonly);
+							d2u_addon_backend_helper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', $news->online_status == "online", $readonly);
 							d2u_addon_backend_helper::form_input('d2u_news_date', "form[date]", $news->date, TRUE, $readonly, "date");
 						?>
 					</div>
@@ -215,7 +215,10 @@ if ($func == '') {
     $list->addTableAttribute('class', 'table-striped table-hover');
 
     $tdIcon = '<i class="rex-icon fa-newspaper-o"></i>';
-    $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '" title="' . rex_i18n::msg('add') . '"><i class="rex-icon rex-icon-add-module"></i></a>';
+	$thIcon = "";
+	if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_news[edit_data]')) {
+	    $thIcon = '<a href="' . $list->getUrl(['func' => 'add']) . '" title="' . rex_i18n::msg('add') . '"><i class="rex-icon rex-icon-add-module"></i></a>';
+	}
     $list->addColumn($thIcon, $tdIcon, 0, ['<th class="rex-table-icon">###VALUE###</th>', '<td class="rex-table-icon">###VALUE###</td>']);
     $list->setColumnParams($thIcon, ['func' => 'edit', 'entry_id' => '###news_id###']);
 
@@ -227,18 +230,20 @@ if ($func == '') {
 
     $list->setColumnLabel('date', rex_i18n::msg('d2u_news_date'));
    
-	$list->removeColumn('online_status');
-    $list->addColumn(rex_i18n::msg('status_online'), '<a class="rex-###online_status###" href="' . rex_url::currentBackendPage(['func' => 'changestatus']) . '&entry_id=###news_id###"><i class="rex-icon rex-icon-###online_status###"></i> ###online_status###</a>');
-	$list->setColumnLayout(rex_i18n::msg('status_online'), ['', '<td class="rex-table-action">###VALUE###</td>']);
-
     $list->addColumn(rex_i18n::msg('module_functions'), '<i class="rex-icon rex-icon-edit"></i> ' . rex_i18n::msg('system_update'));
     $list->setColumnLayout(rex_i18n::msg('module_functions'), ['<th class="rex-table-action" colspan="2">###VALUE###</th>', '<td class="rex-table-action">###VALUE###</td>']);
     $list->setColumnParams(rex_i18n::msg('module_functions'), ['func' => 'edit', 'entry_id' => '###news_id###']);
 
-    $list->addColumn(rex_i18n::msg('delete_module'), '<i class="rex-icon rex-icon-delete"></i> ' . rex_i18n::msg('delete'));
-    $list->setColumnLayout(rex_i18n::msg('delete_module'), ['', '<td class="rex-table-action">###VALUE###</td>']);
-    $list->setColumnParams(rex_i18n::msg('delete_module'), ['func' => 'delete', 'entry_id' => '###news_id###']);
-    $list->addLinkAttribute(rex_i18n::msg('delete_module'), 'data-confirm', rex_i18n::msg('d2u_helper_confirm_delete'));
+	$list->removeColumn('online_status');
+	if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_news[edit_data]')) {
+		$list->addColumn(rex_i18n::msg('status_online'), '<a class="rex-###online_status###" href="' . rex_url::currentBackendPage(['func' => 'changestatus']) . '&entry_id=###news_id###"><i class="rex-icon rex-icon-###online_status###"></i> ###online_status###</a>');
+		$list->setColumnLayout(rex_i18n::msg('status_online'), ['', '<td class="rex-table-action">###VALUE###</td>']);
+
+		$list->addColumn(rex_i18n::msg('delete_module'), '<i class="rex-icon rex-icon-delete"></i> ' . rex_i18n::msg('delete'));
+		$list->setColumnLayout(rex_i18n::msg('delete_module'), ['', '<td class="rex-table-action">###VALUE###</td>']);
+		$list->setColumnParams(rex_i18n::msg('delete_module'), ['func' => 'delete', 'entry_id' => '###news_id###']);
+		$list->addLinkAttribute(rex_i18n::msg('delete_module'), 'data-confirm', rex_i18n::msg('d2u_helper_confirm_delete'));
+	}
 
     $list->setNoRowsMessage(rex_i18n::msg('d2u_news_no_news_found'));
 

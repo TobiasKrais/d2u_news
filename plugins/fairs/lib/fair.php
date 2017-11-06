@@ -92,7 +92,7 @@ class Fair {
 		if($current_only) {
 			$query .= "WHERE date_end > '". date('Y-m-d') ."'";
 		}
-		$query .= "ORDER BY date_start";
+		$query .= "ORDER BY date_start, date_end";
 		$result = rex_sql::factory();
 		$result->setQuery($query);
 		
