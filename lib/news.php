@@ -8,7 +8,7 @@
 /**
  * News
  */
-class News {
+class News implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * @var int Database ID
 	 */
@@ -188,6 +188,38 @@ class News {
 		}
 		return $news;
 	}
+	
+	/**
+	 * Get objects concerning translation updates
+	 * @param int $clang_id Redaxo language ID
+	 * @param string $type 'update' or 'missing'
+	 * @return News[] Array with News objects.
+	 */
+	public static function getTranslationHelperObjects($clang_id, $type) {
+		$query = 'SELECT news_id FROM '. \rex::getTablePrefix() .'d2u_news_news_lang '
+				."WHERE clang_id = ". $clang_id ." AND translation_needs_update = 'yes' "
+				.'ORDER BY name';
+		if($type == 'missing') {
+			$query = 'SELECT main.news_id FROM '. \rex::getTablePrefix() .'d2u_news_news AS main '
+					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_news_lang AS target_lang '
+						.'ON main.news_id = target_lang.news_id AND target_lang.clang_id = '. $clang_id .' '
+					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_news_lang AS default_lang '
+						.'ON main.news_id = default_lang.news_id AND default_lang.clang_id = '. \rex_config::get('d2u_helper', 'default_lang') .' '
+					."WHERE target_lang.news_id IS NULL "
+					.'ORDER BY default_lang.name';
+			$clang_id = \rex_config::get('d2u_helper', 'default_lang');
+		}
+		$result = \rex_sql::factory();
+		$result->setQuery($query);
+
+		$objects = [];
+		for($i = 0; $i < $result->getRows(); $i++) {
+			$objects[] = new News($result->getValue("news_id"), $clang_id);
+			$result->next();
+		}
+		
+		return $objects;
+    }
 	
 	/**
 	 * Updates or inserts the object into database.
