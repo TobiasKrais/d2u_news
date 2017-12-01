@@ -1,0 +1,18 @@
+d2u_news = D2U News
+d2u_news_news_title = News
+
+d2u_news_article = Redaxo article
+d2u_news_could_not_delete = Delete failed.
+d2u_news_date = Date
+d2u_news_link_type = Link to ...
+d2u_news_name = Name
+d2u_news_no_link = No link
+d2u_news_machine = D2U Machinery machine
+d2u_news_no_news_found = No news found.
+d2u_news_news = News text
+d2u_news_teaser = Short description
+
+d2u_news_rights = D2U News addon
+d2u_news_rights_edit_data = D2U News addon: edit rights for data
+d2u_news_rights_edit_lang = D2U News addon: edit rights for translations (languages set in user roles apply)
+d2u_news_rights_settings = D2U News addon: settings
