@@ -11,12 +11,7 @@ if(!function_exists('formatDate')) {
 			$d = explode("-", $datum);
 			$unix = mktime(0, 0, 0, $d[1], $d[2], $d[0]);
 
-			if($clang_id == 2) {
-				return date("d.m.Y",$unix);
-			}
-			else {
-				return strtoupper(date("d/m/Y",$unix));
-			}
+			return date("d.m.Y",$unix);
 		}
 	}
 }
@@ -36,88 +31,79 @@ if(rex::isBackend()) {
 <?php
 }
 else if(rex_addon::get("d2u_news")->isAvailable()) {
-	// Ausgabe im FRONTEND
-	$show_pic = true;
-	
+	// FRONTEND
 	$news = News::getAll(rex_clang::getCurrentId(), $counter_news, TRUE);
 	if(count($news) > 0) {
 	?>
-		<div class="small-12 columns">
+		<div class="col-12">
 			<div class="row">
-				<div class="small-12 columns">
+				<div class="col-12">
 					<h1><?php print $tag_open . 'd2u_news_news'. $tag_close; ?></h1>
 				</div>
 			</div>
-			<div class="row">
-				<div class="small-12 columns">
-					<?php
-						foreach ($news as $nachricht) {
-					?>
-					<article class="row teaser teaser-fullwidth hyphens">
-						<?php
-						$machine = FALSE;
-						if($nachricht->d2u_machines_machine_id > 0) {
-							$machine = new Machine($nachricht->d2u_machines_machine_id, rex_clang::getCurrentId());
-						}
-
-						if($show_pic) {
-							print '<aside class="large-2 small-2 columns">';
-							if($nachricht->article_id > 0) {
-								print '<a href="'. rex_getUrl($nachricht->article_id).'">';
-							}
-							else if($nachricht->d2u_machines_machine_id > 0) {
-								print '<a href="'. $machine->getURL() .'">';
-							}
-							print '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt='. $nachricht->name .' class="listpic">';
-							if($nachricht->article_id > 0 || $nachricht->d2u_machines_machine_id > 0) {
-								print '</a>';
-							}
-							print '</aside>';
-						}
-						?>
-						<div class="large-10 small-10 columns">
-							<header>
-								<?php
-									print '<h1>';
-									if($nachricht->article_id > 0) {
-										print '<a href="'. rex_getUrl($nachricht->article_id).'">';
-									}
-									else if($nachricht->d2u_machines_machine_id > 0) {
-										print '<a href="'. $machine->getUrl() .'">';
-									}
-									print $nachricht->name;
-									if($nachricht->article_id > 0 || $nachricht->d2u_machines_machine_id > 0) {
-										print '</a>';
-									}
-									print '</h1>';
-									print '<p><time pubdate="" datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
-									?>
-							</header>
-							<p class="text">
-								<?php
-									print $nachricht->teaser;
-								?>
-							</p>
-						</div>
-					</article>
-					<div class="sp line w100p"></div>
-					<?php
-					}
-				?>
-				</div>
-			</div>
 			<?php
+				foreach ($news as $nachricht) {
+					print '<div class="row news">';
+					
+					$url = "";
+					if($nachricht->link_type == "machine" && $nachricht->d2u_machines_machine_id > 0) {
+						$machine = new Machine($nachricht->d2u_machines_machine_id, rex_clang::getCurrentId());
+						$url = $machine->getURL();
+					}
+					else if($nachricht->link_type == "article" && $nachricht->article_id > 0) {
+						$url = rex_getUrl($nachricht->article_id);
+					}
+					else if($nachricht->link_type == "url" && $nachricht->url != "") {
+						$url = $nachricht->url;
+					}
+
+					if($nachricht->picture != "") {
+						print '<div class="col-12 col-sm-4">';
+						if($url != "") {
+							print '<a href="'. $url .'">';
+						}
+						print '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt='. $nachricht->name .' class="listpic">';
+						if($url != "") {
+							print '</a>';
+						}
+						print '</div>';
+						
+						print '<div class="col-12 col-sm-8">';
+					}
+					else {
+						print '<div class="col-12">';
+					}
+
+					print '<h2 class="news">';
+					if($url != "") {
+						print '<a href="'. $url .'">';
+					}
+					print $nachricht->name;
+					if($url != "") {
+						print '</a>';
+					}
+					print '</h2>';
+					print '<p><time pubdate="" datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
+						
+					if($nachricht->teaser != "") {
+						print '<p class="text">'. $nachricht->teaser .'</p>';
+					}
+					else if($url != "") {
+						print '<p class="text"><a href="'. $url .'">'. $url .'</a></p>';	
+					}
+					print '</div>';
+					print '</div>';
+				}
+
 				if($link_id_overview > 0) {
 					print '<div class="row">';
-					print '<div class="small-12 columns">';
-					print '<div class="sp h20"></div>';
-					print '<a href="'. rex_getUrl($link_id_overview) .'" class="arrow">'. $tag_open . 'd2u_news_details'. $tag_close .'</a>';
+					print '<div class="col-12">';
+					print '<a href="'. rex_getUrl($link_id_overview) .'">'. $tag_open . 'd2u_news_details'. $tag_close .'</a>';
 					print '</div>';
 					print '</div>';
 				}
 			?>
 		</div>
-		<div class="sp sections"></div>
 	<?php
 	}
 }

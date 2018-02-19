@@ -6,6 +6,7 @@ $sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_news_n
 	picture varchar(255) collate utf8_general_ci default NULL,
 	link_type varchar(15) collate utf8_general_ci default NULL,
 	article_id int(10) default NULL,
+	url varchar(255) collate utf8_general_ci default NULL,
 	d2u_machines_machine_id int(10) default NULL,
 	online_status varchar(10) collate utf8_general_ci default 'online',
 	`date` varchar(10) collate utf8_general_ci default NULL,

@@ -11,6 +11,7 @@ d2u_news_machine = D2U Machinery machine
 d2u_news_no_news_found = No news found.
 d2u_news_news = News text
 d2u_news_teaser = Short description
+d2u_news_url = External URL
 
 d2u_news_rights = D2U News addon
 d2u_news_rights_edit_data = D2U News addon: edit rights for data

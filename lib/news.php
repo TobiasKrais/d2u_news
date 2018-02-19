@@ -40,9 +40,14 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var $picture = "";
 	
 	/**
-	 * @var string Type of link, either "article" (default) or "machine"
+	 * @var string Type of link, either "none" (default), "article", "url" or "machine"
 	 */
-	var $link_type = 'article';
+	var $link_type = 'none';
+	
+	/**
+	 * @var string external URL
+	 */
+	var $url = '';
 	
 	/**
 	 * @var int Redaxo article id
@@ -96,6 +101,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 			$this->teaser = stripslashes(htmlspecialchars_decode($result->getValue("teaser")));
 			$this->link_type = $result->getValue("link_type");
 			$this->article_id = $result->getValue("article_id");
+			$this->url = $result->getValue("url");
 			$this->d2u_machines_machine_id = $result->getValue("d2u_machines_machine_id");
 			$this->online_status = $result->getValue("online_status");
 			$this->picture = $result->getValue("picture");
@@ -237,6 +243,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 					."picture = '". $this->picture ."', "
 					."link_type = '". $this->link_type ."', "
 					."article_id = ". $this->article_id .", "
+					."url = '". $this->url ."', "
 					."d2u_machines_machine_id = ". $this->d2u_machines_machine_id .", "
 					."`date` = '". $this->date ."' ";
 

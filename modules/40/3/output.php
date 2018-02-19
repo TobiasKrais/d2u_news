@@ -80,14 +80,17 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 							<header>
 								<?php
 									print '<h1>';
-									if($nachricht->article_id > 0) {
+									if($nachricht->link_type == "article" && $nachricht->article_id > 0) {
 										print '<a href="'. rex_getUrl($nachricht->article_id).'">';
 									}
-									else if($nachricht->d2u_machines_machine_id > 0) {
-										print '<a href="'. $machine->getUrl() .'">';
+									else if($nachricht->link_type == "machine" && $nachricht->d2u_machines_machine_id > 0) {
+										print '<a href="'. $machine->getURL() .'">';
+									}
+									else if($nachricht->link_type == "url" && $nachricht->url != "") {
+										print '<a href="'. $nachricht->url .'">';
 									}
 									print $nachricht->name;
-									if($nachricht->article_id > 0 || $nachricht->d2u_machines_machine_id > 0) {
+									if($nachricht->link_type != "none") {
 										print '</a>';
 									}
 									print '</h1>';
