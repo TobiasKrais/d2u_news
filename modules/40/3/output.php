@@ -99,7 +99,15 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 							</header>
 							<p class="text">
 								<?php
-									print $nachricht->teaser;
+									if(rex_config::get('d2u_helper', 'editor', '') == 'markitup' && rex_addon::get('markitup')->isAvailable()) {
+										print markitup::parseOutput ('markdown', $nachricht->teaser);
+									}
+									else if(rex_config::get('d2u_helper', 'editor', '') == 'markitup_textile' && rex_addon::get('markitup')->isAvailable()) {
+										print markitup::parseOutput ('textile', $nachricht->teaser);
+									}
+									else {
+										print $nachricht->teaser;
+									}
 								?>
 							</p>
 						</div>

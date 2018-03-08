@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.2-DEV:</p>
 <ul>
+	<li>Möglichkeit in D2U Helper Addon Liebling WYSIWYG Editor auszuwählen.</li>
 	<li>Englisches Backend hinzugefügt.</li>
 	<li>Link nun auch auf externe URLs möglich.</li>
 </ul>
