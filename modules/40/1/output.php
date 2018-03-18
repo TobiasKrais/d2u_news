@@ -86,17 +86,7 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 					print '<p><time pubdate="" datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
 						
 					if($nachricht->teaser != "") {
-						print '<p class="text">';
-						if(rex_config::get('d2u_helper', 'editor', '') == 'markitup' && rex_addon::get('markitup')->isAvailable()) {
-							print markitup::parseOutput ('markdown', $nachricht->teaser);
-						}
-						else if(rex_config::get('d2u_helper', 'editor', '') == 'markitup_textile' && rex_addon::get('markitup')->isAvailable()) {
-							print markitup::parseOutput ('textile', $nachricht->teaser);
-						}
-						else {
-							print $nachricht->teaser;
-						}
-						print '</p>';
+						print '<p class="text">'. d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser) .'</p>';
 					}
 					else if($url != "") {
 						print '<p class="text"><a href="'. $url .'">'. $url .'</a></p>';	
