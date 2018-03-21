@@ -22,7 +22,7 @@ if(class_exists(D2UModuleManager)) {
 $sql = rex_sql::factory();
 $sql->setQuery("SHOW COLUMNS FROM ". \rex::getTablePrefix() ."d2u_news_news LIKE 'url';");
 if($sql->getRows() == 0) {
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_machinery_machines "
+	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_news "
 		. "ADD url varchar(255) collate utf8_general_ci default NULL AFTER article_id;");
 }
 
