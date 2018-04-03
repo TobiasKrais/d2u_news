@@ -97,7 +97,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 
 		if ($num_rows > 0) {
 			$this->news_id = $result->getValue("news_id");
-			$this->name = $result->getValue("name");
+			$this->name = stripslashes($result->getValue("name"));
 			$this->teaser = stripslashes(htmlspecialchars_decode($result->getValue("teaser")));
 			$this->link_type = $result->getValue("link_type");
 			$this->article_id = $result->getValue("article_id");
@@ -269,7 +269,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 				$query = "REPLACE INTO ". rex::getTablePrefix() ."d2u_news_news_lang SET "
 						."news_id = '". $this->news_id ."', "
 						."clang_id = '". $this->clang_id ."', "
-						."name = '". $this->name ."', "
+						."name = '". addslashes($this->name) ."', "
 						."teaser = '". addslashes(htmlspecialchars($this->teaser)) ."', "
 						."translation_needs_update = '". $this->translation_needs_update ."', "
 						."updatedate = ". time() .", "

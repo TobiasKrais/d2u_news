@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.0.3:</p>
 <ul>
+	<li>Bugfix: Fehler beim Speichern von Namen mit einfachem Anführungszeichen behoben.</li>
 	<li>Abhängigkeit von url und yrewrite Addon aufgehoben.</li>
 </ul>
 <p>1.0.2:</p>
