@@ -5,6 +5,7 @@
  * @author <a href="http://www.design-to-use.de">www.design-to-use.de</a>
  */
 
+namespace D2U_News;
 /**
  * Fair
  */
@@ -54,9 +55,9 @@ class Fair {
 	 * @param int $fair_id Contact ID.
 	 */
 	 public function __construct($fair_id) {
-		$query = "SELECT * FROM ". rex::getTablePrefix() ."d2u_news_fairs "
+		$query = "SELECT * FROM ". \rex::getTablePrefix() ."d2u_news_fairs "
 				."WHERE fair_id = ". $fair_id;
-		$result = rex_sql::factory();
+		$result = \rex_sql::factory();
 		$result->setQuery($query);
 		$num_rows = $result->getRows();
 
@@ -76,9 +77,9 @@ class Fair {
 	 * Deletes the object.
 	 */
 	public function delete() {
-		$query = "DELETE FROM ". rex::getTablePrefix() ."d2u_news_fairs "
+		$query = "DELETE FROM ". \rex::getTablePrefix() ."d2u_news_fairs "
 			."WHERE fair_id = ". $this->fair_id;
-		$result = rex_sql::factory();
+		$result = \rex_sql::factory();
 		$result->setQuery($query);
 	}
 
@@ -88,12 +89,12 @@ class Fair {
 	 * @return Fair[] Array with Contact objects.
 	 */
 	public static function getAll($current_only = TRUE) {
-		$query = "SELECT fair_id FROM ". rex::getTablePrefix() ."d2u_news_fairs ";
+		$query = "SELECT fair_id FROM ". \rex::getTablePrefix() ."d2u_news_fairs ";
 		if($current_only) {
 			$query .= "WHERE date_end > '". date('Y-m-d') ."'";
 		}
 		$query .= "ORDER BY date_start, date_end";
-		$result = rex_sql::factory();
+		$result = \rex_sql::factory();
 		$result->setQuery($query);
 		
 		$fairs = [];
@@ -111,14 +112,14 @@ class Fair {
 	public function save() {
 		$error = 0;
 
-		$query = rex::getTablePrefix() ."d2u_news_fairs SET "
+		$query = \rex::getTablePrefix() ."d2u_news_fairs SET "
 				."name = '". $this->name ."', "
 				."city = '". $this->city ."', "
 				."country_code = '". $this->country_code ."', "
 				."date_start = '". $this->date_start ."', "
 				."date_end = '". $this->date_end ."', "
 				."updatedate = ". time() .", "
-				."updateuser = '". rex::getUser()->getLogin() ."' ";
+				."updateuser = '". \rex::getUser()->getLogin() ."' ";
 
 		if($this->fair_id == 0) {
 			$query = "INSERT INTO ". $query;
@@ -127,7 +128,7 @@ class Fair {
 			$query = "UPDATE ". $query ." WHERE fair_id = ". $this->fair_id;
 		}
 
-		$result = rex_sql::factory();
+		$result = \rex_sql::factory();
 		$result->setQuery($query);
 		if($this->fair_id == 0) {
 			$this->fair_id = $result->getLastId();

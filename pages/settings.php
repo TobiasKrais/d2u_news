@@ -55,6 +55,15 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 					?>
 				</div>
 			</fieldset>
+			<fieldset>
+				<legend><small><i class="rex-icon rex-icon-open-category"></i></small> <?php echo rex_i18n::msg('d2u_helper_categories'); ?></legend>
+				<div class="panel-body-wrapper slide">
+					<?php
+						$options_sort = ['name' => rex_i18n::msg('d2u_helper_name'), 'priority' => rex_i18n::msg('header_priority')];
+						d2u_addon_backend_helper::form_select('d2u_helper_translations_sort', 'settings[default_sort]', $options_sort, [$this->getConfig('default_sort')]);
+					?>
+				</div>
+			</fieldset>
 		</div>
 		<footer class="panel-footer">
 			<div class="rex-form-panel-footer">

@@ -21,12 +21,17 @@ $d2u_module_manager->showManagerList();
 ?>
 <h2>Beispielseiten</h2>
 <ul>
-	<li>News Addon: <a href="http://www.design-to-use.de" target="_blank">
-		www.design-to-use.de</a>.</li>
+	<li>News Addon: <a href="http://www.kaltenbach.com" target="_blank">
+		www.kaltenbach.com</a>.</li>
 </ul>
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_news" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
+<p>1.1.0:</p>
+<ul>
+	<li>Namespace "D2U_News" eingeführt. ACHTUNG: Module müssen angepasst werden!</li>
+	<li>News Kategorien hinzugefügt.</li>
+</ul>
 <p>1.0.3:</p>
 <ul>
 	<li>Bugfix: Fehler beim Speichern von Namen mit einfachem Anführungszeichen behoben.</li>

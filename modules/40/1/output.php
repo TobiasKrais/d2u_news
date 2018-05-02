@@ -23,16 +23,27 @@ $tag_close = $sprog->getConfig('wildcard_close_tag');
 $counter_news = "REX_VALUE[1]" == "" ? "5" : "REX_VALUE[1]";
 $link_id_overview = "REX_LINK[id=1 output=id]";
 
+$category_id = "REX_VALUE[2]" > 0 ? "REX_VALUE[2]" : 0;
+$category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : FALSE;
+
 if(rex::isBackend()) {
 	// Ausgabe im BACKEND	
 ?>
 	<h1 style="font-size: 1.5em;">News</h1>
-	Anzahl auszugebender News: REX_VALUE[1]
+	<p>Anzahl auszugebender News: REX_VALUE[1]</p>
+	<p>Gewählte Kategorie: <?php print ($category !== FALSE ? $category->name : 'Alle Kategorien'); ?></p>
 <?php
 }
 else if(rex_addon::get("d2u_news")->isAvailable()) {
 	// FRONTEND
-	$news = News::getAll(rex_clang::getCurrentId(), $counter_news, TRUE);
+	$news = [];
+	if($category !== FALSE) {
+		$news = $category->getNews(TRUE);
+	}
+	else {
+		$news = \D2U_News\News::getAll(rex_clang::getCurrentId(), $counter_news, TRUE);
+	}
+	
 	if(count($news) > 0) {
 	?>
 		<div class="col-12">
@@ -46,6 +57,7 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 					print '<div class="row news">';
 					
 					$url = "";
+					// In case link is set to a machine from D2U Machinery Addon
 					if($nachricht->link_type == "machine" && $nachricht->d2u_machines_machine_id > 0) {
 						$machine = new Machine($nachricht->d2u_machines_machine_id, rex_clang::getCurrentId());
 						$url = $machine->getURL();

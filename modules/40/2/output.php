@@ -26,7 +26,7 @@ $tag_open = $sprog->getConfig('wildcard_open_tag');
 $tag_close = $sprog->getConfig('wildcard_close_tag');
 
 // Messen ausgeben
-$fairs = Fair::getAll();
+$fairs = \D2U_News\Fair::getAll();
 
 if(count($fairs) > 0) {
 	print '<div class="col-12">';
