@@ -30,6 +30,7 @@ $d2u_module_manager->showManagerList();
 <p>1.1.0:</p>
 <ul>
 	<li>Namespace "D2U_News" eingeführt. ACHTUNG: Module müssen angepasst werden!</li>
+	<li>Plugin Nachrichtenarten hinzugefügt.</li>
 	<li>News Kategorien hinzugefügt.</li>
 </ul>
 <p>1.0.3:</p>

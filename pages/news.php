@@ -37,6 +37,13 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 			$news->url = $form['url'];
 			$news->date = $form['date'];
 			$news->online_status = array_key_exists('online_status', $form) ? "online" : "offline";
+			if(rex_plugin::get("d2u_news", "news_types")->isAvailable()) {
+				$type_ids = isset($form['type_ids']) ? $form['type_ids'] : [];
+				$news->types = [];
+				foreach ($type_ids as $type_id) {
+					$news->types[$type_id] = new \D2U_News\Type($type_id, $rex_clang->getId());
+				}
+			}
 		}
 		else {
 			$news->clang_id = $rex_clang->getId();
@@ -209,6 +216,20 @@ if ($func == 'edit' || $func == 'add') {
 						</script>
 					</div>
 				</fieldset>
+				<?php
+					if(rex_plugin::get("d2u_news", "news_types")->isAvailable()) {
+						print '<fieldset>';
+						print '<legend><small><i class="rex-icon fa-file-text-o"></i></small> '. rex_i18n::msg('d2u_news_types') .'</legend>';
+						print '<div class="panel-body-wrapper slide">';
+						$options_types = [];
+						foreach (D2U_News\Type::getAll(rex_config::get("d2u_helper", "default_lang"), FALSE) as $types) {
+							$options_types[$types->type_id] = $types->name;
+						}
+						d2u_addon_backend_helper::form_select('d2u_news_types', 'form[type_ids][]', $options_types, (count($news->types) > 0 ? array_keys($news->types) : []), 5, TRUE, $readonly);
+						print '</div>';
+						print '</fieldset>';
+					}
+				?>
 			</div>
 			<footer class="panel-footer">
 				<div class="rex-form-panel-footer">

@@ -47,6 +47,11 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var $categories = [];
 
 	/**
+	 * @var Type[] Array containing type objects. 
+	 */
+	var $types = [];
+
+	/**
 	 * @var string Type of link, either "none" (default), "article", "url" or "machine"
 	 */
 	var $link_type = 'none';
@@ -122,6 +127,13 @@ class News implements \D2U_Helper\ITranslationHelper {
 			$this->date = $result->getValue("date");
 			$this->updatedate = $result->getValue("updatedate");
 			$this->updateuser = $result->getValue("updateuser");
+
+			if(\rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
+				$type_ids = preg_grep('/^\s*$/s', explode("|", $result->getValue("type_ids")), PREG_GREP_INVERT);
+				foreach ($type_ids as $type_id) {
+					$this->types[$type_id] = new Type($type_id, $clang_id);
+				}
+			}
 		}
 	}
 	
@@ -258,6 +270,9 @@ class News implements \D2U_Helper\ITranslationHelper {
 					."url = '". $this->url ."', "
 					."d2u_machines_machine_id = ". $this->d2u_machines_machine_id .", "
 					."`date` = '". $this->date ."' ";
+			if(\rex_plugin::get("d2u_news", "news_types")->isAvailable()) {
+				$query .= ", type_ids = '|". implode("|", array_keys($this->types)) ."|' ";
+			}
 
 			if($this->news_id == 0) {
 				$query = "INSERT INTO ". $query;

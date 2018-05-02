@@ -8,13 +8,13 @@
 namespace D2U_News;
 
 /**
- * News Category
+ * News Type
  */
-class Category implements \D2U_Helper\ITranslationHelper {
+class Type implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * @var int Database ID
 	 */
-	var $category_id = 0;
+	var $type_id = 0;
 	
 	/**
 	 * @var int Redaxo clang id
@@ -26,11 +26,6 @@ class Category implements \D2U_Helper\ITranslationHelper {
 	 */
 	var $name = "";
 
-	/**
-	 * @var string Preview picture file name 
-	 */
-	var $picture = "";
-	
 	/**
 	 * @var int Sort Priority
 	 */
@@ -53,24 +48,23 @@ class Category implements \D2U_Helper\ITranslationHelper {
 
 	/**
 	 * Constructor. Reads a category stored in database.
-	 * @param int $category_id Category ID.
+	 * @param int $type_id Type ID.
 	 * @param int $clang_id Redaxo clang id.
 	 */
-	 public function __construct($category_id, $clang_id) {
+	 public function __construct($type_id, $clang_id) {
 		$this->clang_id = $clang_id;
-		$query = "SELECT * FROM ". \rex::getTablePrefix() ."d2u_news_categories AS categories "
-				."LEFT JOIN ". \rex::getTablePrefix() ."d2u_news_categories_lang AS lang "
-					."ON categories.category_id = lang.category_id "
+		$query = "SELECT * FROM ". \rex::getTablePrefix() ."d2u_news_types AS types "
+				."LEFT JOIN ". \rex::getTablePrefix() ."d2u_news_types_lang AS lang "
+					."ON types.type_id = lang.type_id "
 					."AND clang_id = ". $this->clang_id ." "
-				."WHERE categories.category_id = ". $category_id;
+				."WHERE types.type_id = ". $type_id;
 		$result = \rex_sql::factory();
 		$result->setQuery($query);
 		$num_rows = $result->getRows();
 
 		if ($num_rows > 0) {
-			$this->category_id = $result->getValue("category_id");
+			$this->type_id = $result->getValue("type_id");
 			$this->name = stripslashes($result->getValue("name"));
-			$this->picture = $result->getValue("picture");
 			$this->priority = $result->getValue("priority");
 			if($result->getValue("translation_needs_update") != "") {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
@@ -86,34 +80,34 @@ class Category implements \D2U_Helper\ITranslationHelper {
 	 * FALSE, only this translation will be deleted.
 	 */
 	public function delete($delete_all = TRUE) {
-		$query_lang = "DELETE FROM ". \rex::getTablePrefix() ."d2u_news_categories_lang "
-			."WHERE category_id = ". $this->category_id
+		$query_lang = "DELETE FROM ". \rex::getTablePrefix() ."d2u_news_types_lang "
+			."WHERE type_id = ". $this->type_id
 			. ($delete_all ? '' : ' AND clang_id = '. $this->clang_id) ;
 		$result_lang = \rex_sql::factory();
 		$result_lang->setQuery($query_lang);
 		
 		// If no more lang objects are available, delete
-		$query_main = "SELECT * FROM ". \rex::getTablePrefix() ."d2u_news_categories_lang "
-			."WHERE category_id = ". $this->category_id;
+		$query_main = "SELECT * FROM ". \rex::getTablePrefix() ."d2u_news_types_lang "
+			."WHERE type_id = ". $this->type_id;
 		$result_main = \rex_sql::factory();
 		$result_main->setQuery($query_main);
 		if($result_main->getRows() == 0) {
-			$query = "DELETE FROM ". \rex::getTablePrefix() ."d2u_news_categories "
-				."WHERE category_id = ". $this->category_id;
+			$query = "DELETE FROM ". \rex::getTablePrefix() ."d2u_news_types "
+				."WHERE type_id = ". $this->type_id;
 			$result = \rex_sql::factory();
 			$result->setQuery($query);
 		}
 	}
 	
 	/**
-	 * Get all categories.
+	 * Get all types.
 	 * @param int $clang_id Redaxo clang id.
-	 * @return Category[] Array with Category objects.
+	 * @return Type[] Array with Type objects.
 	 */
 	public static function getAll($clang_id) {
-		$query = "SELECT lang.category_id FROM ". \rex::getTablePrefix() ."d2u_news_categories_lang AS lang "
-			."LEFT JOIN ". \rex::getTablePrefix() ."d2u_news_categories AS categories "
-				."ON lang.category_id = categories.category_id "
+		$query = "SELECT lang.type_id FROM ". \rex::getTablePrefix() ."d2u_news_types_lang AS lang "
+			."LEFT JOIN ". \rex::getTablePrefix() ."d2u_news_types AS types "
+				."ON lang.type_id = types.type_id "
 			."WHERE clang_id = ". $clang_id ." ";
 		if(\rex_addon::get('d2u_news')->getConfig('default_sort', 'name') == 'priority') {
 			$query .= 'ORDER BY priority';
@@ -124,12 +118,12 @@ class Category implements \D2U_Helper\ITranslationHelper {
 		$result = \rex_sql::factory();
 		$result->setQuery($query);
 		
-		$categories = [];
+		$types = [];
 		for($i = 0; $i < $result->getRows(); $i++) {
-			$categories[] = new Category($result->getValue("category_id"), $clang_id);
+			$types[] = new Type($result->getValue("type_id"), $clang_id);
 			$result->next();
 		}
-		return $categories;
+		return $types;
 	}
 	
 	/**
@@ -141,7 +135,7 @@ class Category implements \D2U_Helper\ITranslationHelper {
 		$query = "SELECT lang.news_id FROM ". \rex::getTablePrefix() ."d2u_news_news_lang AS lang "
 			."LEFT JOIN ". \rex::getTablePrefix() ."d2u_news_news AS news "
 					."ON lang.news_id = news.news_id "
-			."WHERE category_ids LIKE '%|". $this->category_id ."|%' AND clang_id = ". $this->clang_id ." ";
+			."WHERE type_ids LIKE '%|". $this->type_id ."|%' AND clang_id = ". $this->clang_id ." ";
 		if($only_online) {
 			$query .= "AND online_status = 'online' ";
 		}
@@ -156,7 +150,7 @@ class Category implements \D2U_Helper\ITranslationHelper {
 		
 		$news = [];
 		for($i = 0; $i < $result->getRows(); $i++) {
-			$news[$result->getValue("news_id")] = new News($result->getValue("news_id"), $this->clang_id);
+			$news[] = new News($result->getValue("news_id"), $this->clang_id);
 			$result->next();
 		}
 		return $news;
@@ -166,19 +160,19 @@ class Category implements \D2U_Helper\ITranslationHelper {
 	 * Get objects concerning translation updates
 	 * @param int $clang_id Redaxo language ID
 	 * @param string $type 'update' or 'missing'
-	 * @return Category[] Array with Category objects.
+	 * @return Type[] Array with Type objects.
 	 */
 	public static function getTranslationHelperObjects($clang_id, $type) {
-		$query = 'SELECT category_id FROM '. \rex::getTablePrefix() .'d2u_news_categories_lang '
+		$query = 'SELECT type_id FROM '. \rex::getTablePrefix() .'d2u_news_types_lang '
 				."WHERE clang_id = ". $clang_id ." AND translation_needs_update = 'yes' "
 				.'ORDER BY name';
 		if($type == 'missing') {
-			$query = 'SELECT main.category_id FROM '. \rex::getTablePrefix() .'d2u_news_categories AS main '
-					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_categories_lang AS target_lang '
-						.'ON main.category_id = target_lang.category_id AND target_lang.clang_id = '. $clang_id .' '
-					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_categories_lang AS default_lang '
-						.'ON main.category_id = default_lang.category_id AND default_lang.clang_id = '. \rex_config::get('d2u_helper', 'default_lang') .' '
-					."WHERE target_lang.category_id IS NULL "
+			$query = 'SELECT main.type_id FROM '. \rex::getTablePrefix() .'d2u_news_types AS main '
+					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_types_lang AS target_lang '
+						.'ON main.type_id = target_lang.type_id AND target_lang.clang_id = '. $clang_id .' '
+					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_types_lang AS default_lang '
+						.'ON main.type_id = default_lang.type_id AND default_lang.clang_id = '. \rex_config::get('d2u_helper', 'default_lang') .' '
+					."WHERE target_lang.type_id IS NULL "
 					.'ORDER BY default_lang.name';
 			$clang_id = \rex_config::get('d2u_helper', 'default_lang');
 		}
@@ -187,7 +181,7 @@ class Category implements \D2U_Helper\ITranslationHelper {
 
 		$objects = [];
 		for($i = 0; $i < $result->getRows(); $i++) {
-			$objects[] = new Category($result->getValue("category_id"), $clang_id);
+			$objects[] = new Type($result->getValue("type_id"), $clang_id);
 			$result->next();
 		}
 		
@@ -202,39 +196,38 @@ class Category implements \D2U_Helper\ITranslationHelper {
 		$error = 0;
 
 		// Save the not language specific part
-		$pre_save_category = new Category($this->category_id, $this->clang_id);
+		$pre_save_category = new Type($this->type_id, $this->clang_id);
 	
 		// save priority, but only if new or changed
-		if($this->priority != $pre_save_category->priority || $this->category_id == 0) {
+		if($this->priority != $pre_save_category->priority || $this->type_id == 0) {
 			$this->setPriority();
 		}
 
-		if($this->category_id == 0 || $pre_save_category != $this) {
-			$query = \rex::getTablePrefix() ."d2u_news_categories SET "
-					."priority = ". $this->priority .", "
-					."picture = '". $this->picture ."' ";
+		if($this->type_id == 0 || $pre_save_category != $this) {
+			$query = \rex::getTablePrefix() ."d2u_news_types SET "
+					."priority = ". $this->priority ." ";
 
-			if($this->category_id == 0) {
+			if($this->type_id == 0) {
 				$query = "INSERT INTO ". $query;
 			}
 			else {
-				$query = "UPDATE ". $query ." WHERE category_id = ". $this->category_id;
+				$query = "UPDATE ". $query ." WHERE type_id = ". $this->type_id;
 			}
 
 			$result = \rex_sql::factory();
 			$result->setQuery($query);
-			if($this->category_id == 0) {
-				$this->category_id = $result->getLastId();
+			if($this->type_id == 0) {
+				$this->type_id = $result->getLastId();
 				$error = $result->hasError();
 			}
 		}
 		
 		if($error == 0) {
 			// Save the language specific part
-			$pre_save_category = new Category($this->category_id, $this->clang_id);
+			$pre_save_category = new Type($this->type_id, $this->clang_id);
 			if($pre_save_category != $this) {
-				$query = "REPLACE INTO ". \rex::getTablePrefix() ."d2u_news_categories_lang SET "
-						."category_id = '". $this->category_id ."', "
+				$query = "REPLACE INTO ". \rex::getTablePrefix() ."d2u_news_types_lang SET "
+						."type_id = '". $this->type_id ."', "
 						."clang_id = '". $this->clang_id ."', "
 						."name = '". addslashes($this->name) ."', "
 						."translation_needs_update = '". $this->translation_needs_update ."', "
@@ -260,8 +253,8 @@ class Category implements \D2U_Helper\ITranslationHelper {
 	 */
 	private function setPriority() {
 		// Pull prios from database
-		$query = "SELECT category_id, priority FROM ". \rex::getTablePrefix() ."d2u_news_categories "
-			."WHERE category_id <> ". $this->category_id ." ORDER BY priority";
+		$query = "SELECT type_id, priority FROM ". \rex::getTablePrefix() ."d2u_news_types "
+			."WHERE type_id <> ". $this->type_id ." ORDER BY priority";
 		$result = \rex_sql::factory();
 		$result->setQuery($query);
 		
@@ -275,18 +268,18 @@ class Category implements \D2U_Helper\ITranslationHelper {
 			$this->priority = $result->getRows() + 1;
 		}
 
-		$categories = [];
+		$types = [];
 		for($i = 0; $i < $result->getRows(); $i++) {
-			$categories[$result->getValue("priority")] = $result->getValue("category_id");
+			$types[$result->getValue("priority")] = $result->getValue("type_id");
 			$result->next();
 		}
-		array_splice($categories, ($this->priority - 1), 0, [$this->category_id]);
+		array_splice($types, ($this->priority - 1), 0, [$this->type_id]);
 
 		// Save all prios
-		foreach($categories as $prio => $category_id) {
-			$query = "UPDATE ". \rex::getTablePrefix() ."d2u_news_categories "
+		foreach($types as $prio => $type_id) {
+			$query = "UPDATE ". \rex::getTablePrefix() ."d2u_news_types "
 					."SET priority = ". ($prio + 1) ." " // +1 because array_splice recounts at zero
-					."WHERE category_id = ". $category_id;
+					."WHERE type_id = ". $type_id;
 			$result = \rex_sql::factory();
 			$result->setQuery($query);
 		}
