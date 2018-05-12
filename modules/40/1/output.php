@@ -64,12 +64,9 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 	if($category !== FALSE) {
 		$news = $category->getNews(TRUE);
 	}
-	else {
-		$news = \D2U_News\News::getAll(rex_clang::getCurrentId(), $counter_news, TRUE);
-	}
-
-	// If News Types Plugin is activated: filter
-	if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
+	else if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
+		// If News Types Plugin is activated: filter
+		$news = \D2U_News\News::getAll(rex_clang::getCurrentId());
 		if(count($selected_news_types) > 0) {
 			foreach ($news as $current_news) {
 				foreach($selected_news_types as $selected_news_type) {
@@ -80,7 +77,14 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 			}
 		}
 	}
-
+	else {
+		//
+		$news = \D2U_News\News::getAll(rex_clang::getCurrentId(), $counter_news, TRUE);
+	}
+	
+	// Only predefined number of news
+	$news = array_slice($news, 0, $counter_news);
+	
 	if(count($news) > 0) {
 	?>
 		<div class="col-12">
