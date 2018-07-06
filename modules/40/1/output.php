@@ -26,6 +26,8 @@ $link_id_overview = "REX_LINK[id=1 output=id]";
 $category_id = "REX_VALUE[2]" > 0 ? "REX_VALUE[2]" : 0;
 $category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : FALSE;
 
+$heading = "REX_VALUE[4]" != "" ? "REX_VALUE[4]" : \Sprog\Wildcard::get('d2u_news_news');
+
 // If News Types Plugin is activated
 $selected_news_types = [];
 if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
@@ -38,7 +40,7 @@ if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 if(rex::isBackend()) {
 	// Ausgabe im BACKEND	
 ?>
-	<h1 style="font-size: 1.5em;">News</h1>
+	<h2 style="font-size: 1.5em;"><?php print $heading; ?></h2>
 	<p>Anzahl auszugebender News: REX_VALUE[1]</p>
 	<p>Gewählte Kategorie: <?php print ($category !== FALSE ? $category->name : 'Alle Kategorien'); ?></p>
 	<p>Gewählte Nachrichtenarten:
@@ -90,7 +92,7 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 		<div class="col-12">
 			<div class="row">
 				<div class="col-12">
-					<h1><?php print $tag_open . 'd2u_news_news'. $tag_close; ?></h1>
+					<h2><?php print $heading; ?></h2>
 				</div>
 			</div>
 			<?php
@@ -127,7 +129,7 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 						print '<div class="col-12">';
 					}
 
-					print '<h2 class="news">';
+					print '<h3 class="news">';
 					if($url != "") {
 						print '<a href="'. $url .'">';
 					}
@@ -135,11 +137,11 @@ else if(rex_addon::get("d2u_news")->isAvailable()) {
 					if($url != "") {
 						print '</a>';
 					}
-					print '</h2>';
-					print '<p><time pubdate="" datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
+					print '</h3>';
+					print '<time pubdate="" datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time>';
 						
 					if($nachricht->teaser != "") {
-						print '<p class="text">'. d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser) .'</p>';
+						print d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser);
 					}
 					else if($url != "") {
 						print '<p class="text"><a href="'. $url .'">'. $url .'</a></p>';	

@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.1:</p>
 <ul>
+	<li>Module 40-1: Optional kann individuelle Überschrift eingegeben werden. Überschriften wurden um eine Kategorie herabgestuft.</li>
 	<li>Bugfix Module: manchmal wurden weniger als die definierte Anzahl News ausgegeben.</li>
 </ul>
 <p>1.1.0:</p>

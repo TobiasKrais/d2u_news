@@ -1,3 +1,17 @@
+<?php
+	$sprog = rex_addon::get("sprog");
+	$tag_open = $sprog->getConfig('wildcard_open_tag');
+	$tag_close = $sprog->getConfig('wildcard_close_tag');
+?>
+<div class="row">
+	<div class="col-xs-12 col-sm-6">Überschrift (optional, Standard: "<?php print \Sprog\Wildcard::get('d2u_news_news'); ?>")</div>
+	<div class="col-xs-12 col-sm-6">
+		<input type="text" name="REX_INPUT_VALUE[4]" value="REX_VALUE[4]" style="width: 100%;" />
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-12"><br></div>
+</div>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">In welchem Artikel ist eine komplette Übersicht über News und Messen zu finden?</div>
 	<div class="col-xs-12 col-sm-6">REX_LINK[id=1 widget=1]</div>
@@ -14,24 +28,24 @@
 <div class="row">
 	<div class="col-xs-12"><br></div>
 </div>
+<?php
+	$categories = \D2U_News\Category::getAll(rex_clang::getCurrentId(), TRUE);
+	if (count($categories) > 0) {
+?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Welche News Kategorie soll angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
 		<?php
-			$categories = \D2U_News\Category::getAll(rex_clang::getCurrentId(), TRUE);
-			if (count($categories) > 0) {
-				print '<select name="REX_INPUT_VALUE[2]">';
-				print '<option value="0">Nachrichten aller Kategorien anzeigen</option>';
-				foreach ($categories as $category) {
-					echo '<option value="'. $category->category_id .'" ';
-
-					if ("REX_VALUE[2]" == $category->category_id) {
-						echo 'selected="selected" ';
-					}
-					echo '>'. $category->name .'</option>';
+			print '<select name="REX_INPUT_VALUE[2]">';
+			print '<option value="0">Nachrichten aller Kategorien anzeigen</option>';
+			foreach ($categories as $category) {
+				echo '<option value="'. $category->category_id .'" ';
+				if ("REX_VALUE[2]" == $category->category_id) {
+					echo 'selected="selected" ';
 				}
-				print '</select>';
+				echo '>'. $category->name .'</option>';
 			}
+			print '</select>';
 		?>
 	</div>
 </div>
@@ -39,7 +53,8 @@
 	<div class="col-xs-12"><br></div>
 </div>
 <?php
-if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
+	}
+	if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 ?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Welche Nachrichtenarten sollen herausgefiltert werden?<br>(Ohne Auswahl werden alle Nachrichten angezeigt.)</div>
@@ -66,7 +81,7 @@ if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 	<div class="col-xs-12"><br></div>
 </div>
 <?php
-}
+	}
 ?>
 <div class="row">
 	<div class="col-xs-12">
