@@ -60,7 +60,7 @@ if(rex::isBackend()) {
 	</p>
 <?php
 }
-else if(rex_addon::get("d2u_news")->isAvailable()) {
+else if(\rex_addon::get("d2u_news")->isAvailable()) {
 	// FRONTEND
 	$news = [];
 	if($category !== FALSE) {

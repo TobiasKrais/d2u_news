@@ -31,7 +31,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 			$news->picture = $input_media[1];
 			$news->link_type = $form['link_type'];
 			$news->article_id = $link_ids["REX_INPUT_LINK"][1];
-			if(rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
+			if(\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
 				$news->d2u_machines_machine_id = $form['d2u_machines_machine_id'];
 			}
 			$news->url = $form['url'];
@@ -161,12 +161,12 @@ if ($func == 'edit' || $func == 'add') {
 							$options_link_type["none"] = rex_i18n::msg('d2u_news_no_link');
 							$options_link_type["article"] = rex_i18n::msg('d2u_news_article');
 							$options_link_type["url"] = rex_i18n::msg('d2u_news_url');
-							if(rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
+							if(\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
 								$options_link_type["machine"] = rex_i18n::msg('d2u_news_machine');
 							}
 							d2u_addon_backend_helper::form_select('d2u_news_link_type', 'form[link_type]', $options_link_type, [$news->link_type], 1, FALSE, $readonly_lang);
 
-							if(rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
+							if(\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
 								$options_machines = [];
 								foreach(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE) as $machine) {
 									$options_machines[$machine->machine_id] = $machine->name;
