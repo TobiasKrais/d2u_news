@@ -138,7 +138,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 						print '</a>';
 					}
 					print '</h3>';
-					print '<time datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time>';
+					print '<time datetime="'. $nachricht->date .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time>';
 						
 					if($nachricht->teaser != "") {
 						print d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser);

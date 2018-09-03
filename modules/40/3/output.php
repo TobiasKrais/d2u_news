@@ -144,7 +144,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 							print '</a>';
 						}
 						print '</h1>';
-						print '<p><time datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
+						print '<p><time datetime="'. $nachricht->date .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
 					?>
 					<p class="text">
 						<?php
