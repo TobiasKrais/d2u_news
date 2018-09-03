@@ -117,7 +117,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 						if($url != "") {
 							print '<a href="'. $url .'">';
 						}
-						print '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt='. $nachricht->name .' class="listpic">';
+						print '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt="'. $nachricht->name .'" class="listpic">';
 						if($url != "") {
 							print '</a>';
 						}
@@ -138,7 +138,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 						print '</a>';
 					}
 					print '</h3>';
-					print '<time pubdate="" datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time>';
+					print '<time datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time>';
 						
 					if($nachricht->teaser != "") {
 						print d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser);

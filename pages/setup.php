@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.1-DEV:</p>
 <ul>
+	<li>Module 40-1 und 40-3: alt Tag des Bildes war ohne Anführungszeichen.</li>
 	<li>Bugfix: Löschen von Sprachen schlug fehl.</li>
 	<li>Module 40-1: Optional kann individuelle Überschrift eingegeben werden. Überschriften wurden um eine Kategorie herabgestuft.</li>
 	<li>Bugfix Module: manchmal wurden weniger als die definierte Anzahl News ausgegeben.</li>

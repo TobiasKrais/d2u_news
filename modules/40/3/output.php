@@ -119,7 +119,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 							// In case link is set to a machine from D2U Machinery Addon
 							print '<a href="'. $machine->getURL() .'">';
 						}
-						print '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt='. $nachricht->name .' class="listpic">';
+						print '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt="'. $nachricht->name .'" class="listpic">';
 						if($nachricht->article_id > 0 || $nachricht->d2u_machines_machine_id > 0) {
 							print '</a>';
 						}
@@ -144,7 +144,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 							print '</a>';
 						}
 						print '</h1>';
-						print '<p><time pubdate="" datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
+						print '<p><time datetime="'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
 					?>
 					<p class="text">
 						<?php
