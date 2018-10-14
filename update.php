@@ -3,7 +3,7 @@
 d2u_news_lang_helper::factory()->install();
 
 // Update modules
-if(class_exists(D2UModuleManager)) {
+if(class_exists('D2UModuleManager')) {
 	$modules = [];
 	$modules[] = new D2UModule("40-1",
 		"D2U News - Ausgabe News",
