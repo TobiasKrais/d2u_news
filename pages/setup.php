@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.1-DEV:</p>
 <ul>
+	<li>Bugfix: Deaktiviertes Addon zu deinstallieren führte zu fatal error.</li>
 	<li>In den Einstellungen gibt es jetzt eine Option, eigene Übersetzungen in SProg dauerhaft zu erhalten.</li>
 	<li>Messe Plugin erlaubt im Namen und Ort nun einfache Anführungszeichen.</li>
 	<li>Module 40-1 und 40-3: alt Tag des Bildes war ohne Anführungszeichen.</li>
