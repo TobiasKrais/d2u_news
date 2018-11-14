@@ -63,8 +63,8 @@ class Fair {
 
 		if ($num_rows > 0) {
 			$this->fair_id = $result->getValue("fair_id");
-			$this->name = $result->getValue("name");
-			$this->city = $result->getValue("city");
+			$this->name = stripslashes($result->getValue("name"));
+			$this->city = stripslashes($result->getValue("city"));
 			$this->country_code = $result->getValue("country_code");
 			$this->date_start = $result->getValue("date_start");
 			$this->date_end = $result->getValue("date_end");
@@ -113,8 +113,8 @@ class Fair {
 		$error = 0;
 
 		$query = \rex::getTablePrefix() ."d2u_news_fairs SET "
-				."name = '". $this->name ."', "
-				."city = '". $this->city ."', "
+				."name = '". addslashes($this->name) ."', "
+				."city = '". addslashes($this->city) ."', "
 				."country_code = '". $this->country_code ."', "
 				."date_start = '". $this->date_start ."', "
 				."date_end = '". $this->date_end ."', "

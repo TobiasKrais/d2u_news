@@ -7,6 +7,9 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 	$link_ids = filter_input_array(INPUT_POST, array('REX_INPUT_LINK'=> array('filter' => FILTER_VALIDATE_INT, 'flags' => FILTER_REQUIRE_ARRAY)));
 	$settings['article_id'] = $link_ids["REX_INPUT_LINK"][1];
 
+	// Checkbox also needs special treatment if empty
+	$settings['lang_wildcard_overwrite'] = array_key_exists('lang_wildcard_overwrite', $settings) ? "true" : "false";
+
 	// Save settings
 	if(rex_config::set("d2u_news", $settings)) {
 		echo rex_view::success(rex_i18n::msg('form_saved'));
@@ -27,6 +30,7 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 				<legend><small><i class="rex-icon rex-icon-language"></i></small> <?php echo rex_i18n::msg('d2u_helper_lang_replacements'); ?></legend>
 				<div class="panel-body-wrapper slide">
 					<?php
+						d2u_addon_backend_helper::form_checkbox('d2u_helper_lang_wildcard_overwrite', 'settings[lang_wildcard_overwrite]', 'true', $this->getConfig('lang_wildcard_overwrite') == 'true');
 						foreach(rex_clang::getAll() as $rex_clang) {
 							print '<dl class="rex-form-group form-group">';
 							print '<dt><label>'. $rex_clang->getName() .'</label></dt>';
@@ -60,7 +64,7 @@ if (filter_input(INPUT_POST, "btn_save") == 'save') {
 				<div class="panel-body-wrapper slide">
 					<?php
 						$options_sort = ['name' => rex_i18n::msg('d2u_helper_name'), 'priority' => rex_i18n::msg('header_priority')];
-						d2u_addon_backend_helper::form_select('d2u_helper_translations_sort', 'settings[default_sort]', $options_sort, [$this->getConfig('default_sort')]);
+						d2u_addon_backend_helper::form_select('d2u_helper_sort', 'settings[default_sort]', $options_sort, [$this->getConfig('default_sort')]);
 					?>
 				</div>
 			</fieldset>
