@@ -29,7 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.2-DEV:</p>
 <ul>
-	<li>...</li>
+	<li>Bugfix: Prioritäten wurden beim Löschen nicht reorganisiert.</li>
 </ul>
 <p>1.1.1:</p>
 <ul>
