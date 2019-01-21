@@ -135,10 +135,24 @@ if ($func == 'edit' || $func == 'add') {
 								else {
 									print '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
 								}
-								
-								d2u_addon_backend_helper::form_input('d2u_news_name', "form[lang][". $rex_clang->getId() ."][name]", $news->name, $required, $readonly_lang, "text");
-								d2u_addon_backend_helper::form_textarea('d2u_news_teaser', "form[lang][". $rex_clang->getId() ."][teaser]", $news->teaser, 5, FALSE, $readonly_lang, TRUE);
 							?>
+							<script>
+								// Hide on document load
+								$(document).ready(function() {
+									toggleClangDetailsView(<?php print $rex_clang->getId(); ?>);
+								});
+
+								// Hide on selection change
+								$("select[name='form[lang][1][translation_needs_update]']").on('change', function(e) {
+									toggleClangDetailsView(<?php print $rex_clang->getId(); ?>);
+								});
+							</script>
+							<div id="details_clang_<?php print $rex_clang->getId(); ?>">
+								<?php
+									d2u_addon_backend_helper::form_input('d2u_news_name', "form[lang][". $rex_clang->getId() ."][name]", $news->name, $required, $readonly_lang, "text");
+									d2u_addon_backend_helper::form_textarea('d2u_news_teaser', "form[lang][". $rex_clang->getId() ."][teaser]", $news->teaser, 5, FALSE, $readonly_lang, TRUE);
+								?>
+							</div>
 						</div>
 					</fieldset>
 				<?php
