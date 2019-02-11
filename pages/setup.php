@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.2-DEV:</p>
 <ul>
+	<li>Konvertierung der Datenbanktabellen zu utf8mb4.</li>
 	<li>Sprachdetails werden ausgeblendet, wenn Speicherung der Sprache nicht vorgesehen ist.</li>
 	<li>Bugfix: Prioritäten wurden beim Löschen nicht reorganisiert.</li>
 </ul>
