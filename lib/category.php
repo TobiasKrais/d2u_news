@@ -148,12 +148,7 @@ class Category implements \D2U_Helper\ITranslationHelper {
 		if($only_online) {
 			$query .= "AND online_status = 'online' ";
 		}
-		if(\rex_addon::get('d2u_news')->getConfig('default_sort', 'name') == 'priority') {
-			$query .= 'ORDER BY priority ASC';
-		}
-		else {
-			$query .= 'ORDER BY name ASC';
-		}
+		$query .= 'ORDER BY date ASC';
 		$result = \rex_sql::factory();
 		$result->setQuery($query);
 		
