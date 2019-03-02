@@ -148,7 +148,7 @@ class Category implements \D2U_Helper\ITranslationHelper {
 		if($only_online) {
 			$query .= "AND online_status = 'online' ";
 		}
-		$query .= 'ORDER BY date ASC';
+		$query .= 'ORDER BY `date` DESC';
 		$result = \rex_sql::factory();
 		$result->setQuery($query);
 		

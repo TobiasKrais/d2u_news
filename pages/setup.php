@@ -31,6 +31,8 @@ $d2u_module_manager->showManagerList();
 <ul>
 	<li>Konvertierung der Datenbanktabellen zu utf8mb4.</li>
 	<li>Sprachdetails werden ausgeblendet, wenn Speicherung der Sprache nicht vorgesehen ist.</li>
+	<li>Bugfix: Categories->getNews() sortiert jetzt auch absteigend, wie alle anderen getNews() Methoden.</li>
+	<li>Bugfix: Sortierung der News enthielt Fehler.</li>
 	<li>Bugfix: Prioritäten wurden beim Löschen nicht reorganisiert.</li>
 </ul>
 <p>1.1.1:</p>
