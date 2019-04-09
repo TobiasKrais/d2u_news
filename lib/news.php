@@ -82,16 +82,6 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var $date = "";
 	
 	/**
-	 * @var int Unix timestamp containing the last update date
-	 */
-	var $updatedate = 0;
-	
-	/**
-	 * @var string Redaxo update user name
-	 */
-	var $updateuser = "";
-	
-	/**
 	 * Constructor. Reads the object stored in database.
 	 * @param int $news_id News ID.
 	 * @param int $clang_id Redaxo clang id.
@@ -125,8 +115,6 @@ class News implements \D2U_Helper\ITranslationHelper {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
 			}
 			$this->date = $result->getValue("date");
-			$this->updatedate = $result->getValue("updatedate");
-			$this->updateuser = $result->getValue("updateuser");
 
 			if(\rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 				$type_ids = preg_grep('/^\s*$/s', explode("|", $result->getValue("type_ids")), PREG_GREP_INVERT);
@@ -298,9 +286,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 						."clang_id = '". $this->clang_id ."', "
 						."name = '". addslashes($this->name) ."', "
 						."teaser = '". addslashes(htmlspecialchars($this->teaser)) ."', "
-						."translation_needs_update = '". $this->translation_needs_update ."', "
-						."updatedate = ". time() .", "
-						."updateuser = '". \rex::getUser()->getLogin() ."' ";
+						."translation_needs_update = '". $this->translation_needs_update ."' ";
 
 				$result = \rex_sql::factory();
 				$result->setQuery($query);

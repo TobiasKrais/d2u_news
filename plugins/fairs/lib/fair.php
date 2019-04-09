@@ -41,16 +41,6 @@ class Fair {
 	var $date_end = "";
 	
 	/**
-	 * @var int updatedate
-	 */
-	var $updatedate = "";
-
-	/**
-	 * @var string update Redaxo user
-	 */
-	var $updateuser = "";
-
-	/**
 	 * Constructor. Reads a contact stored in database.
 	 * @param int $fair_id Contact ID.
 	 */
@@ -68,8 +58,6 @@ class Fair {
 			$this->country_code = $result->getValue("country_code");
 			$this->date_start = $result->getValue("date_start");
 			$this->date_end = $result->getValue("date_end");
-			$this->updatedate = $result->getValue("updatedate");
-			$this->updateuser = $result->getValue("updateuser");
 		}
 	}
 	
@@ -117,9 +105,7 @@ class Fair {
 				."city = '". addslashes($this->city) ."', "
 				."country_code = '". $this->country_code ."', "
 				."date_start = '". $this->date_start ."', "
-				."date_end = '". $this->date_end ."', "
-				."updatedate = ". time() .", "
-				."updateuser = '". \rex::getUser()->getLogin() ."' ";
+				."date_end = '". $this->date_end ."' ";
 
 		if($this->fair_id == 0) {
 			$query = "INSERT INTO ". $query;

@@ -19,8 +19,6 @@ $sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_news_n
 	name varchar(255) collate utf8mb4_unicode_ci default NULL,
 	teaser text collate utf8mb4_unicode_ci default NULL,
 	translation_needs_update varchar(7) collate utf8mb4_unicode_ci default NULL,
-	updatedate int(11) default NULL,
-	updateuser varchar(255) collate utf8mb4_unicode_ci default NULL,
 	PRIMARY KEY (news_id, clang_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
 
@@ -35,8 +33,6 @@ $sql->setQuery("CREATE TABLE IF NOT EXISTS ". \rex::getTablePrefix() ."d2u_news_
 	clang_id int(10) NOT NULL,
 	name varchar(255) collate utf8mb4_unicode_ci default NULL,
 	translation_needs_update varchar(7) collate utf8mb4_unicode_ci default NULL,
-	updatedate int(11) default NULL,
-	updateuser varchar(255) collate utf8mb4_unicode_ci default NULL,
 	PRIMARY KEY (category_id, clang_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
 

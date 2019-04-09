@@ -57,6 +57,13 @@ $sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_news_lang` CONV
 $sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_categories` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
 $sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_categories_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
 
+if (rex_string::versionCompare($this->getVersion(), '1.1.2', '<')) {
+	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_news_lang DROP updatedate;");
+	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_news_lang DROP updateuser;");
+	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_categories_lang DROP updatedate;");
+	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_categories_lang DROP updateuser;");
+}
+
 // remove default lang setting
 if ($this->hasConfig('default_lang')) {
 	$this->removeConfig('default_lang');

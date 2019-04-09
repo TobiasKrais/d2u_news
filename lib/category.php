@@ -42,16 +42,6 @@ class Category implements \D2U_Helper\ITranslationHelper {
 	var $translation_needs_update = "delete";
 
 	/**
-	 * @var int Unix timestamp containing the last update date
-	 */
-	var $updatedate = 0;
-	
-	/**
-	 * @var string Redaxo update user name
-	 */
-	var $updateuser = "";
-
-	/**
 	 * Constructor. Reads a category stored in database.
 	 * @param int $category_id Category ID.
 	 * @param int $clang_id Redaxo clang id.
@@ -75,8 +65,6 @@ class Category implements \D2U_Helper\ITranslationHelper {
 			if($result->getValue("translation_needs_update") != "") {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
 			}
-			$this->updatedate = $result->getValue("updatedate");
-			$this->updateuser = $result->getValue("updateuser");
 		}
 	}
 	
@@ -235,19 +223,12 @@ class Category implements \D2U_Helper\ITranslationHelper {
 						."category_id = '". $this->category_id ."', "
 						."clang_id = '". $this->clang_id ."', "
 						."name = '". addslashes($this->name) ."', "
-						."translation_needs_update = '". $this->translation_needs_update ."', "
-						."updatedate = ". time() .", "
-						."updateuser = '". \rex::getUser()->getLogin() ."' ";
+						."translation_needs_update = '". $this->translation_needs_update ."' ";
 
 				$result = \rex_sql::factory();
 				$result->setQuery($query);
 				$error = $result->hasError();
 			}
-		}
-		
-		// Update URLs
-		if(\rex_addon::get("url")->isAvailable()) {
-			\UrlGenerator::generatePathFile([]);
 		}
 		
 		return $error;

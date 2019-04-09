@@ -37,16 +37,6 @@ class Type implements \D2U_Helper\ITranslationHelper {
 	var $translation_needs_update = "delete";
 
 	/**
-	 * @var int Unix timestamp containing the last update date
-	 */
-	var $updatedate = 0;
-	
-	/**
-	 * @var string Redaxo update user name
-	 */
-	var $updateuser = "";
-
-	/**
 	 * Constructor. Reads a category stored in database.
 	 * @param int $type_id Type ID.
 	 * @param int $clang_id Redaxo clang id.
@@ -69,8 +59,6 @@ class Type implements \D2U_Helper\ITranslationHelper {
 			if($result->getValue("translation_needs_update") != "") {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
 			}
-			$this->updatedate = $result->getValue("updatedate");
-			$this->updateuser = $result->getValue("updateuser");
 		}
 	}
 	
@@ -241,11 +229,6 @@ class Type implements \D2U_Helper\ITranslationHelper {
 				$result->setQuery($query);
 				$error = $result->hasError();
 			}
-		}
-		
-		// Update URLs
-		if(\rex_addon::get("url")->isAvailable()) {
-			\UrlGenerator::generatePathFile([]);
 		}
 		
 		return $error;
