@@ -99,26 +99,13 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 				foreach ($news as $nachricht) {
 					print '<div class="row news">';
 					
-					$url = "";
-					// In case link is set to a machine from D2U Machinery Addon
-					if($nachricht->link_type == "machine" && $nachricht->d2u_machines_machine_id > 0) {
-						$machine = new Machine($nachricht->d2u_machines_machine_id, rex_clang::getCurrentId());
-						$url = $machine->getURL();
-					}
-					else if($nachricht->link_type == "article" && $nachricht->article_id > 0) {
-						$url = rex_getUrl($nachricht->article_id);
-					}
-					else if($nachricht->link_type == "url" && $nachricht->url != "") {
-						$url = $nachricht->url;
-					}
-
 					if($nachricht->picture != "") {
 						print '<div class="col-12 col-sm-4">';
-						if($url != "") {
-							print '<a href="'. $url .'">';
+						if($nachricht->getUrl() != "") {
+							print '<a href="'. $nachricht->getUrl() .'">';
 						}
 						print '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt="'. $nachricht->name .'" class="listpic">';
-						if($url != "") {
+						if($nachricht->getUrl() != "") {
 							print '</a>';
 						}
 						print '</div>';
@@ -130,11 +117,11 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 					}
 
 					print '<h3 class="news">';
-					if($url != "") {
-						print '<a href="'. $url .'">';
+					if($nachricht->getUrl() != "") {
+						print '<a href="'. $nachricht->getUrl() .'">';
 					}
 					print $nachricht->name;
-					if($url != "") {
+					if($nachricht->getUrl() != "") {
 						print '</a>';
 					}
 					print '</h3>';
@@ -143,8 +130,8 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 					if($nachricht->teaser != "") {
 						print d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser);
 					}
-					else if($url != "") {
-						print '<p class="text"><a href="'. $url .'">'. $url .'</a></p>';	
+					else if($nachricht->getUrl() != "") {
+						print '<p class="text"><a href="'. $nachricht->getUrl() .'">'. $nachricht->getUrl() .'</a></p>';	
 					}
 					print '</div>';
 					print '</div>';

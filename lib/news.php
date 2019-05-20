@@ -62,6 +62,11 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var $url = '';
 	
 	/**
+	 * @var string News URL depending on news type
+	 */
+	private $news_url = '';
+	
+	/**
 	 * @var int Redaxo article id
 	 */
 	var $article_id = 0;
@@ -236,6 +241,26 @@ class News implements \D2U_Helper\ITranslationHelper {
 		}
 		
 		return $objects;
+    }
+
+	/**
+	 * Get URL, depending on news type
+	 * @return string News URL
+	 */
+	public static function getUrl() {
+		if($this->news_url == "") {
+			if($this->link_type == "article" && $this->article_id > 0) {
+				$this->news_url = rex_getUrl($this->article_id);
+			}
+			else if($this->link_type == "url") {
+				$this->news_url = $this->url;
+			}
+			else if($this->link_type == "machine") {
+				$machine = new \Machine($this->d2u_machines_machine_id, $this->clang_id);
+				$this->news_url = $machine->getURL();
+			}
+		}
+		return $this->news_url;
     }
 	
 	/**

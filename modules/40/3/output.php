@@ -2,7 +2,7 @@
 if(!function_exists('formatDate')) {
 	/**
 	 * Formats the date for language specific options.
-	 * @param string $date DAte in Format YYYY-MM-TT
+	 * @param string $datum DAte in Format YYYY-MM-TT
 	 * @param int $clang_id Redaxo clang id
 	 * @return string Formated date
 	 */
@@ -104,23 +104,13 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 		<div class="row">
 			<?php
 				foreach ($news as $nachricht) {
-					$machine = FALSE;
-					// In case link is set to a machine from D2U Machinery Addon
-					if($nachricht->d2u_machines_machine_id > 0) {
-						$machine = new Machine($nachricht->d2u_machines_machine_id, rex_clang::getCurrentId());
-					}
-
 					if($show_pic && $nachricht->picture != "") {
 						print '<aside class="col-12 col-sm-2">';
-						if($nachricht->article_id > 0) {
-							print '<a href="'. rex_getUrl($nachricht->article_id).'">';
-						}
-						else if($nachricht->d2u_machines_machine_id > 0) {
-							// In case link is set to a machine from D2U Machinery Addon
-							print '<a href="'. $machine->getURL() .'">';
+						if($nachricht->getUrl() != "") {
+							print '<a href="'. $nachricht->getUrl() .'">';
 						}
 						print '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt="'. $nachricht->name .'" class="listpic">';
-						if($nachricht->article_id > 0 || $nachricht->d2u_machines_machine_id > 0) {
+						if($nachricht->getUrl() != "") {
 							print '</a>';
 						}
 						print '</aside>';
@@ -129,18 +119,11 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 				<div class="col-12 col-sm-10">
 					<?php
 						print '<h1>';
-						if($nachricht->link_type == "article" && $nachricht->article_id > 0) {
-							print '<a href="'. rex_getUrl($nachricht->article_id).'">';
-						}
-						else if($nachricht->link_type == "machine" && $nachricht->d2u_machines_machine_id > 0) {
-							// In case link is set to a machine from D2U Machinery Addon
-							print '<a href="'. $machine->getURL() .'">';
-						}
-						else if($nachricht->link_type == "url" && $nachricht->url != "") {
-							print '<a href="'. $nachricht->url .'">';
+						if($nachricht->getUrl() != "") {
+							print '<a href="'. $nachricht->getUrl() .'">';
 						}
 						print $nachricht->name;
-						if($nachricht->link_type != "none") {
+						if($nachricht->getUrl() != "") {
 							print '</a>';
 						}
 						print '</h1>';
@@ -196,4 +179,3 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 		}
 	}
 }
-?>

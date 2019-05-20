@@ -199,25 +199,17 @@ if ($func == 'edit' || $func == 'add') {
 						?>
 						<script>
 							function changeType() {
+								$('#LINK_1').hide();
+								$('#form\\[url\\]').hide();
+								$('#form\\[d2u_machines_machine_id\\]').hide();
 								if($('select[name="form\\[link_type\\]"]').val() === "article") {
 									$('#LINK_1').show();
-									$('#form\\[url\\]').hide();
-									$('#form\\[d2u_machines_machine_id\\]').hide();
 								}
 								else if($('select[name="form\\[link_type\\]"]').val() === "machine") {
-									$('#LINK_1').hide();
-									$('#form\\[url\\]').hide();
 									$('#form\\[d2u_machines_machine_id\\]').show();
 								}
 								else if($('select[name="form\\[link_type\\]"]').val() === "url") {
-									$('#LINK_1').hide();
 									$('#form\\[url\\]').show();
-									$('#form\\[d2u_machines_machine_id\\]').hide();
-								}
-								else {
-									$('#LINK_1').hide();
-									$('#form\\[url\\]').hide();
-									$('#form\\[d2u_machines_machine_id\\]').hide();
 								}
 							}
 							

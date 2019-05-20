@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.2-DEV:</p>
 <ul>
+	<li>Methode News->getUrl() hinzugefügt. Gibt die URL der News zurück, abhängig vom Link Typ.</li>
 	<li>Nicht benötigte Felder "updatedate" und "updateuser" in Datenbank entfernt".</li>
 	<li>Listen im Backend werden jetzt nicht mehr in Seiten unterteilt.</li>
 	<li>Konvertierung der Datenbanktabellen zu utf8mb4.</li>

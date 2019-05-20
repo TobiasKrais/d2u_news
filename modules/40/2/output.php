@@ -56,4 +56,3 @@ if(count($fairs) > 0) {
 	print '</div>';
 	print '</div>';
 }
-?>
