@@ -247,7 +247,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 	 * Get URL, depending on news type
 	 * @return string News URL
 	 */
-	public static function getUrl() {
+	public function getUrl() {
 		if($this->news_url == "") {
 			if($this->link_type == "article" && $this->article_id > 0) {
 				$this->news_url = rex_getUrl($this->article_id);
