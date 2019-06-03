@@ -27,6 +27,10 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_news" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
+<p>1.1.3-DEV:</p>
+<ul>
+	<li>...</li>
+</ul>
 <p>1.1.2:</p>
 <ul>
 	<li>Methode News->getUrl() hinzugefügt. Gibt die URL der News zurück, abhängig vom Link Typ.</li>
