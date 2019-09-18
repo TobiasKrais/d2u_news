@@ -97,8 +97,8 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	 */
 	protected $replacements_russian = [
 		'd2u_news_details' => 'Для получения дополнительной информации',
-		'd2u_news_fair_dates' => 'даты выставок',
 		'd2u_news_fairs_all' => 'даты всех выставок',
+		'd2u_news_fair_dates' => 'даты выставок',
 		'd2u_news_news' => 'Новости',
 	];
 
