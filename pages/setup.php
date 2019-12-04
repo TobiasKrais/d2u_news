@@ -29,7 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.3-DEV:</p>
 <ul>
-	<li>...</li>
+	<li>Backend: Einstellungen und Setup Tabs rechts eingeordnet um sie vom Inhalt besser zu unterscheiden.</li>
 </ul>
 <p>1.1.2:</p>
 <ul>
