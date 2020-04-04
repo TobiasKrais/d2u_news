@@ -42,8 +42,8 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	 */
 	protected $replacements_spanish = [
 		'd2u_news_details' => 'Para obtener más información',
-		'd2u_news_fair_dates' => 'Calendario ferias',
-		'd2u_news_fairs_all' => 'Todos Calendario ferias',
+		'd2u_news_fair_dates' => 'Calendario de ferias',
+		'd2u_news_fairs_all' => 'Fechas de todas las ferias',
 		'd2u_news_news' => 'Noticias',
 	];
 
