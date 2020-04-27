@@ -279,7 +279,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 					."category_ids = '|". implode("|", array_keys($this->categories)) ."|', "
 					."picture = '". $this->picture ."', "
 					."link_type = '". $this->link_type ."', "
-					."article_id = ". $this->article_id .", "
+					."article_id = ". (int)$this->article_id .", "
 					."url = '". $this->url ."', "
 					."d2u_machines_machine_id = ". $this->d2u_machines_machine_id .", "
 					."`date` = '". $this->date ."' ";

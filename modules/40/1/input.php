@@ -6,7 +6,7 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Überschrift (optional, Standard: "<?php print \Sprog\Wildcard::get('d2u_news_news'); ?>")</div>
 	<div class="col-xs-12 col-sm-6">
-		<input type="text" name="REX_INPUT_VALUE[4]" value="REX_VALUE[4]" style="width: 100%;" />
+		<input type="text" name="REX_INPUT_VALUE[4]" value="REX_VALUE[4]" class="form-control" />
 	</div>
 </div>
 <div class="row">
@@ -22,7 +22,7 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Wie viele News sollen angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
-		<input type="number" size="3" name="REX_INPUT_VALUE[1]" value="REX_VALUE[1]"/>
+		<input type="number" size="3" name="REX_INPUT_VALUE[1]" value="REX_VALUE[1]" class="form-control" style="max-width: 100px"/>
 	</div>
 </div>
 <div class="row">
@@ -36,7 +36,7 @@
 	<div class="col-xs-12 col-sm-6">Welche News Kategorie soll angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
 		<?php
-			print '<select name="REX_INPUT_VALUE[2]">';
+			print '<select name="REX_INPUT_VALUE[2]" class="form-control">';
 			print '<option value="0">Nachrichten aller Kategorien anzeigen</option>';
 			foreach ($categories as $category) {
 				echo '<option value="'. $category->category_id .'" ';
@@ -63,7 +63,7 @@
 			$selected_types = rex_var::toArray("REX_VALUE[3]");
 			$types = \D2U_News\Type::getAll(rex_clang::getCurrentId(), TRUE);
 			if (count($types) > 0) {
-				print '<select name="REX_INPUT_VALUE[3][]" multiple="multiple" style="width: 100%" size="5">';
+				print '<select name="REX_INPUT_VALUE[3][]" multiple="multiple" style="width: 100%" size="5" class="form-control">';
 				foreach ($types as $type) {
 					echo '<option value="'. $type->type_id .'" ';
 

@@ -30,6 +30,7 @@ $d2u_module_manager->showManagerList();
 <p>1.1.3-DEV:</p>
 <ul>
 	<li>Spanische Frontend Übersetzungen aktualisiert.</li>
+	<li>Bugfix: beim Speichern von News konnte ein Fehler auftauchen, wenn ein Artikellink entfernt wurde.</li>
 	<li>Backend: Einstellungen und Setup Tabs rechts eingeordnet um sie vom Inhalt besser zu unterscheiden.</li>
 </ul>
 <p>1.1.2:</p>
