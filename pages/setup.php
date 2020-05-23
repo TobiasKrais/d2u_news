@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.3-DEV:</p>
 <ul>
+	<li>Benötigt Redaxo >= 5.10, da die neue Klasse rex_version verwendet wird.</li>
 	<li>Spanische Frontend Übersetzungen aktualisiert.</li>
 	<li>Bugfix: beim Speichern von News konnte ein Fehler auftauchen, wenn ein Artikellink entfernt wurde.</li>
 	<li>Backend: Einstellungen und Setup Tabs rechts eingeordnet um sie vom Inhalt besser zu unterscheiden.</li>
