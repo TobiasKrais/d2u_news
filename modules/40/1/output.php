@@ -92,7 +92,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 		<div class="col-12">
 			<div class="row">
 				<div class="col-12">
-					<h2><?php print $heading; ?></h2>
+					<h2 class="h2-news"><?php print $heading; ?></h2>
 				</div>
 			</div>
 			<?php
