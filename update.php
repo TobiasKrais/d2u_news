@@ -11,7 +11,7 @@ if(class_exists('D2UModuleManager')) {
 	$modules = [];
 	$modules[] = new D2UModule("40-1",
 		"D2U News - Ausgabe News",
-		5);
+		6);
 	$modules[] = new D2UModule("40-2",
 		"D2U News - Ausgabe Messen",
 		1);

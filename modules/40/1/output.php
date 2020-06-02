@@ -98,6 +98,9 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 			<?php
 				foreach ($news as $nachricht) {
 					print '<div class="row news">';
+					print '<div class="col-12">';
+					print '<div class="news-box">';
+					print '<div class="row">';
 					
 					if($nachricht->picture != "") {
 						print '<div class="col-12 col-sm-4">';
@@ -133,6 +136,9 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 					else if($nachricht->getUrl() != "") {
 						print '<p class="text"><a href="'. $nachricht->getUrl() .'">'. $nachricht->getUrl() .'</a></p>';	
 					}
+					print '</div>';
+					print '</div>';
+					print '</div>';
 					print '</div>';
 					print '</div>';
 				}
