@@ -27,7 +27,7 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_news" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
-<p>1.1.3-DEV:</p>
+<p>1.1.3:</p>
 <ul>
 	<li>Modul 40-1 "D2U News - Ausgabe News" verwendet ein zusätzliches div um Linie unter oder über die News setzen zu können.</li>
 	<li>Benötigt Redaxo >= 5.10, da die neue Klasse rex_version verwendet wird.</li>
