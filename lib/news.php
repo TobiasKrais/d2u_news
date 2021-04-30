@@ -22,22 +22,22 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var $clang_id = 0;
 	
 	/**
-	 * @var string Name
+	 * @var String Name
 	 */
 	var $name = "";
 	
 	/**
-	 * @var string Short description
+	 * @var String Short description
 	 */
 	var $teaser = "";
 	
 	/**
-	 * @var string Online status. Either "online", "offline" or "archived".
+	 * @var String Online status. Either "online", "offline" or "archived".
 	 */
 	var $online_status = "";
 
 	/**
-	 * @var string Picture file name
+	 * @var String Picture file name
 	 */
 	var $picture = "";
 	
@@ -52,17 +52,17 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var $types = [];
 
 	/**
-	 * @var string Type of link, either "none" (default), "article", "url" or "machine"
+	 * @var String Type of link, either "none" (default), "article", "url" or "machine"
 	 */
 	var $link_type = 'none';
 	
 	/**
-	 * @var string external URL
+	 * @var String external URL
 	 */
 	var $url = '';
 	
 	/**
-	 * @var string News URL depending on news type
+	 * @var String News URL depending on news type
 	 */
 	private $news_url = '';
 	
@@ -77,14 +77,19 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var $d2u_machines_machine_id = 0;
 	
 	/**
-	 * @var string "yes" if translation needs update
+	 * @var String "yes" if translation needs update
 	 */
 	var $translation_needs_update = "delete";
 
 	/**
-	 * @var string Date in format YYYY-MM-DD.
+	 * @var String Date in format YYYY-MM-DD.
 	 */
 	var $date = "";
+	
+	/**
+	 * @var boolean Indicator for hiding news in this special language
+	 */
+	var $hide_this_lang = false;
 	
 	/**
 	 * Constructor. Reads the object stored in database.
@@ -115,6 +120,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 			$this->url = $result->getValue("url");
 			$this->d2u_machines_machine_id = $result->getValue("d2u_machines_machine_id");
 			$this->online_status = $result->getValue("online_status");
+			$this->hide_this_lang = $result->getValue("hide_this_lang") == 1 ? true : false;
 			$this->picture = $result->getValue("picture");
 			if($result->getValue("translation_needs_update") != "") {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
@@ -194,7 +200,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 				."ON lang.news_id = news.news_id "
 			."WHERE clang_id = ". $clang_id ." ";
 		if($online_only) {
-			$query .= "AND online_status = 'online' ";
+			$query .= "AND online_status = 'online' AND hide_this_lang = 0 ";
 		}
 		$query .='ORDER BY `date` DESC';
 		if($limit > 0) {
@@ -307,12 +313,12 @@ class News implements \D2U_Helper\ITranslationHelper {
 			$pre_save_news = new News($this->news_id, $this->clang_id);
 			if($pre_save_news != $this) {
 				$query = "REPLACE INTO ". \rex::getTablePrefix() ."d2u_news_news_lang SET "
-						."news_id = '". $this->news_id ."', "
-						."clang_id = '". $this->clang_id ."', "
+						."news_id = ". $this->news_id .", "
+						."clang_id = ". $this->clang_id .", "
 						."name = '". addslashes($this->name) ."', "
 						."teaser = '". addslashes(htmlspecialchars($this->teaser)) ."', "
+						."hide_this_lang = ". (int) $this->hide_this_lang .", "
 						."translation_needs_update = '". $this->translation_needs_update ."' ";
-
 				$result = \rex_sql::factory();
 				$result->setQuery($query);
 				$error = $result->hasError();

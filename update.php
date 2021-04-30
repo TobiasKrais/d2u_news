@@ -22,13 +22,6 @@ if(class_exists('D2UModuleManager')) {
 	$d2u_module_manager->autoupdate();
 }
 
-// 1.0.1 Update database
-$sql = rex_sql::factory();
-$sql->setQuery("SHOW COLUMNS FROM ". \rex::getTablePrefix() ."d2u_news_news LIKE 'url';");
-if($sql->getRows() == 0) {
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_news "
-		. "ADD url varchar(255) collate utf8mb4_unicode_ci default NULL AFTER article_id;");
-}
 // 1.1.0
 $sql->setQuery("CREATE TABLE IF NOT EXISTS ". \rex::getTablePrefix() ."d2u_news_categories (
 	category_id int(10) unsigned NOT NULL auto_increment,
@@ -45,11 +38,6 @@ $sql->setQuery("CREATE TABLE IF NOT EXISTS ". \rex::getTablePrefix() ."d2u_news_
 	updateuser varchar(255) collate utf8mb4_unicode_ci default NULL,
 	PRIMARY KEY (category_id, clang_id)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
-$sql->setQuery("SHOW COLUMNS FROM ". \rex::getTablePrefix() ."d2u_news_news LIKE 'category_ids';");
-if($sql->getRows() == 0) {
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_news "
-		. "ADD category_ids varchar(255) collate utf8mb4_unicode_ci default NULL AFTER news_id;");
-}
 
 // Update database to 1.1.2
 $sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_news` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
@@ -57,12 +45,28 @@ $sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_news_lang` CONV
 $sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_categories` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
 $sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_categories_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
 
-if (rex_version::compare($this->getVersion(), '1.1.2', '<')) {
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_news_lang DROP updatedate;");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_news_lang DROP updateuser;");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_categories_lang DROP updatedate;");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_categories_lang DROP updateuser;");
-}
+// Remove old columns
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_news_lang'))
+    ->removeColumn('updatedate')
+    ->removeColumn('updateuser')
+    ->ensure();
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_categories_lang'))
+    ->removeColumn('updatedate')
+    ->removeColumn('updateuser')
+    ->ensure();
+
+// Add new columns
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_news'))
+    ->ensureColumn(new \rex_sql_column('category_ids', 'VARCHAR(255)', TRUE))
+    ->ensureColumn(new \rex_sql_column('url', 'VARCHAR(255)', TRUE))
+    ->alter();
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_news_lang'))
+    ->ensureColumn(new \rex_sql_column('hide_this_lang', 'TINYINT(1)', FALSE, 0))
+    ->alter();
 
 // remove default lang setting
 if ($this->hasConfig('default_lang')) {
@@ -70,6 +74,6 @@ if ($this->hasConfig('default_lang')) {
 }
 
 // Standard settings
-if (!$this->hasConfig()) {
+if (!$this->hasConfig('default_sort')) {
     $this->setConfig('default_sort', "name");
 }

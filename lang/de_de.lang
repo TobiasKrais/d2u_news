@@ -4,6 +4,7 @@ d2u_news_news_title = Nachrichten
 d2u_news_article = Redaxo Artikel
 d2u_news_could_not_delete = Löschen fehlgeschlagen.
 d2u_news_date = Datum
+d2u_news_hide_this_lang = News in dieser Sprache ausblenden
 d2u_news_link_type = Link zu ...
 d2u_news_name = Name
 d2u_news_no_link = Kein Link

@@ -50,6 +50,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 		}
 		$news->name = $form['lang'][$rex_clang->getId()]['name'];
 		$news->teaser = $form['lang'][$rex_clang->getId()]['teaser'];
+		$news->hide_this_lang = array_key_exists('hide_this_lang', $form['lang'][$rex_clang->getId()]);
 		$news->translation_needs_update = $form['lang'][$rex_clang->getId()]['translation_needs_update'];
 		
 		if($news->translation_needs_update == "delete") {
@@ -151,6 +152,7 @@ if ($func == 'edit' || $func == 'add') {
 								<?php
 									d2u_addon_backend_helper::form_input('d2u_news_name', "form[lang][". $rex_clang->getId() ."][name]", $news->name, $required, $readonly_lang, "text");
 									d2u_addon_backend_helper::form_textarea('d2u_news_teaser', "form[lang][". $rex_clang->getId() ."][teaser]", $news->teaser, 5, FALSE, $readonly_lang, TRUE);
+									d2u_addon_backend_helper::form_checkbox('d2u_news_hide_this_lang', 'form[lang]['. $rex_clang->getId() .'][hide_this_lang]', 'true', $news->hide_this_lang, $readonly_lang);
 								?>
 							</div>
 						</div>
