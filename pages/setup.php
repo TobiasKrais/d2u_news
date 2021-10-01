@@ -30,6 +30,7 @@ $d2u_module_manager->showManagerList();
 <p>1.1.4-DEV:</p>
 <ul>
 	<li>News können nun für einzelne Sprachen ausgeblendet werden.</li>
+	<li>Messen Plugin: Messen haben nun auch ein Feld für ein Bild.</li>
 </ul>
 <p>1.1.3:</p>
 <ul>

@@ -10,6 +10,9 @@ if($message != "") {
 
 // save settings
 if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_apply") == 1) {
+	// Media fields and links need special treatment
+	$input_media = (array) rex_post('REX_INPUT_MEDIA', 'array', array());
+
 	$form = (array) rex_post('form', 'array', []);
 
 	$fair = new \D2U_News\Fair($form['fair_id']);
@@ -18,6 +21,7 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 	$fair->country_code = $form['country_code'];
 	$fair->date_start = $form['date_start'];
 	$fair->date_end = $form['date_end'];
+	$fair->picture = $input_media[1];
 
 	// message output
 	$message = 'form_save_error';
@@ -70,6 +74,7 @@ if ($func == 'edit' || $func == 'add') {
 							d2u_addon_backend_helper::form_input('d2u_news_fairs_country_code', 'form[country_code]', $fair->country_code, TRUE, $readonly);
 							d2u_addon_backend_helper::form_input('d2u_news_fairs_date_start', 'form[date_start]', $fair->date_start, TRUE, $readonly, 'date');
 							d2u_addon_backend_helper::form_input('d2u_news_house_date_end', 'form[date_end]', $fair->date_end, TRUE, $readonly, 'date');
+							d2u_addon_backend_helper::form_mediafield('d2u_helper_picture', '1', $fair->picture, $readonly);
 						?>
 					</div>
 				</fieldset>

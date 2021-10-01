@@ -41,6 +41,11 @@ class Fair {
 	var $date_end = "";
 	
 	/**
+	 * @var string picture
+	 */
+	var $picture = "";
+	
+	/**
 	 * Constructor. Reads a contact stored in database.
 	 * @param int $fair_id Contact ID.
 	 */
@@ -58,6 +63,7 @@ class Fair {
 			$this->country_code = $result->getValue("country_code");
 			$this->date_start = $result->getValue("date_start");
 			$this->date_end = $result->getValue("date_end");
+			$this->picture = $result->getValue("picture");
 		}
 	}
 	
@@ -105,7 +111,8 @@ class Fair {
 				."city = '". addslashes($this->city) ."', "
 				."country_code = '". $this->country_code ."', "
 				."date_start = '". $this->date_start ."', "
-				."date_end = '". $this->date_end ."' ";
+				."date_end = '". $this->date_end ."', "
+				."picture = '". $this->picture ."' ";
 
 		if($this->fair_id == 0) {
 			$query = "INSERT INTO ". $query;
