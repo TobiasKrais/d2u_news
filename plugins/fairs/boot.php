@@ -15,7 +15,7 @@ function rex_d2u_news_fairs_media_is_in_use(rex_extension_point $ep) {
 
 	// Fairs
 	$sql = rex_sql::factory();
-	$sql->setQuery('SELECT lang.fair_id, name FROM `' . rex::getTablePrefix() . 'd2u_news_fairs` '
+	$sql->setQuery('SELECT fair_id, name FROM `' . rex::getTablePrefix() . 'd2u_news_fairs` '
 		.'WHERE picture = "'. $filename .'"');  
 
 	// Prepare warnings
