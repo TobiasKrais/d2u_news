@@ -14,7 +14,7 @@
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Wie viele News sollen angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
-		<input type="number" size="3" name="REX_INPUT_VALUE[1]" value="REX_VALUE[1]"/>
+		<input type="number" class="form-control" size="3" name="REX_INPUT_VALUE[1]" value="REX_VALUE[1]"/>
 	</div>
 </div>
 <div class="row">

@@ -31,6 +31,7 @@ $d2u_module_manager->showManagerList();
 <ul>
 	<li>News können nun für einzelne Sprachen ausgeblendet werden.</li>
 	<li>Messen Plugin: Messen haben nun auch ein Feld für ein Bild.</li>
+	<li>Module 40-3: Eingabefeld an Redaxo 13 Dark Mode angepasst.</li>
 </ul>
 <p>1.1.3:</p>
 <ul>

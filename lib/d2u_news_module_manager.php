@@ -19,7 +19,7 @@ class D2UNewsModules {
 			1);
 		$modules[] = new D2UModule("40-3",
 			"D2U News - Ausgabe News und Messen",
-			4);
+			5);
 		return $modules;
 	}
 }
