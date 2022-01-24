@@ -31,6 +31,7 @@ $d2u_module_manager->showManagerList();
 <ul>
 	<li>News können nun für einzelne Sprachen ausgeblendet werden.</li>
 	<li>Messen Plugin: Messen haben nun auch ein Feld für ein Bild.</li>
+	<li>Bugfix: Beim Löschen von Medien die vom Addon verlinkt werden wurde der Name der verlinkenden Quelle in der Warnmeldung nicht immer korrekt angegeben.</li>
 	<li>Module 40-3: Eingabefeld an Redaxo 13 Dark Mode angepasst.</li>
 </ul>
 <p>1.1.3:</p>

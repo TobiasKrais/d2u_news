@@ -92,6 +92,7 @@ function rex_d2u_news_media_is_in_use(rex_extension_point $ep) {
 		if(!in_array($message, $warning)) {
 			$warning[] = $message;
 		}
+		$sql_news->next();
     }
 	
 	return $warning;
