@@ -1,13 +1,11 @@
 <?php
-$sql = rex_sql::factory();
-// Install database
-$sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_news_fairs (
-	fair_id int(10) unsigned NOT NULL auto_increment,
-	name varchar(255) collate utf8mb4_unicode_ci default NULL,
-	city varchar(255) collate utf8mb4_unicode_ci default NULL,
-	country_code varchar(3) collate utf8mb4_unicode_ci default NULL,
-	date_start varchar(10) collate utf8mb4_unicode_ci default NULL,
-	date_end varchar(10) collate utf8mb4_unicode_ci default NULL,
-	picture varchar(255) collate utf8mb4_unicode_ci default NULL,
-	PRIMARY KEY (fair_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
+\rex_sql_table::get(\rex::getTable('d2u_news_fairs'))
+	->ensureColumn(new rex_sql_column('fair_id', 'int(10) unsigned', false, null, 'auto_increment'))
+	->setPrimaryKey('fair_id')
+	->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('city', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('country_code', 'VARCHAR(3)'))
+    ->ensureColumn(new \rex_sql_column('date_start', 'VARCHAR(10)', true))
+    ->ensureColumn(new \rex_sql_column('date_end', 'VARCHAR(10)', true))
+    ->ensureColumn(new \rex_sql_column('picture', 'VARCHAR(255)'))
+    ->ensure();

@@ -1,46 +1,47 @@
 <?php
-$sql = rex_sql::factory();
-// Install database
-$sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_news_news (
-	news_id int(10) unsigned NOT NULL auto_increment,
-	category_ids varchar(255) collate utf8mb4_unicode_ci default NULL,
-	picture varchar(255) collate utf8mb4_unicode_ci default NULL,
-	link_type varchar(15) collate utf8mb4_unicode_ci default NULL,
-	article_id int(10) default NULL,
-	url varchar(255) collate utf8mb4_unicode_ci default NULL,
-	d2u_machines_machine_id int(10) default NULL,
-	online_status varchar(10) collate utf8mb4_unicode_ci default 'online',
-	`date` varchar(10) collate utf8mb4_unicode_ci default NULL,
-	PRIMARY KEY (news_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
-$sql->setQuery("CREATE TABLE IF NOT EXISTS ". rex::getTablePrefix() ."d2u_news_news_lang (
-	news_id int(10) NOT NULL,
-	clang_id int(10) NOT NULL,
-	name varchar(255) collate utf8mb4_unicode_ci default NULL,
-	teaser text collate utf8mb4_unicode_ci default NULL,
-	hide_this_lang tinyint(1) default 0,
-	translation_needs_update varchar(7) collate utf8mb4_unicode_ci default NULL,
-	PRIMARY KEY (news_id, clang_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
+\rex_sql_table::get(\rex::getTable('d2u_news_news'))
+	->ensureColumn(new rex_sql_column('news_id', 'int(10) unsigned', false, null, 'auto_increment'))
+	->setPrimaryKey('news_id')
+	->ensureColumn(new \rex_sql_column('category_ids', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('picture', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('link_type', 'VARCHAR(15)'))
+    ->ensureColumn(new \rex_sql_column('article_id', 'INT(10)', true, 0))
+    ->ensureColumn(new \rex_sql_column('url', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('d2u_machines_machine_id', 'INT(10)', true, 0))
+    ->ensureColumn(new \rex_sql_column('d2u_courses_course_id', 'INT(10)', true, 0))
+    ->ensureColumn(new \rex_sql_column('online_status', 'VARCHAR(10)', true))
+    ->ensureColumn(new \rex_sql_column('date', 'VARCHAR(10)'))
+    ->ensure();
+\rex_sql_table::get(\rex::getTable('d2u_news_news_lang'))
+	->ensureColumn(new rex_sql_column('news_id', 'int(10) unsigned', false, null, 'auto_increment'))
+    ->ensureColumn(new \rex_sql_column('clang_id', 'INT(11)', false, 1))
+	->setPrimaryKey(['news_id', 'clang_id'])
+    ->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)'))
+    ->ensureColumn(new \rex_sql_column('teaser', 'TEXT'))
+    ->ensureColumn(new \rex_sql_column('hide_this_lang', 'TINYINT(1)', true))
+    ->ensureColumn(new \rex_sql_column('translation_needs_update', 'VARCHAR(7)'))
+    ->ensure();
 
-$sql->setQuery("CREATE TABLE IF NOT EXISTS ". \rex::getTablePrefix() ."d2u_news_categories (
-	category_id int(10) unsigned NOT NULL auto_increment,
-	priority int(10) default NULL,
-	picture varchar(255) collate utf8mb4_unicode_ci default NULL,
-	PRIMARY KEY (category_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
-$sql->setQuery("CREATE TABLE IF NOT EXISTS ". \rex::getTablePrefix() ."d2u_news_categories_lang (
-	category_id int(10) NOT NULL,
-	clang_id int(10) NOT NULL,
-	name varchar(255) collate utf8mb4_unicode_ci default NULL,
-	translation_needs_update varchar(7) collate utf8mb4_unicode_ci default NULL,
-	PRIMARY KEY (category_id, clang_id)
-) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1;");
+\rex_sql_table::get(\rex::getTable('d2u_news_categories'))
+	->ensureColumn(new rex_sql_column('category_id', 'int(10) unsigned', false, null, 'auto_increment'))
+	->setPrimaryKey('category_id')
+    ->ensureColumn(new \rex_sql_column('priority', 'INT(10)', true))
+    ->ensureColumn(new \rex_sql_column('picture', 'VARCHAR(255)', true))
+    ->ensure();
+\rex_sql_table::get(\rex::getTable('d2u_news_categories_lang'))
+	->ensureColumn(new rex_sql_column('category_id', 'int(10) unsigned', false, null, 'auto_increment'))
+    ->ensureColumn(new \rex_sql_column('clang_id', 'INT(11)', false, 1))
+	->setPrimaryKey(['category_id', 'clang_id'])
+    ->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)'))
+    ->ensureColumn(new \rex_sql_column('translation_needs_update', 'VARCHAR(7)'))
+    ->ensure();
 
-// Insert frontend translations
-if(class_exists('d2u_news_lang_helper')) {
-	d2u_news_lang_helper::factory()->install();
+// Update language replacements
+if(!class_exists('d2u_news_lang_helper')) {
+	// Load class in case addon is deactivated
+	require_once 'lib/d2u_news_lang_helper.php';
 }
+d2u_news_lang_helper::factory()->install();
 
 // Standard settings
 if (!$this->hasConfig()) {

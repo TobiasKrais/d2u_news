@@ -14,32 +14,32 @@ class News implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * @var int Database ID
 	 */
-	var $news_id = 0;
+	var int $news_id = 0;
 	
 	/**
 	 * @var int Redaxo clang id
 	 */
-	var $clang_id = 0;
+	var int $clang_id = 0;
 	
 	/**
 	 * @var String Name
 	 */
-	var $name = "";
+	var string $name = "";
 	
 	/**
 	 * @var String Short description
 	 */
-	var $teaser = "";
+	var string $teaser = "";
 	
 	/**
 	 * @var String Online status. Either "online", "offline" or "archived".
 	 */
-	var $online_status = "";
+	var string $online_status = "";
 
 	/**
 	 * @var String Picture file name
 	 */
-	var $picture = "";
+	var string $picture = "";
 	
 	/**
 	 * @var Category[] Array containing category objects. 
@@ -54,32 +54,38 @@ class News implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * @var String Type of link, either "none" (default), "article", "url" or "machine"
 	 */
-	var $link_type = 'none';
+	var string $link_type = 'none';
 	
 	/**
 	 * @var String external URL
 	 */
-	var $url = '';
+	var string $url = '';
 	
 	/**
 	 * @var String News URL depending on news type
 	 */
-	private $news_url = '';
+	private string $news_url = '';
 	
 	/**
 	 * @var int Redaxo article id
 	 */
-	var $article_id = 0;
+	var int $article_id = 0;
 	
 	/**
 	 * @var int machine ID if linktype is "machine"
 	 */
-	var $d2u_machines_machine_id = 0;
+	var int $d2u_machines_machine_id = 0;
+
+	/**
+	 * @var int machine ID if linktype is "machine"
+	 */
+	var int $d2u_courses_course_id = 0;
+
 	
 	/**
 	 * @var String "yes" if translation needs update
 	 */
-	var $translation_needs_update = "delete";
+	var string $translation_needs_update = "delete";
 
 	/**
 	 * @var String Date in format YYYY-MM-DD.
@@ -116,13 +122,14 @@ class News implements \D2U_Helper\ITranslationHelper {
 				$this->categories[$category_id] = new Category($category_id, $clang_id);
 			}
 			$this->link_type = $result->getValue("link_type");
-			$this->article_id = $result->getValue("article_id");
+			$this->article_id = $result->getValue("article_id") ?: 0;
 			$this->url = $result->getValue("url");
-			$this->d2u_machines_machine_id = $result->getValue("d2u_machines_machine_id");
+			$this->d2u_machines_machine_id = $result->getValue("d2u_machines_machine_id") ?: 0;
+			$this->d2u_courses_course_id = $result->getValue("d2u_courses_course_id") ?: 0;
 			$this->online_status = $result->getValue("online_status");
 			$this->hide_this_lang = $result->getValue("hide_this_lang") == 1 ? true : false;
 			$this->picture = $result->getValue("picture");
-			if($result->getValue("translation_needs_update") != "") {
+			if($result->getValue("translation_needs_update")) {
 				$this->translation_needs_update = $result->getValue("translation_needs_update");
 			}
 			$this->date = $result->getValue("date");
@@ -261,9 +268,13 @@ class News implements \D2U_Helper\ITranslationHelper {
 			else if($this->link_type == "url") {
 				$this->news_url = $this->url;
 			}
-			else if($this->link_type == "machine") {
+			else if($this->link_type == "machine" && \rex_addon::get('d2u_machinery')->isAvailable()) {
 				$machine = new \Machine($this->d2u_machines_machine_id, $this->clang_id);
 				$this->news_url = $machine->getURL();
+			}
+			else if($this->link_type == "course" && \rex_addon::get('d2u_courses')->isAvailable()) {
+				$course = new \D2U_Courses\Course($this->d2u_machines_machine_id);
+				$this->news_url = $course->getURL();
 			}
 		}
 		return $this->news_url;
@@ -288,6 +299,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 					."article_id = ". (int)$this->article_id .", "
 					."url = '". $this->url ."', "
 					."d2u_machines_machine_id = ". $this->d2u_machines_machine_id .", "
+					."d2u_courses_course_id = ". $this->d2u_courses_course_id .", "
 					."`date` = '". $this->date ."' ";
 			if(\rex_plugin::get("d2u_news", "news_types")->isAvailable()) {
 				$query .= ", type_ids = '|". implode("|", array_keys($this->types)) ."|' ";

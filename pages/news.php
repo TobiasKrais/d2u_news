@@ -34,6 +34,9 @@ if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_a
 			if(\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
 				$news->d2u_machines_machine_id = $form['d2u_machines_machine_id'];
 			}
+			if(\rex_addon::get('d2u_courses')->isAvailable() && count(\D2U_Courses\Course::getAll(TRUE)) > 0) {
+				$news->d2u_courses_course_id = $form['d2u_courses_course_id'];
+			}
 			$news->url = $form['url'];
 			$news->date = $form['date'];
 			$news->online_status = array_key_exists('online_status', $form) ? "online" : "offline";
@@ -180,6 +183,9 @@ if ($func == 'edit' || $func == 'add') {
 							if(\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
 								$options_link_type["machine"] = rex_i18n::msg('d2u_news_machine');
 							}
+							if(\rex_addon::get('d2u_courses')->isAvailable() && count(D2U_Courses\Course::getAll(TRUE)) > 0) {
+								$options_link_type["course"] = rex_i18n::msg('d2u_courses_courses');
+							}
 							d2u_addon_backend_helper::form_select('d2u_news_link_type', 'form[link_type]', $options_link_type, [$news->link_type], 1, FALSE, $readonly_lang);
 
 							if(\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll(rex_config::get("d2u_helper", "default_lang"), TRUE)) > 0) {
@@ -188,6 +194,17 @@ if ($func == 'edit' || $func == 'add') {
 									$options_machines[$machine->machine_id] = $machine->name;
 								}
 								d2u_addon_backend_helper::form_select('d2u_news_machine', 'form[d2u_machines_machine_id]', $options_machines, [$news->d2u_machines_machine_id], 1, FALSE, $readonly_lang);
+							}
+							if(\rex_addon::get('d2u_courses')->isAvailable() && count(D2U_Courses\Course::getAll(TRUE)) > 0) {
+								$options_courses = [];
+								foreach(D2U_Courses\Course::getAll(TRUE) as $course) {
+									$options_courses[$course->course_id] = ($course->category->parent_category && $course->category->parent_category->parent_category && $course->category->parent_category->parent_category->parent_category ? $course->category->parent_category->parent_category->parent_category->name ." → " : "")
+										. ($course->category->parent_category && $course->category->parent_category->parent_category ? $course->category->parent_category->parent_category->name ." → " : "")
+										. ($course->category->parent_category ? $course->category->parent_category->name ." → " : "")
+										. $course->category->name ." → ". $course->name;
+								}
+								asort($options_courses);
+								d2u_addon_backend_helper::form_select('d2u_courses_courses', 'form[d2u_courses_course_id]', $options_courses, [$news->d2u_courses_course_id], 1, FALSE, $readonly_lang);
 							}
 							d2u_addon_backend_helper::form_linkfield('d2u_news_article', '1', $news->article_id, rex_config::get("d2u_helper", "default_lang", rex_clang::getStartId()));
 							d2u_addon_backend_helper::form_input('d2u_news_url', "form[url]", $news->url, FALSE, $readonly, "text");
@@ -204,6 +221,7 @@ if ($func == 'edit' || $func == 'add') {
 								$('#LINK_1').hide();
 								$('#form\\[url\\]').hide();
 								$('#form\\[d2u_machines_machine_id\\]').hide();
+								$('#form\\[d2u_courses_course_id\\]').hide();
 								if($('select[name="form\\[link_type\\]"]').val() === "article") {
 									$('#LINK_1').show();
 								}
@@ -212,6 +230,9 @@ if ($func == 'edit' || $func == 'add') {
 								}
 								else if($('select[name="form\\[link_type\\]"]').val() === "url") {
 									$('#form\\[url\\]').show();
+								}
+								else if($('select[name="form\\[link_type\\]"]').val() === "course") {
+									$('#form\\[d2u_courses_course_id\\]').show();
 								}
 							}
 							
@@ -262,11 +283,11 @@ if ($func == 'edit' || $func == 'add') {
 }
 
 if ($func == '') {
-	$query = 'SELECT refs.news_id, name, online_status, `date` '
+	$query = 'SELECT refs.news_id, name, category_ids, online_status, `date` '
 		. 'FROM '. rex::getTablePrefix() .'d2u_news_news AS refs '
 		. 'LEFT JOIN '. rex::getTablePrefix() .'d2u_news_news_lang AS lang '
 			. 'ON refs.news_id = lang.news_id AND lang.clang_id = '. rex_config::get("d2u_helper", "default_lang") .' '
-		.'ORDER BY `date` DESC';
+		.'ORDER BY category_ids, `date` DESC';
     $list = rex_list::factory($query, 1000);
 
     $list->addTableAttribute('class', 'table-striped table-hover');
@@ -287,6 +308,17 @@ if ($func == '') {
 
     $list->setColumnLabel('date', rex_i18n::msg('d2u_news_date'));
    
+	$list->setColumnLabel('category_ids', rex_i18n::msg('d2u_helper_categories'));
+	$list->setColumnFormat('category_ids', 'custom', function ($params) {
+		$list_params = $params['list'];
+		$cat_names = [];
+		foreach(preg_grep('/^\s*$/s', explode("|", $list_params->getValue('category_ids')), PREG_GREP_INVERT) as $category_id) {
+			$category = new D2U_News\Category($category_id, rex_config::get("d2u_helper", "default_lang"));
+			$cat_names[] = $category ? $category->name : '';
+		}
+		return implode(', ', $cat_names);
+	});
+	
     $list->addColumn(rex_i18n::msg('module_functions'), '<i class="rex-icon rex-icon-edit"></i> ' . rex_i18n::msg('edit'));
     $list->setColumnLayout(rex_i18n::msg('module_functions'), ['<th class="rex-table-action" colspan="2">###VALUE###</th>', '<td class="rex-table-action">###VALUE###</td>']);
     $list->setColumnParams(rex_i18n::msg('module_functions'), ['func' => 'edit', 'entry_id' => '###news_id###']);

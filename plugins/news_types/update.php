@@ -1,11 +1,9 @@
 <?php
-$sql = rex_sql::factory();
+// use path relative to __DIR__ to get correct path in update temp dir
+$this->includeFile(__DIR__.'/install.php');
 
-// Update database to 1.1.2
-$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_types` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-$sql->setQuery("ALTER TABLE `". rex::getTablePrefix() ."d2u_news_types_lang` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;");
-
-if (rex_version::compare($this->getVersion(), '1.1.2', '<')) {
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_types_lang DROP updatedate;");
-	$sql->setQuery("ALTER TABLE ". \rex::getTablePrefix() ."d2u_news_types_lang DROP updateuser;");
-}
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_types_lang'))
+    ->removeColumn('updatedate')
+    ->removeColumn('updateuser')
+    ->ensure();
