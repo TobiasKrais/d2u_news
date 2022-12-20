@@ -9,7 +9,7 @@ if($message != "") {
 }
 
 // save settings
-if (filter_input(INPUT_POST, "btn_save") == 1 || filter_input(INPUT_POST, "btn_apply") == 1) {
+if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(INPUT_POST, "btn_apply")) === 1) {
 	// Media fields and links need special treatment
 	$input_media = (array) rex_post('REX_INPUT_MEDIA', 'array', array());
 
