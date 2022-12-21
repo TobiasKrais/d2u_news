@@ -61,7 +61,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 		$form = (array) rex_post('form', 'array', []);
 		$type_id = $form['type_id'];
 	}
-	$type = new \D2U_News\Type($type_id, rex_config::get("d2u_helper", "default_lang"));
+	$type = new \D2U_News\Type($type_id, intval(rex_config::get("d2u_helper", "default_lang")));
 	$type->type_id = $type_id; // Ensure correct ID in case language has no object
 	
 	// Check if type is used
@@ -95,7 +95,7 @@ if ($func == 'edit' || $func == 'add') {
 				<?php
 					foreach(rex_clang::getAll() as $rex_clang) {
 						$type = new \D2U_News\Type($entry_id, $rex_clang->getId());
-						$required = $rex_clang->getId() == rex_config::get("d2u_helper", "default_lang") ? TRUE : FALSE;
+						$required = $rex_clang->getId() === intval(rex_config::get("d2u_helper", "default_lang")) ? TRUE : FALSE;
 						
 						$readonly_lang = TRUE;
 						if(\rex::getUser()->isAdmin() || (\rex::getUser()->hasPerm('d2u_news[edit_lang]') && \rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId()))) {
@@ -106,7 +106,7 @@ if ($func == 'edit' || $func == 'add') {
 						<legend><?php echo rex_i18n::msg('d2u_helper_text_lang') .' "'. $rex_clang->getName() .'"'; ?></legend>
 						<div class="panel-body-wrapper slide">
 							<?php
-								if($rex_clang->getId() != rex_config::get("d2u_helper", "default_lang")) {
+								if($rex_clang->getId() !== intval(rex_config::get("d2u_helper", "default_lang"))) {
 									$options_translations = [];
 									$options_translations["yes"] = rex_i18n::msg('d2u_helper_translation_needs_update');
 									$options_translations["no"] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
@@ -143,7 +143,7 @@ if ($func == 'edit' || $func == 'add') {
 					<div class="panel-body-wrapper slide">
 						<?php
 							// Do not use last object from translations, because you don't know if it exists in DB
-							$type = new \D2U_News\Type($entry_id, rex_config::get("d2u_helper", "default_lang"));
+							$type = new \D2U_News\Type($entry_id, intval(rex_config::get("d2u_helper", "default_lang")));
 							$readonly = TRUE;
 							if(\rex::getUser()->isAdmin() || \rex::getUser()->hasPerm('d2u_news[edit_data]')) {
 								$readonly = FALSE;
@@ -180,7 +180,7 @@ if ($func == '') {
 	$query = 'SELECT types.type_id, name, priority '
 		. 'FROM '. \rex::getTablePrefix() .'d2u_news_types AS types '
 		. 'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_types_lang AS lang '
-			. 'ON types.type_id = lang.type_id AND lang.clang_id = '. rex_config::get("d2u_helper", "default_lang") .' ';
+			. 'ON types.type_id = lang.type_id AND lang.clang_id = '. intval(rex_config::get("d2u_helper", "default_lang")) .' ';
 	if($this->getConfig('default_type_sort') == 'priority') {
 		$query .= 'ORDER BY priority ASC';
 	}
