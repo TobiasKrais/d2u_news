@@ -54,9 +54,9 @@ function rex_d2u_news_clang_deleted(rex_extension_point $ep) {
 	$clang_id = $params['id'];
 
 	// Delete
-	$news = D2U_News\News::getAll($clang_id, 0, FALSE);
+	$news = D2U_News\News::getAll($clang_id, 0, false);
 	foreach ($news as $cur_news) {
-		$cur_news->delete(FALSE);
+		$cur_news->delete(false);
 	}
 
 	// Delete language settings

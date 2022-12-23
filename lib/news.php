@@ -146,8 +146,8 @@ class News implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * Changes the online status of this object
 	 */
-	public function changeStatus() {
-		if($this->online_status == "online") {
+	public function changeStatus():void {
+		if($this->online_status === "online") {
 			if($this->news_id > 0) {
 				$query = "UPDATE ". \rex::getTablePrefix() ."d2u_news_news "
 					."SET online_status = 'offline' "
@@ -171,10 +171,10 @@ class News implements \D2U_Helper\ITranslationHelper {
 
 	/**
 	 * Deletes the object in all languages.
-	 * @param int $delete_all If TRUE, all translations and main object are deleted. If 
-	 * FALSE, only this translation will be deleted.
+	 * @param bool $delete_all If true, all translations and main object are deleted. If 
+	 * false, only this translation will be deleted.
 	 */
-	public function delete($delete_all = TRUE) {
+	public function delete($delete_all = true):void {
 		$query_lang = "DELETE FROM ". \rex::getTablePrefix() ."d2u_news_news_lang "
 			."WHERE news_id = ". $this->news_id
 			. ($delete_all ? '' : ' AND clang_id = '. $this->clang_id) ;
@@ -201,7 +201,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 	 * @param boolean $online_only only online news
 	 * @return News[] Array with News objects.
 	 */
-	public static function getAll($clang_id, $limit = 0, $online_only = TRUE) {
+	public static function getAll($clang_id, $limit = 0, $online_only = true) {
 		$query = "SELECT lang.news_id FROM ". \rex::getTablePrefix() ."d2u_news_news_lang AS lang "
 			."LEFT JOIN ". \rex::getTablePrefix() ."d2u_news_news AS news "
 				."ON lang.news_id = news.news_id "
@@ -234,7 +234,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 		$query = 'SELECT news_id FROM '. \rex::getTablePrefix() .'d2u_news_news_lang '
 				."WHERE clang_id = ". $clang_id ." AND translation_needs_update = 'yes' "
 				.'ORDER BY name';
-		if($type == 'missing') {
+		if($type === 'missing') {
 			$query = 'SELECT main.news_id FROM '. \rex::getTablePrefix() .'d2u_news_news AS main '
 					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_news_lang AS target_lang '
 						.'ON main.news_id = target_lang.news_id AND target_lang.clang_id = '. $clang_id .' '
@@ -282,7 +282,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 	
 	/**
 	 * Updates or inserts the object into database.
-	 * @return boolean TRUE if successful
+	 * @return boolean true if successful
 	 */
 	public function save() {
 		$error = 0;
@@ -290,7 +290,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 		// Save the not language specific part
 		$pre_save_news = new News($this->news_id, $this->clang_id);
 	
-		if($this->news_id == 0 || $pre_save_news != $this) {
+		if($this->news_id === 0 || $pre_save_news != $this) {
 			$query = \rex::getTablePrefix() ."d2u_news_news SET "
 					."online_status = '". $this->online_status ."', "
 					."category_ids = '|". implode("|", array_keys($this->categories)) ."|', "
@@ -305,7 +305,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 				$query .= ", type_ids = '|". implode("|", array_keys($this->types)) ."|' ";
 			}
 
-			if($this->news_id == 0) {
+			if($this->news_id === 0) {
 				$query = "INSERT INTO ". $query;
 			}
 			else {
@@ -314,8 +314,8 @@ class News implements \D2U_Helper\ITranslationHelper {
 
 			$result = \rex_sql::factory();
 			$result->setQuery($query);
-			if($this->news_id == 0) {
-				$this->news_id = $result->getLastId();
+			if($this->news_id === 0) {
+				$this->news_id = intval($result->getLastId());
 				$error = $result->hasError();
 			}
 		}

@@ -10,13 +10,13 @@ if($message != "") {
 
 // save settings
 if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(INPUT_POST, "btn_apply")) === 1) {
-	$form = (array) rex_post('form', 'array', []);
+	$form = rex_post('form', 'array', []);
 
-	$success = TRUE;
-	$type = FALSE;
+	$success = true;
+	$type = false;
 	$type_id = $form['type_id'];
 	foreach(rex_clang::getAll() as $rex_clang) {
-		if($type === FALSE) {
+		if($type === false) {
 			$type = new \D2U_News\Type($type_id, $rex_clang->getId());
 			$type->type_id = $type_id; // Ensure correct ID in case first language has no object
 			$type->priority = $form['priority'];
@@ -27,11 +27,11 @@ if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(IN
 		$type->name = $form['lang'][$rex_clang->getId()]['name'];
 		$type->translation_needs_update = $form['lang'][$rex_clang->getId()]['translation_needs_update'];
 		
-		if($type->translation_needs_update == "delete") {
-			$type->delete(FALSE);
+		if($type->translation_needs_update === "delete") {
+			$type->delete(false);
 		}
 		else if($type->save() > 0){
-			$success = FALSE;
+			$success = false;
 		}
 		else {
 			// remember id, for each database lang object needs same id
@@ -46,30 +46,30 @@ if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(IN
 	}
 	
 	// Redirect to make reload and thus double save impossible
-	if(filter_input(INPUT_POST, "btn_apply") == 1 && $type !== FALSE) {
-		header("Location: ". rex_url::currentBackendPage(array("entry_id"=>$type->type_id, "func"=>'edit', "message"=>$message), FALSE));
+	if(intval(filter_input(INPUT_POST, "btn_apply", FILTER_VALIDATE_INT)) === 1 &&$type !== false) {
+		header("Location: ". rex_url::currentBackendPage(array("entry_id"=>$type->type_id, "func"=>'edit', "message"=>$message), false));
 	}
 	else {
-		header("Location: ". rex_url::currentBackendPage(array("message"=>$message), FALSE));
+		header("Location: ". rex_url::currentBackendPage(array("message"=>$message), false));
 	}
 	exit;
 }
 // Delete
-else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
+else if(intval(filter_input(INPUT_POST, "btn_delete", FILTER_VALIDATE_INT)) === 1 || $func === 'delete') {
 	$type_id = $entry_id;
-	if($type_id == 0) {
-		$form = (array) rex_post('form', 'array', []);
+	if($type_id === 0) {
+		$form = rex_post('form', 'array', []);
 		$type_id = $form['type_id'];
 	}
 	$type = new \D2U_News\Type($type_id, intval(rex_config::get("d2u_helper", "default_lang")));
 	$type->type_id = $type_id; // Ensure correct ID in case language has no object
 	
 	// Check if type is used
-	$uses_news = $type->getNews(FALSE);
+	$uses_news = $type->getNews(false);
 	
 	// If not used, delete
 	if(count($uses_news) == 0) {
-		$type->delete(TRUE);
+		$type->delete(true);
 	}
 	else {
 		$message = '<ul>';
@@ -85,7 +85,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 }
 
 // Eingabeformular
-if ($func == 'edit' || $func == 'add') {
+if ($func === 'edit' || $func === 'add') {
 ?>
 	<form action="<?php print rex_url::currentBackendPage(); ?>" method="post">
 		<div class="panel panel-edit">
@@ -95,11 +95,11 @@ if ($func == 'edit' || $func == 'add') {
 				<?php
 					foreach(rex_clang::getAll() as $rex_clang) {
 						$type = new \D2U_News\Type($entry_id, $rex_clang->getId());
-						$required = $rex_clang->getId() === intval(rex_config::get("d2u_helper", "default_lang")) ? TRUE : FALSE;
+						$required = $rex_clang->getId() === intval(rex_config::get("d2u_helper", "default_lang")) ? true : false;
 						
-						$readonly_lang = TRUE;
+						$readonly_lang = true;
 						if(\rex::getUser() instanceof rex_user && (\rex::getUser()->isAdmin() || (\rex::getUser()->hasPerm('d2u_news[edit_lang]') && \rex::getUser()->getComplexPerm('clang') instanceof rex_clang_perm && \rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId())))) {
-							$readonly_lang = FALSE;
+							$readonly_lang = false;
 						}
 				?>
 					<fieldset>
@@ -111,7 +111,7 @@ if ($func == 'edit' || $func == 'add') {
 									$options_translations["yes"] = rex_i18n::msg('d2u_helper_translation_needs_update');
 									$options_translations["no"] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
 									$options_translations["delete"] = rex_i18n::msg('d2u_helper_translation_delete');
-									d2u_addon_backend_helper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$type->translation_needs_update], 1, FALSE, $readonly_lang);
+									d2u_addon_backend_helper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$type->translation_needs_update], 1, false, $readonly_lang);
 								}
 								else {
 									print '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
@@ -144,12 +144,12 @@ if ($func == 'edit' || $func == 'add') {
 						<?php
 							// Do not use last object from translations, because you don't know if it exists in DB
 							$type = new \D2U_News\Type($entry_id, intval(rex_config::get("d2u_helper", "default_lang")));
-							$readonly = TRUE;
+							$readonly = true;
 							if(\rex::getUser() instanceof rex_user && (\rex::getUser()->isAdmin() || \rex::getUser()->hasPerm('d2u_news[edit_data]'))) {
-								$readonly = FALSE;
+								$readonly = false;
 							}
 							
-							d2u_addon_backend_helper::form_input('header_priority', 'form[priority]', $type->priority, TRUE, $readonly, 'number');
+							d2u_addon_backend_helper::form_input('header_priority', 'form[priority]', $type->priority, true, $readonly, 'number');
 						?>
 					</div>
 				</fieldset>
@@ -176,7 +176,7 @@ if ($func == 'edit' || $func == 'add') {
 		print d2u_addon_backend_helper::getJS();
 }
 
-if ($func == '') {
+if ($func === '') {
 	$query = 'SELECT types.type_id, name, priority '
 		. 'FROM '. \rex::getTablePrefix() .'d2u_news_types AS types '
 		. 'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_types_lang AS lang '

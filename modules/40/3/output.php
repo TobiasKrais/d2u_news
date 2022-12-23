@@ -29,7 +29,7 @@ $counter_news = "REX_VALUE[1]" == "" ? "5" : "REX_VALUE[1]";
 $link_id_fairs = "REX_LINK[id=1 output=id]";
 
 $category_id = "REX_VALUE[2]" > 0 ? "REX_VALUE[2]" : 0;
-$category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : FALSE;
+$category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : false;
 
 // If News Types Plugin is activated
 $selected_news_types = [];
@@ -45,20 +45,20 @@ if(rex::isBackend()) {
 ?>
 	<h1 style="font-size: 1.5em;">News</h1>
 	Anzahl auszugebender News: REX_VALUE[1]
-	<p>Gewählte Kategorie: <?php print ($category !== FALSE ? $category->name : 'Alle Kategorien'); ?></p>
+	<p>Gewählte Kategorie: <?php print ($category !== false ? $category->name : 'Alle Kategorien'); ?></p>
 	<p>Gewählte Nachrichtenarten:
 		<?php
-			$first_type = TRUE;
+			$first_type = true;
 			foreach($selected_news_types as $selected_news_type) {
 				if($first_type)  {
-					$first_type = FALSE;
+					$first_type = false;
 				}
 				else {
 					print ", ";
 				}
 				print $selected_news_type->name;
 			}
-		print ($category !== FALSE ? $category->name : 'Alle Kategorien');
+		print ($category !== false ? $category->name : 'Alle Kategorien');
 		?>
 	</p>
 <?php
@@ -68,8 +68,8 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 	$show_pic = true;
 	
 	$news = [];
-	if($category !== FALSE) {
-		$news = $category->getNews(TRUE);
+	if($category !== false) {
+		$news = $category->getNews(true);
 	}
 	else if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 		// If News Types Plugin is activated: filter
@@ -86,7 +86,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 	}
 	else {
 		//
-		$news = \D2U_News\News::getAll(rex_clang::getCurrentId(), $counter_news, TRUE);
+		$news = \D2U_News\News::getAll(rex_clang::getCurrentId(), $counter_news, true);
 	}
 	
 	// Only predefined number of news
@@ -143,7 +143,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 	<?php
 		if(rex_plugin::get('d2u_news', 'fairs')->isAvailable()) {
 			// Messen ausgeben
-			$fairs = \D2U_News\Fair::getAll(TRUE);
+			$fairs = \D2U_News\Fair::getAll(true);
 
 			if(count($fairs) > 0) {
 				print '<div class="col-12 col-lg-4">';

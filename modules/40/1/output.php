@@ -24,7 +24,7 @@ $counter_news = "REX_VALUE[1]" == "" ? "5" : "REX_VALUE[1]";
 $link_id_overview = "REX_LINK[id=1 output=id]";
 
 $category_id = "REX_VALUE[2]" > 0 ? "REX_VALUE[2]" : 0;
-$category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : FALSE;
+$category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : false;
 
 $heading = "REX_VALUE[4]" != "" ? "REX_VALUE[4]" : \Sprog\Wildcard::get('d2u_news_news');
 
@@ -42,20 +42,20 @@ if(rex::isBackend()) {
 ?>
 	<h2 style="font-size: 1.5em;"><?php print $heading; ?></h2>
 	<p>Anzahl auszugebender News: REX_VALUE[1]</p>
-	<p>Gewählte Kategorie: <?php print ($category !== FALSE ? $category->name : 'Alle Kategorien'); ?></p>
+	<p>Gewählte Kategorie: <?php print ($category !== false ? $category->name : 'Alle Kategorien'); ?></p>
 	<p>Gewählte Nachrichtenarten:
 		<?php
-			$first_type = TRUE;
+			$first_type = true;
 			foreach($selected_news_types as $selected_news_type) {
 				if($first_type)  {
-					$first_type = FALSE;
+					$first_type = false;
 				}
 				else {
 					print ", ";
 				}
 				print $selected_news_type->name;
 			}
-		print ($category !== FALSE ? $category->name : 'Alle Kategorien');
+		print ($category !== false ? $category->name : 'Alle Kategorien');
 		?>
 	</p>
 <?php
@@ -63,8 +63,8 @@ if(rex::isBackend()) {
 else if(\rex_addon::get("d2u_news")->isAvailable()) {
 	// FRONTEND
 	$news = [];
-	if($category !== FALSE) {
-		$news = $category->getNews(TRUE);
+	if($category !== false) {
+		$news = $category->getNews(true);
 	}
 	else if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 		// If News Types Plugin is activated: filter
@@ -81,7 +81,7 @@ else if(\rex_addon::get("d2u_news")->isAvailable()) {
 	}
 	else {
 		//
-		$news = \D2U_News\News::getAll(rex_clang::getCurrentId(), $counter_news, TRUE);
+		$news = \D2U_News\News::getAll(rex_clang::getCurrentId(), $counter_news, true);
 	}
 	
 	// Only predefined number of news

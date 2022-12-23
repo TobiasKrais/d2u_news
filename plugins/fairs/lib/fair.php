@@ -82,7 +82,7 @@ class Fair {
 	 * @param boolean $current_only only fairs in future, not in past
 	 * @return Fair[] Array with Contact objects.
 	 */
-	public static function getAll($current_only = TRUE) {
+	public static function getAll($current_only = true) {
 		$query = "SELECT fair_id FROM ". \rex::getTablePrefix() ."d2u_news_fairs ";
 		if($current_only) {
 			$query .= "WHERE date_end > '". date('Y-m-d') ."'";
@@ -114,7 +114,7 @@ class Fair {
 				."date_end = '". $this->date_end ."', "
 				."picture = '". $this->picture ."' ";
 
-		if($this->fair_id == 0) {
+		if($this->fair_id === 0) {
 			$query = "INSERT INTO ". $query;
 		}
 		else {
@@ -123,8 +123,8 @@ class Fair {
 
 		$result = \rex_sql::factory();
 		$result->setQuery($query);
-		if($this->fair_id == 0) {
-			$this->fair_id = $result->getLastId();
+		if($this->fair_id === 0) {
+			$this->fair_id = intval($result->getLastId());
 			$error = $result->hasError();
 		}
 		

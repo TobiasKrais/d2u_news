@@ -11,9 +11,9 @@ if($message != "") {
 // save settings
 if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(INPUT_POST, "btn_apply")) === 1) {
 	// Media fields and links need special treatment
-	$input_media = (array) rex_post('REX_INPUT_MEDIA', 'array', array());
+	$input_media = rex_post('REX_INPUT_MEDIA', 'array', []);
 
-	$form = (array) rex_post('form', 'array', []);
+	$form = rex_post('form', 'array', []);
 
 	$fair = new \D2U_News\Fair($form['fair_id']);
 	$fair->name = $form['name'];
@@ -30,19 +30,19 @@ if (intval(filter_input(INPUT_POST, "btn_save")) === 1 || intval(filter_input(IN
 	}
 	
 	// Redirect to make reload and thus double save impossible
-	if(filter_input(INPUT_POST, "btn_apply") == 1 && $fair !== FALSE) {
-		header("Location: ". rex_url::currentBackendPage(array("entry_id"=>$fair->fair_id, "func"=>'edit', "message"=>$message), FALSE));
+	if(intval(filter_input(INPUT_POST, "btn_apply", FILTER_VALIDATE_INT)) === 1 &&$fair !== false) {
+		header("Location: ". rex_url::currentBackendPage(array("entry_id"=>$fair->fair_id, "func"=>'edit', "message"=>$message), false));
 	}
 	else {
-		header("Location: ". rex_url::currentBackendPage(array("message"=>$message), FALSE));
+		header("Location: ". rex_url::currentBackendPage(array("message"=>$message), false));
 	}
 	exit;
 }
 // Delete
-else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
+else if(intval(filter_input(INPUT_POST, "btn_delete", FILTER_VALIDATE_INT)) === 1 || $func === 'delete') {
 	$fair_id = $entry_id;
-	if($fair_id == 0) {
-		$form = (array) rex_post('form', 'array', []);
+	if($fair_id === 0) {
+		$form = rex_post('form', 'array', []);
 		$fair_id = $form['fair_id'];
 	}
 	$fair = new \D2U_News\Fair($fair_id);
@@ -52,7 +52,7 @@ else if(filter_input(INPUT_POST, "btn_delete") == 1 || $func == 'delete') {
 }
 
 // Eingabeformular
-if ($func == 'edit' || $func == 'add') {
+if ($func === 'edit' || $func === 'add') {
 ?>
 	<form action="<?php print rex_url::currentBackendPage(); ?>" method="post">
 		<div class="panel panel-edit">
@@ -64,16 +64,16 @@ if ($func == 'edit' || $func == 'add') {
 					<div class="panel-body-wrapper slide">
 						<?php
 							$fair = new \D2U_News\Fair($entry_id);
-							$readonly = TRUE;
+							$readonly = true;
 							if(rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_news[edit_data]')) {
-								$readonly = FALSE;
+								$readonly = false;
 							}
 							
-							d2u_addon_backend_helper::form_input('d2u_news_name', 'form[name]', $fair->name, TRUE, $readonly);
-							d2u_addon_backend_helper::form_input('d2u_news_fairs_city', 'form[city]', $fair->city, TRUE, $readonly);
-							d2u_addon_backend_helper::form_input('d2u_news_fairs_country_code', 'form[country_code]', $fair->country_code, TRUE, $readonly);
-							d2u_addon_backend_helper::form_input('d2u_news_fairs_date_start', 'form[date_start]', $fair->date_start, TRUE, $readonly, 'date');
-							d2u_addon_backend_helper::form_input('d2u_news_house_date_end', 'form[date_end]', $fair->date_end, TRUE, $readonly, 'date');
+							d2u_addon_backend_helper::form_input('d2u_news_name', 'form[name]', $fair->name, true, $readonly);
+							d2u_addon_backend_helper::form_input('d2u_news_fairs_city', 'form[city]', $fair->city, true, $readonly);
+							d2u_addon_backend_helper::form_input('d2u_news_fairs_country_code', 'form[country_code]', $fair->country_code, true, $readonly);
+							d2u_addon_backend_helper::form_input('d2u_news_fairs_date_start', 'form[date_start]', $fair->date_start, true, $readonly, 'date');
+							d2u_addon_backend_helper::form_input('d2u_news_house_date_end', 'form[date_end]', $fair->date_end, true, $readonly, 'date');
 							d2u_addon_backend_helper::form_mediafield('d2u_helper_picture', '1', $fair->picture, $readonly);
 						?>
 					</div>
@@ -109,7 +109,7 @@ if ($func == 'edit' || $func == 'add') {
 //		print d2u_addon_backend_helper::getJS();
 }
 
-if ($func == '') {
+if ($func === '') {
 	$query = 'SELECT fair_id, name, city, date_start, date_end '
 		. 'FROM '. rex::getTablePrefix() .'d2u_news_fairs '
 		. 'ORDER BY date_start DESC';

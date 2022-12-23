@@ -64,10 +64,10 @@ class Type implements \D2U_Helper\ITranslationHelper {
 	
 	/**
 	 * Deletes the object in all languages.
-	 * @param int $delete_all If TRUE, all translations and main object are deleted. If 
-	 * FALSE, only this translation will be deleted.
+	 * @param bool $delete_all If true, all translations and main object are deleted. If 
+	 * false, only this translation will be deleted.
 	 */
-	public function delete($delete_all = TRUE) {
+	public function delete($delete_all = true):void {
 		$query_lang = "DELETE FROM ". \rex::getTablePrefix() ."d2u_news_types_lang "
 			."WHERE type_id = ". $this->type_id
 			. ($delete_all ? '' : ' AND clang_id = '. $this->clang_id) ;
@@ -86,7 +86,7 @@ class Type implements \D2U_Helper\ITranslationHelper {
 			$result->setQuery($query);
 
 			// reset priorities
-			$this->setPriority(TRUE);			
+			$this->setPriority(true);			
 		}
 	}
 	
@@ -122,7 +122,7 @@ class Type implements \D2U_Helper\ITranslationHelper {
 	 * @param boolean $only_online Show only online news
 	 * @return News[] News of this category
 	 */
-	public function getNews($only_online = FALSE) {
+	public function getNews($only_online = false) {
 		$query = "SELECT lang.news_id FROM ". \rex::getTablePrefix() ."d2u_news_news_lang AS lang "
 			."LEFT JOIN ". \rex::getTablePrefix() ."d2u_news_news AS news "
 					."ON lang.news_id = news.news_id "
@@ -157,7 +157,7 @@ class Type implements \D2U_Helper\ITranslationHelper {
 		$query = 'SELECT type_id FROM '. \rex::getTablePrefix() .'d2u_news_types_lang '
 				."WHERE clang_id = ". $clang_id ." AND translation_needs_update = 'yes' "
 				.'ORDER BY name';
-		if($type == 'missing') {
+		if($type === 'missing') {
 			$query = 'SELECT main.type_id FROM '. \rex::getTablePrefix() .'d2u_news_types AS main '
 					.'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_types_lang AS target_lang '
 						.'ON main.type_id = target_lang.type_id AND target_lang.clang_id = '. $clang_id .' '
@@ -181,7 +181,7 @@ class Type implements \D2U_Helper\ITranslationHelper {
 	
 	/**
 	 * Updates or inserts the object into database.
-	 * @return boolean TRUE if successful
+	 * @return boolean true if successful
 	 */
 	public function save() {
 		$error = 0;
@@ -190,15 +190,15 @@ class Type implements \D2U_Helper\ITranslationHelper {
 		$pre_save_category = new Type($this->type_id, $this->clang_id);
 	
 		// save priority, but only if new or changed
-		if($this->priority != $pre_save_category->priority || $this->type_id == 0) {
+		if($this->priority != $pre_save_category->priority || $this->type_id === 0) {
 			$this->setPriority();
 		}
 
-		if($this->type_id == 0 || $pre_save_category != $this) {
+		if($this->type_id === 0 || $pre_save_category != $this) {
 			$query = \rex::getTablePrefix() ."d2u_news_types SET "
 					."priority = ". $this->priority ." ";
 
-			if($this->type_id == 0) {
+			if($this->type_id === 0) {
 				$query = "INSERT INTO ". $query;
 			}
 			else {
@@ -207,8 +207,8 @@ class Type implements \D2U_Helper\ITranslationHelper {
 
 			$result = \rex_sql::factory();
 			$result->setQuery($query);
-			if($this->type_id == 0) {
-				$this->type_id = $result->getLastId();
+			if($this->type_id === 0) {
+				$this->type_id = intval($result->getLastId());
 				$error = $result->hasError();
 			}
 		}
@@ -223,7 +223,7 @@ class Type implements \D2U_Helper\ITranslationHelper {
 						."name = '". addslashes($this->name) ."', "
 						."translation_needs_update = '". $this->translation_needs_update ."', "
 						."updatedate = ". time() .", "
-						."updateuser = '". \rex::getUser()->getLogin() ."' ";
+						."updateuser = '". (\rex::getUser() instanceof rex_user ? \rex::getUser()->getLogin() : '') ."' ";
 
 				$result = \rex_sql::factory();
 				$result->setQuery($query);
@@ -238,7 +238,7 @@ class Type implements \D2U_Helper\ITranslationHelper {
 	 * Reassigns priorities in database.
 	 * @param boolean $delete Reorder priority after deletion
 	 */
-	private function setPriority($delete = FALSE) {
+	private function setPriority($delete = false):void {
 		// Pull prios from database
 		$query = "SELECT type_id, priority FROM ". \rex::getTablePrefix() ."d2u_news_types "
 			."WHERE type_id <> ". $this->type_id ." ORDER BY priority";
@@ -252,7 +252,7 @@ class Type implements \D2U_Helper\ITranslationHelper {
 		
 		// When prio is too high or was deleted, simply add at end 
 		if($this->priority > $result->getRows() || $delete) {
-			$this->priority = $result->getRows() + 1;
+			$this->priority = intval($result->getRows()) + 1;
 		}
 
 		$types = [];
@@ -265,7 +265,7 @@ class Type implements \D2U_Helper\ITranslationHelper {
 		// Save all prios
 		foreach($types as $prio => $type_id) {
 			$query = "UPDATE ". \rex::getTablePrefix() ."d2u_news_types "
-					."SET priority = ". ($prio + 1) ." " // +1 because array_splice recounts at zero
+					."SET priority = ". (intval($prio) + 1) ." " // +1 because array_splice recounts at zero
 					."WHERE type_id = ". $type_id;
 			$result = \rex_sql::factory();
 			$result->setQuery($query);
