@@ -118,6 +118,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 			$this->name = stripslashes($result->getValue("name"));
 			$this->teaser = stripslashes(htmlspecialchars_decode($result->getValue("teaser")));
 			$category_ids = preg_grep('/^\s*$/s', explode("|", $result->getValue("category_ids")), PREG_GREP_INVERT);
+			$category_ids = is_array($category_ids) ? array_map('intval', $category_ids) : [];
 			foreach ($category_ids as $category_id) {
 				$this->categories[$category_id] = new Category($category_id, $clang_id);
 			}
@@ -136,6 +137,7 @@ class News implements \D2U_Helper\ITranslationHelper {
 
 			if(\rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 				$type_ids = preg_grep('/^\s*$/s', explode("|", $result->getValue("type_ids")), PREG_GREP_INVERT);
+				$type_ids = is_array($category_ids) ? array_map('intval', $category_ids) : [];
 				foreach ($type_ids as $type_id) {
 					$this->types[$type_id] = new Type($type_id, $clang_id);
 				}
