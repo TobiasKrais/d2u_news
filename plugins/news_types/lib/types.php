@@ -14,27 +14,27 @@ class Type implements \D2U_Helper\ITranslationHelper {
 	/**
 	 * @var int Database ID
 	 */
-	var $type_id = 0;
+	var int $type_id = 0;
 	
 	/**
 	 * @var int Redaxo clang id
 	 */
-	var $clang_id = 0;
+	var int $clang_id = 0;
 	
 	/**
 	 * @var string Name
 	 */
-	var $name = "";
+	var string $name = "";
 
 	/**
 	 * @var int Sort Priority
 	 */
-	var $priority = 0;
+	var int $priority = 0;
 	
 	/**
 	 * @var string "yes" if translation needs update
 	 */
-	var $translation_needs_update = "delete";
+	var string $translation_needs_update = "delete";
 
 	/**
 	 * Constructor. Reads a category stored in database.
@@ -53,11 +53,11 @@ class Type implements \D2U_Helper\ITranslationHelper {
 		$num_rows = $result->getRows();
 
 		if ($num_rows > 0) {
-			$this->type_id = $result->getValue("type_id");
-			$this->name = stripslashes($result->getValue("name"));
-			$this->priority = $result->getValue("priority");
-			if($result->getValue("translation_needs_update") != "") {
-				$this->translation_needs_update = $result->getValue("translation_needs_update");
+			$this->type_id = (int) $result->getValue("type_id");
+			$this->name = stripslashes((string) $result->getValue("name"));
+			$this->priority = (int) $result->getValue("priority");
+			if($result->getValue("translation_needs_update") !== "") {
+				$this->translation_needs_update = (string) $result->getValue("translation_needs_update");
 			}
 		}
 	}
@@ -190,11 +190,11 @@ class Type implements \D2U_Helper\ITranslationHelper {
 		$pre_save_category = new Type($this->type_id, $this->clang_id);
 	
 		// save priority, but only if new or changed
-		if($this->priority != $pre_save_category->priority || $this->type_id === 0) {
+		if($this->priority !== $pre_save_category->priority || $this->type_id === 0) {
 			$this->setPriority();
 		}
 
-		if($this->type_id === 0 || $pre_save_category != $this) {
+		if($this->type_id === 0 || $pre_save_category !== $this) {
 			$query = \rex::getTablePrefix() ."d2u_news_types SET "
 					."priority = ". $this->priority ." ";
 
@@ -216,14 +216,12 @@ class Type implements \D2U_Helper\ITranslationHelper {
 		if($error == 0) {
 			// Save the language specific part
 			$pre_save_category = new Type($this->type_id, $this->clang_id);
-			if($pre_save_category != $this) {
+			if($pre_save_category !== $this) {
 				$query = "REPLACE INTO ". \rex::getTablePrefix() ."d2u_news_types_lang SET "
 						."type_id = '". $this->type_id ."', "
 						."clang_id = '". $this->clang_id ."', "
 						."name = '". addslashes($this->name) ."', "
-						."translation_needs_update = '". $this->translation_needs_update ."', "
-						."updatedate = ". time() .", "
-						."updateuser = '". (\rex::getUser() instanceof rex_user ? \rex::getUser()->getLogin() : '') ."' ";
+						."translation_needs_update = '". $this->translation_needs_update ."'";
 
 				$result = \rex_sql::factory();
 				$result->setQuery($query);

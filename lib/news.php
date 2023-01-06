@@ -22,47 +22,47 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var int $clang_id = 0;
 	
 	/**
-	 * @var String Name
+	 * @var string Name
 	 */
 	var string $name = "";
 	
 	/**
-	 * @var String Short description
+	 * @var string Short description
 	 */
 	var string $teaser = "";
 	
 	/**
-	 * @var String Online status. Either "online", "offline" or "archived".
+	 * @var string Online status. Either "online", "offline" or "archived".
 	 */
 	var string $online_status = "";
 
 	/**
-	 * @var String Picture file name
+	 * @var string Picture file name
 	 */
 	var string $picture = "";
 	
 	/**
 	 * @var Category[] Array containing category objects. 
 	 */
-	var $categories = [];
+	var array $categories = [];
 
 	/**
 	 * @var Type[] Array containing type objects. 
 	 */
-	var $types = [];
+	var array $types = [];
 
 	/**
-	 * @var String Type of link, either "none" (default), "article", "url" or "machine"
+	 * @var string Type of link, either "none" (default), "article", "url" or "machine"
 	 */
 	var string $link_type = 'none';
 	
 	/**
-	 * @var String external URL
+	 * @var string external URL
 	 */
 	var string $url = '';
 	
 	/**
-	 * @var String News URL depending on news type
+	 * @var string News URL depending on news type
 	 */
 	private string $news_url = '';
 	
@@ -83,14 +83,14 @@ class News implements \D2U_Helper\ITranslationHelper {
 
 	
 	/**
-	 * @var String "yes" if translation needs update
+	 * @var string "yes" if translation needs update
 	 */
 	var string $translation_needs_update = "delete";
 
 	/**
-	 * @var String Date in format YYYY-MM-DD.
+	 * @var string Date in format YYYY-MM-DD.
 	 */
-	var $date = "";
+	var string $date = "";
 	
 	/**
 	 * @var boolean Indicator for hiding news in this special language
@@ -114,29 +114,29 @@ class News implements \D2U_Helper\ITranslationHelper {
 		$num_rows = $result->getRows();
 
 		if ($num_rows > 0) {
-			$this->news_id = $result->getValue("news_id");
-			$this->name = stripslashes($result->getValue("name"));
-			$this->teaser = stripslashes(htmlspecialchars_decode($result->getValue("teaser")));
-			$category_ids = preg_grep('/^\s*$/s', explode("|", $result->getValue("category_ids")), PREG_GREP_INVERT);
+			$this->news_id = (int) $result->getValue("news_id");
+			$this->name = stripslashes((string) $result->getValue("name"));
+			$this->teaser = stripslashes(htmlspecialchars_decode((string) $result->getValue("teaser")));
+			$category_ids = preg_grep('/^\s*$/s', explode("|", (string) $result->getValue("category_ids")), PREG_GREP_INVERT);
 			$category_ids = is_array($category_ids) ? array_map('intval', $category_ids) : [];
 			foreach ($category_ids as $category_id) {
 				$this->categories[$category_id] = new Category($category_id, $clang_id);
 			}
-			$this->link_type = $result->getValue("link_type");
-			$this->article_id = $result->getValue("article_id") ?: 0;
-			$this->url = $result->getValue("url");
-			$this->d2u_machines_machine_id = $result->getValue("d2u_machines_machine_id") ?: 0;
-			$this->d2u_courses_course_id = $result->getValue("d2u_courses_course_id") ?: 0;
-			$this->online_status = $result->getValue("online_status");
+			$this->link_type = (string) $result->getValue("link_type");
+			$this->article_id = intval($result->getValue("article_id"));
+			$this->url = (string) $result->getValue("url");
+			$this->d2u_machines_machine_id = intval($result->getValue("d2u_machines_machine_id"));
+			$this->d2u_courses_course_id = intval($result->getValue("d2u_courses_course_id"));
+			$this->online_status = (string) $result->getValue("online_status");
 			$this->hide_this_lang = $result->getValue("hide_this_lang") == 1 ? true : false;
-			$this->picture = $result->getValue("picture");
+			$this->picture = (string) $result->getValue("picture");
 			if($result->getValue("translation_needs_update")) {
-				$this->translation_needs_update = $result->getValue("translation_needs_update");
+				$this->translation_needs_update = (string) $result->getValue("translation_needs_update");
 			}
-			$this->date = $result->getValue("date");
+			$this->date = (string) $result->getValue("date");
 
 			if(\rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-				$type_ids = preg_grep('/^\s*$/s', explode("|", $result->getValue("type_ids")), PREG_GREP_INVERT);
+				$type_ids = preg_grep('/^\s*$/s', explode("|", (string) $result->getValue("type_ids")), PREG_GREP_INVERT);
 				$type_ids = is_array($category_ids) ? array_map('intval', $category_ids) : [];
 				foreach ($type_ids as $type_id) {
 					$this->types[$type_id] = new Type($type_id, $clang_id);
