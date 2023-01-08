@@ -13,7 +13,7 @@
     ->ensureColumn(new \rex_sql_column('date', 'VARCHAR(10)'))
     ->ensure();
 \rex_sql_table::get(\rex::getTable('d2u_news_news_lang'))
-	->ensureColumn(new rex_sql_column('news_id', 'int(10) unsigned', false, null, 'auto_increment'))
+	->ensureColumn(new rex_sql_column('news_id', 'INT(11)', false))
     ->ensureColumn(new \rex_sql_column('clang_id', 'INT(11)', false, 1))
 	->setPrimaryKey(['news_id', 'clang_id'])
     ->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)'))
@@ -29,7 +29,7 @@
     ->ensureColumn(new \rex_sql_column('picture', 'VARCHAR(255)', true))
     ->ensure();
 \rex_sql_table::get(\rex::getTable('d2u_news_categories_lang'))
-	->ensureColumn(new rex_sql_column('category_id', 'int(10) unsigned', false, null, 'auto_increment'))
+	->ensureColumn(new rex_sql_column('category_id', 'INT(11)', false))
     ->ensureColumn(new \rex_sql_column('clang_id', 'INT(11)', false, 1))
 	->setPrimaryKey(['category_id', 'clang_id'])
     ->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)'))
@@ -43,7 +43,35 @@ if(!class_exists('d2u_news_lang_helper')) {
 }
 d2u_news_lang_helper::factory()->install();
 
-// Standard settings
-if (!$this->hasConfig()) {
-    $this->setConfig('default_sort', "name");
+// remove default lang setting
+if ($this->hasConfig('default_lang')) {
+	$this->removeConfig('default_lang');
+}
+
+// Remove old columns
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_news_lang'))
+    ->removeColumn('updatedate')
+    ->removeColumn('updateuser')
+    ->ensure();
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_categories_lang'))
+    ->removeColumn('updatedate')
+    ->removeColumn('updateuser')
+    ->ensure();
+
+// Update modules
+if(class_exists('D2UModuleManager')) {
+	$modules = [];
+	$modules[] = new D2UModule("40-1",
+		"D2U News - Ausgabe News",
+		7);
+	$modules[] = new D2UModule("40-2",
+		"D2U News - Ausgabe Messen",
+		1);
+	$modules[] = new D2UModule("40-3",
+		"D2U News - Ausgabe News und Messen",
+		6);
+	$d2u_module_manager = new D2UModuleManager($modules, "", "d2u_news");
+	$d2u_module_manager->autoupdate();
 }

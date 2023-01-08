@@ -20,5 +20,8 @@ requires:
         d2u_helper: '>=1.5.5'
         sprog: '>=1.0.0'
         
+default_config:
+    default_sort: 'name'
+
 installer_ignore:
     - .github

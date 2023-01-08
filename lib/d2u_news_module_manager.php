@@ -13,13 +13,13 @@ class D2UNewsModules {
 		$modules = [];
 		$modules[] = new D2UModule("40-1",
 			"D2U News - Ausgabe News",
-			6);
+			7);
 		$modules[] = new D2UModule("40-2",
 			"D2U News - Ausgabe Messen",
 			1);
 		$modules[] = new D2UModule("40-3",
 			"D2U News - Ausgabe News und Messen",
-			5);
+			6);
 		return $modules;
 	}
 }

@@ -29,6 +29,7 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.5-DEV:</p>
 <ul>
+	<li>Bugfix Module 40-1 und 40-3: Fehler bei Verwendung des news_types Plugins, wenn noch keine Typen angelegt waren.</li>
 	<li>Ein paar erste rexstan Anpassungen.</li>
 	<li>Minimale PHP Version auf 7.4 angepasst.</li>
 	<li>.github Verzeichnis aus Installer Action ausgeschlossen.</li>

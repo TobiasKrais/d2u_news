@@ -63,11 +63,11 @@
 			$selected_types = rex_var::toArray("REX_VALUE[3]");
 			$types = \D2U_News\Type::getAll(rex_clang::getCurrentId(), true);
 			if (count($types) > 0) {
-				print '<select name="REX_INPUT_VALUE[3][]" multiple="multiple" style="width: 100%" size="5" class="form-control">';
+				print '<select name="REX_INPUT_VALUE[3][]" multiple="multiple" class="form-control">';
 				foreach ($types as $type) {
 					echo '<option value="'. $type->type_id .'" ';
 
-					if (in_array($type->type_id, $selected_types)) {
+					if(is_array($selected_types) && in_array($type->type_id, $selected_types)) {
 						echo 'selected="selected" ';
 					}
 					echo '>'. $type->name .'</option>';
