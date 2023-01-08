@@ -60,20 +60,22 @@ if(rex::isBackend()) {
 	</p>
 <?php
 }
-else if(\rex_addon::get("d2u_news")->isAvailable()) {
+else if(\rex_addon::get("d2u_news") instanceof rex_addon && \rex_addon::get("d2u_news")->isAvailable()) {
 	// FRONTEND
 	$news = [];
 	if($category !== false) {
 		$news = $category->getNews(true);
 	}
-	else if(rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
+	else if(rex_plugin::get('d2u_news', 'news_types') instanceof rex_plugin && \rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 		// If News Types Plugin is activated: filter
 		$news = \D2U_News\News::getAll(rex_clang::getCurrentId());
 		if(count($selected_news_types) > 0) {
 			foreach ($news as $current_news) {
-				foreach($selected_news_types as $selected_news_type) {
-					if(!in_array($selected_news_type, $current_news->types)) {
-						unset($news[$current_news->news_id]);
+				if(is_array($current_news->types) && count($current_news->types) > 0) {
+					foreach($selected_news_types as $selected_news_type) {
+						if(!in_array($selected_news_type, $current_news->types, true)) {
+							unset($news[$current_news->news_id]);
+						}
 					}
 				}
 			}

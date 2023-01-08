@@ -42,12 +42,12 @@ class News implements \D2U_Helper\ITranslationHelper {
 	var string $picture = "";
 	
 	/**
-	 * @var Category[] Array containing category objects. 
+	 * @var array<int, \D2U_News\Category> Array containing category objects. 
 	 */
 	var array $categories = [];
 
 	/**
-	 * @var Type[] Array containing type objects. 
+	 * @var array<int, \D2U_News\Type> Array containing type objects. 
 	 */
 	var array $types = [];
 
@@ -81,7 +81,6 @@ class News implements \D2U_Helper\ITranslationHelper {
 	 */
 	var int $d2u_courses_course_id = 0;
 
-	
 	/**
 	 * @var string "yes" if translation needs update
 	 */
