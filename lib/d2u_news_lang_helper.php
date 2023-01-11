@@ -4,10 +4,10 @@
  */
 class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	/**
-	 * @var string[] Array with english replacements. Key is the wildcard,
+	 * @var array<string, string> Array with english replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_english = [
+	protected array $replacements_english = [
 		'd2u_news_details' => 'more Information',
 		'd2u_news_fair_dates' => 'Fair dates',
 		'd2u_news_fairs_all' => 'All Fair dates',
@@ -15,10 +15,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 	
 	/**
-	 * @var string[] Array with german replacements. Key is the wildcard,
+	 * @var array<string, string> Array with german replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_german = [
+	protected array $replacements_german = [
 		'd2u_news_details' => 'Weitere Informationen',
 		'd2u_news_fair_dates' => 'Messetermine',
 		'd2u_news_fairs_all' => 'Alle Messetermine',
@@ -26,10 +26,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 	
 	/**
-	 * @var string[] Array with french replacements. Key is the wildcard,
+	 * @var array<string, string> Array with french replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_french = [
+	protected array $replacements_french = [
 		'd2u_news_details' => "Plus d'informations",
 		'd2u_news_fair_dates' => 'les dates des salons internationaux',
 		'd2u_news_fairs_all' => 'Toutes les dates des salons internationaux',
@@ -37,10 +37,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 	
 	/**
-	 * @var string[] Array with spanish replacements. Key is the wildcard,
+	 * @var array<string, string> Array with spanish replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_spanish = [
+	protected array $replacements_spanish = [
 		'd2u_news_details' => 'Para obtener más información',
 		'd2u_news_fair_dates' => 'Calendario de ferias',
 		'd2u_news_fairs_all' => 'Fechas de todas las ferias',
@@ -48,10 +48,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 
 	/**
-	 * @var string[] Array with italian replacements. Key is the wildcard,
+	 * @var array<string, string> Array with italian replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_italian = [
+	protected array $replacements_italian = [
 		'd2u_news_details' => 'Per ulteriori informazioni',
 		'd2u_news_fair_dates' => 'Calendario fiere',
 		'd2u_news_fairs_all' => 'Tutti Calendario fiere',
@@ -59,10 +59,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 
 	/**
-	 * @var string[] Array with polish replacements. Key is the wildcard,
+	 * @var array<string, string> Array with polish replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_polish = [
+	protected array $replacements_polish = [
 		'd2u_news_details' => 'Aby uzyskać więcej informacji',
 		'd2u_news_fair_dates' => 'Daty godziwe',
 		'd2u_news_fairs_all' => 'Wszystko Daty godziwe',
@@ -70,10 +70,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 	
 	/**
-	 * @var string[] Array with dutch replacements. Key is the wildcard,
+	 * @var array<string, string> Array with dutch replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_dutch = [
+	protected array $replacements_dutch = [
 		'd2u_news_details' => 'Voor meer informatie',
 		'd2u_news_fair_dates' => 'Beursdata',
 		'd2u_news_fairs_all' => 'Alle Beursdata',
@@ -81,10 +81,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 
 	/**
-	 * @var string[] Array with czech replacements. Key is the wildcard,
+	 * @var array<string, string> Array with czech replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_czech = [
+	protected array $replacements_czech = [
 		'd2u_news_details' => 'Pro více informací',
 		'd2u_news_fair_dates' => 'Reálné data',
 		'd2u_news_fairs_all' => 'Vše Reálné data',
@@ -92,10 +92,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 
 	/**
-	 * @var string[] Array with russian replacements. Key is the wildcard,
+	 * @var array<string, string> Array with russian replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_russian = [
+	protected array $replacements_russian = [
 		'd2u_news_details' => 'Для получения дополнительной информации',
 		'd2u_news_fairs_all' => 'даты всех выставок',
 		'd2u_news_fair_dates' => 'даты выставок',
@@ -103,10 +103,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 
 	/**
-	 * @var string[] Array with portuguese replacements. Key is the wildcard,
+	 * @var array<string, string> Array with portuguese replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_portuguese = [
+	protected array $replacements_portuguese = [
 		'd2u_news_details' => 'Para mais informações',
 		'd2u_news_fair_dates' => 'Datas Feira',
 		'd2u_news_fairs_all' => 'Todos Datas Feira',
@@ -114,10 +114,10 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper {
 	];
 
 	/**
-	 * @var string[] Array with chinese replacements. Key is the wildcard,
+	 * @var array<string, string> Array with chinese replacements. Key is the wildcard,
 	 * value the replacement. 
 	 */
-	protected $replacements_chinese = [
+	protected array $replacements_chinese = [
 		'd2u_news_details' => '其他信息',
 		'd2u_news_fair_dates' => '展会时间',
 		'd2u_news_fairs_all' => '所有 展会时间',
