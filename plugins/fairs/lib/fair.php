@@ -70,7 +70,7 @@ class Fair {
 	/**
 	 * Deletes the object.
 	 */
-	public function delete() {
+	public function delete():void {
 		$query = "DELETE FROM ". \rex::getTablePrefix() ."d2u_news_fairs "
 			."WHERE fair_id = ". $this->fair_id;
 		$result = \rex_sql::factory();
