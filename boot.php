@@ -46,12 +46,11 @@ function rex_d2u_news_article_is_in_use(rex_extension_point $ep)
 
 /**
  * Deletes language specific configurations and objects.
- * @param rex_extension_point<string> $ep Redaxo extension point
+ * @param rex_extension_point<array<string>> $ep Redaxo extension point
  * @return array<string> Warning message as array
  */
 function rex_d2u_news_clang_deleted(rex_extension_point $ep)
 {
-    /** @var array<string> $warning */
     $warning = $ep->getSubject();
     $params = $ep->getParams();
     $clang_id = $params['id'];
@@ -74,12 +73,11 @@ function rex_d2u_news_clang_deleted(rex_extension_point $ep)
 
 /**
  * Checks if media is used by this addon.
- * @param rex_extension_point<string> $ep Redaxo extension point
+ * @param rex_extension_point<array<string>> $ep Redaxo extension point
  * @return array<string> Warning message as array
  */
 function rex_d2u_news_media_is_in_use(rex_extension_point $ep)
 {
-    /** @var array<string> $warning */
     $warning = $ep->getSubject();
     $params = $ep->getParams();
     $filename = addslashes($params['filename']);
