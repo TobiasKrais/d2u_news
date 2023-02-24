@@ -250,10 +250,10 @@ class News implements \D2U_Helper\ITranslationHelper
                 $this->news_url = $this->url;
             } elseif ('machine' == $this->link_type && rex_addon::get('d2u_machinery')->isAvailable()) {
                 $machine = new Machine($this->d2u_machines_machine_id, $this->clang_id);
-                $this->news_url = $machine->getURL();
+                $this->news_url = $machine->getUrl();
             } elseif ('course' == $this->link_type && rex_addon::get('d2u_courses')->isAvailable()) {
                 $course = new \D2U_Courses\Course($this->d2u_machines_machine_id);
-                $this->news_url = $course->getURL();
+                $this->news_url = $course->getUrl();
             }
         }
         return $this->news_url;
