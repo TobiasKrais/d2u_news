@@ -64,7 +64,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
     $uses_news = $type->getNews(false);
 
     // If not used, delete
-    if (0 == count($uses_news)) {
+    if (0 === count($uses_news)) {
         $type->delete(true);
     } else {
         $message = '<ul>';
