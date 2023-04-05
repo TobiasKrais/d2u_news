@@ -113,7 +113,7 @@ class Category implements \D2U_Helper\ITranslationHelper
 
         $categories = [];
         for ($i = 0; $i < $result->getRows(); ++$i) {
-            $categories[] = new self($result->getValue('category_id'), $clang_id);
+            $categories[] = new self((int) $result->getValue('category_id'), $clang_id);
             $result->next();
         }
         return $categories;
@@ -171,7 +171,7 @@ class Category implements \D2U_Helper\ITranslationHelper
 
         $objects = [];
         for ($i = 0; $i < $result->getRows(); ++$i) {
-            $objects[] = new self($result->getValue('category_id'), $clang_id);
+            $objects[] = new self((int) $result->getValue('category_id'), $clang_id);
             $result->next();
         }
 
@@ -184,7 +184,7 @@ class Category implements \D2U_Helper\ITranslationHelper
      */
     public function save()
     {
-        $error = 0;
+        $error = false;
 
         // Save the not language specific part
         $pre_save_category = new self($this->category_id, $this->clang_id);
@@ -213,7 +213,7 @@ class Category implements \D2U_Helper\ITranslationHelper
             }
         }
 
-        if (0 == $error) {
+        if (!$error) {
             // Save the language specific part
             $pre_save_category = new self($this->category_id, $this->clang_id);
             if ($pre_save_category !== $this) {

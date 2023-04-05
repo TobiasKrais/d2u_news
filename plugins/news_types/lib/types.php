@@ -184,7 +184,7 @@ class Type implements \D2U_Helper\ITranslationHelper
      */
     public function save()
     {
-        $error = 0;
+        $error = false;
 
         // Save the not language specific part
         $pre_save_category = new self($this->type_id, $this->clang_id);
@@ -212,7 +212,7 @@ class Type implements \D2U_Helper\ITranslationHelper
             }
         }
 
-        if (0 == $error) {
+        if (!$error) {
             // Save the language specific part
             $pre_save_category = new self($this->type_id, $this->clang_id);
             if ($pre_save_category !== $this) {

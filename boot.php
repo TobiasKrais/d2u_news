@@ -28,7 +28,7 @@ function rex_d2u_news_article_is_in_use(rex_extension_point $ep)
     // Prepare warnings
     // Settings
     $addon = rex_addon::get('d2u_news');
-    if ($addon->hasConfig('article_id') && $addon->getConfig('article_id') == $article_id) {
+    if ($addon->hasConfig('article_id') && (int) $addon->getConfig('article_id') === $article_id) {
         $message = '<a href="index.php?page=d2u_news/settings">'.
              rex_i18n::msg('d2u_news_rights') .' - '. rex_i18n::msg('d2u_news_settings') . '</a>';
         if (!in_array($message, $warning, true)) {

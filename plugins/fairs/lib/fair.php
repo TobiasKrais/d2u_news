@@ -99,7 +99,7 @@ class Fair
      */
     public function save()
     {
-        $error = 0;
+        $error = false;
 
         $query = rex::getTablePrefix() .'d2u_news_fairs SET '
                 ."name = '". addslashes($this->name) ."', "
