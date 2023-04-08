@@ -223,7 +223,7 @@ class News implements \D2U_Helper\ITranslationHelper
                         .'ON main.news_id = default_lang.news_id AND default_lang.clang_id = '. rex_config::get('d2u_helper', 'default_lang') .' '
                     .'WHERE target_lang.news_id IS NULL '
                     .'ORDER BY default_lang.name';
-            $clang_id = rex_config::get('d2u_helper', 'default_lang');
+            $clang_id = (int) rex_config::get('d2u_helper', 'default_lang');
         }
         $result = rex_sql::factory();
         $result->setQuery($query);
