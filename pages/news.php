@@ -201,7 +201,7 @@ if ('edit' === $func || 'add' === $func) {
                                 asort($options_courses);
                                 d2u_addon_backend_helper::form_select('d2u_courses_courses', 'form[d2u_courses_course_id]', $options_courses, [$news->d2u_courses_course_id], 1, false, $readonly_lang);
                             }
-                            d2u_addon_backend_helper::form_linkfield('d2u_news_article', '1', $news->article_id, rex_config::get('d2u_helper', 'default_lang', rex_clang::getStartId()));
+                            d2u_addon_backend_helper::form_linkfield('d2u_news_article', '1', $news->article_id, (int) rex_config::get('d2u_helper', 'default_lang', rex_clang::getStartId()));
                             d2u_addon_backend_helper::form_input('d2u_news_url', 'form[url]', $news->url, false, $readonly, 'text');
                             d2u_addon_backend_helper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $news->online_status, $readonly);
                             d2u_addon_backend_helper::form_input('d2u_news_date', 'form[date]', $news->date, true, $readonly, 'date');
