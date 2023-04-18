@@ -30,7 +30,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
             }
             $news->picture = $input_media[1];
             $news->link_type = $form['link_type'];
-            $news->article_id = !is_array($link_ids) ? 0 : $link_ids['REX_INPUT_LINK'][1];
+            $news->article_id = is_array($link_ids['REX_INPUT_LINK']) ? $link_ids['REX_INPUT_LINK'][1] : 0;
             if (\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll((int) rex_config::get('d2u_helper', 'default_lang'), true)) > 0) {
                 $news->d2u_machines_machine_id = $form['d2u_machines_machine_id'];
             }

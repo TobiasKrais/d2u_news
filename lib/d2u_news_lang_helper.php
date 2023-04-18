@@ -5,7 +5,7 @@
 class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
 {
     /**
-     * @var array<string, string> Array with english replacements. Key is the wildcard,
+     * @var array<string,string> Array with english replacements. Key is the wildcard,
      * value the replacement.
      */
     public $replacements_english = [
@@ -16,7 +16,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with german replacements. Key is the wildcard,
+     * @var array<string,string> Array with german replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_german = [
@@ -27,7 +27,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with french replacements. Key is the wildcard,
+     * @var array<string,string> Array with french replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_french = [
@@ -38,7 +38,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with spanish replacements. Key is the wildcard,
+     * @var array<string,string> Array with spanish replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_spanish = [
@@ -49,7 +49,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with italian replacements. Key is the wildcard,
+     * @var array<string,string> Array with italian replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_italian = [
@@ -60,7 +60,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with polish replacements. Key is the wildcard,
+     * @var array<string,string> Array with polish replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_polish = [
@@ -71,7 +71,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with dutch replacements. Key is the wildcard,
+     * @var array<string,string> Array with dutch replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_dutch = [
@@ -82,7 +82,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with czech replacements. Key is the wildcard,
+     * @var array<string,string> Array with czech replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_czech = [
@@ -93,7 +93,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with russian replacements. Key is the wildcard,
+     * @var array<string,string> Array with russian replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_russian = [
@@ -104,7 +104,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with portuguese replacements. Key is the wildcard,
+     * @var array<string,string> Array with portuguese replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_portuguese = [
@@ -115,7 +115,7 @@ class d2u_news_lang_helper extends \D2U_Helper\ALangHelper
     ];
 
     /**
-     * @var array<string, string> Array with chinese replacements. Key is the wildcard,
+     * @var array<string,string> Array with chinese replacements. Key is the wildcard,
      * value the replacement.
      */
     protected array $replacements_chinese = [
