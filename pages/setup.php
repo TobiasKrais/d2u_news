@@ -27,7 +27,7 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_news" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
-<p>1.1.5-DEV:</p>
+<p>1.1.5:</p>
 <ul>
 	<li>PHP-CS-Fixer Code Verbesserungen.</li>
 	<li>Bugfix Module 40-1 und 40-3: Fehler bei Verwendung des news_types Plugins, wenn noch keine Typen angelegt waren.</li>
