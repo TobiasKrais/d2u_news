@@ -22,7 +22,7 @@ $tag_open = $sprog->getConfig('wildcard_open_tag');
 $tag_close = $sprog->getConfig('wildcard_close_tag');
 
 $counter_news = 'REX_VALUE[1]' == '' ? '5' : 'REX_VALUE[1]';
-$link_id_overview = 'REX_LINK[id=1 output=id]';
+$link_id_overview = (int) 'REX_LINK[id=1 output=id]';
 
 $category_id = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 0;
 $category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : false;
@@ -98,7 +98,7 @@ if (rex::isBackend()) {
                 foreach ($news as $nachricht) {
                     echo '<div class="row news">';
                     echo '<div class="col-12">';
-                    echo '<div class="news-box">';
+                    echo '<div class="d2u_module_40-1_news_container news-box">';
                     echo '<div class="row">';
 
                     if ('' != $nachricht->picture) {
@@ -130,6 +130,9 @@ if (rex::isBackend()) {
 
                     if ('' != $nachricht->teaser) {
                         echo d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser);
+                        if ('' != $nachricht->getUrl()) {
+                            echo '<a href="'. $nachricht->getUrl() .'" class="d2u_module_40-1_more">['. $tag_open . 'd2u_news_details'. $tag_close .']</a>';
+                        }
                     } elseif ('' != $nachricht->getUrl()) {
                         echo '<p class="text"><a href="'. $nachricht->getUrl() .'">'. $nachricht->getUrl() .'</a></p>';
                     }
@@ -140,7 +143,7 @@ if (rex::isBackend()) {
                     echo '</div>';
                 }
 
-                if ($link_id_overview > 0) {
+                if ($link_id_overview > 0 && $link_id_overview !== rex_article::getCurrentId()) {
                     echo '<div class="row">';
                     echo '<div class="col-12">';
                     echo '<a href="'. rex_getUrl($link_id_overview) .'">'. $tag_open . 'd2u_news_details'. $tag_close .'</a>';

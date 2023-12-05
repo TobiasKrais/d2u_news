@@ -29,7 +29,9 @@ $d2u_module_manager->showManagerList();
 <h2>Changelog</h2>
 <p>1.1.6-DEV:</p>
 <ul>
-	<li>...</li>
+	<li>Modul 40-1 "D2U News - Ausgabe News" Link mehr information entfernt, wenn News Hauptartikel der aktuelle Artikel ist.</li>
+	<li>Modul 40-1 "D2U News - Ausgabe News" Link mehr information für einzelne News hinzugefügt.</li>
+	<li>Modul 40-1 "D2U News - Ausgabe News" Abstände zwischen News im CSS eingefügt.</li>
 </ul>
 <p>1.1.5:</p>
 <ul>
