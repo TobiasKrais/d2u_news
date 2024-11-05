@@ -14,10 +14,10 @@ page:
         settings: { title: 'translate:d2u_helper_settings', icon: rex-icon rex-icon-system, itemClass: pull-right, perm: 'd2u_news[settings]' }
 
 requires:
-    php: '>=7.4'
+    php: '>=8.0'
     redaxo: '>=5.10.0'
     packages:
-        d2u_helper: '>=1.5.5'
+        d2u_helper: '>=1.14.0'
         sprog: '>=1.0.0'
         
 default_config:

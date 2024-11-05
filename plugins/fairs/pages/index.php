@@ -1,6 +1,6 @@
 <?php
 $func = rex_request('func', 'string');
-$entry_id = (int) rex_request('entry_id', 'int');
+$entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
 
 // Print comments
@@ -68,12 +68,12 @@ if ('edit' === $func || 'add' === $func) {
                                 $readonly = false;
                             }
 
-                            d2u_addon_backend_helper::form_input('d2u_news_name', 'form[name]', $fair->name, true, $readonly);
-                            d2u_addon_backend_helper::form_input('d2u_news_fairs_city', 'form[city]', $fair->city, true, $readonly);
-                            d2u_addon_backend_helper::form_input('d2u_news_fairs_country_code', 'form[country_code]', $fair->country_code, true, $readonly);
-                            d2u_addon_backend_helper::form_input('d2u_news_fairs_date_start', 'form[date_start]', $fair->date_start, true, $readonly, 'date');
-                            d2u_addon_backend_helper::form_input('d2u_news_house_date_end', 'form[date_end]', $fair->date_end, true, $readonly, 'date');
-                            d2u_addon_backend_helper::form_mediafield('d2u_helper_picture', '1', $fair->picture, $readonly);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_name', 'form[name]', $fair->name, true, $readonly);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_fairs_city', 'form[city]', $fair->city, true, $readonly);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_fairs_country_code', 'form[country_code]', $fair->country_code, true, $readonly);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_fairs_date_start', 'form[date_start]', $fair->date_start, true, $readonly, 'date');
+                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_house_date_end', 'form[date_end]', $fair->date_end, true, $readonly, 'date');
+                            \TobiasKrais\D2UHelper\BackendHelper::form_mediafield('d2u_helper_picture', '1', $fair->picture, $readonly);
                         ?>
 					</div>
 				</fieldset>
@@ -104,8 +104,8 @@ if ('edit' === $func || 'add' === $func) {
 		});
 	</script>
 	<?php
-        echo d2u_addon_backend_helper::getCSS();
-//		print d2u_addon_backend_helper::getJS();
+        echo \TobiasKrais\D2UHelper\BackendHelper::getCSS();
+//		print \TobiasKrais\D2UHelper\BackendHelper::getJS();
 }
 
 if ('' === $func) {

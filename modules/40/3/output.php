@@ -128,7 +128,7 @@ if (rex::isBackend()) {
                         echo '<p><time datetime="'. $nachricht->date .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
                     ?>
 					<p class="text">
-						<?= d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser);
+						<?= TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($nachricht->teaser);
                         ?>
 					</p>
 				</div>

@@ -19,7 +19,7 @@ use function is_array;
 /**
  * News.
  */
-class News implements \D2U_Helper\ITranslationHelper
+class News implements \TobiasKrais\D2UHelper\ITranslationHelper
 {
     /** @var int Database ID */
     public int $news_id = 0;
@@ -165,7 +165,7 @@ class News implements \D2U_Helper\ITranslationHelper
             .'WHERE news_id = '. $this->news_id;
         $result_main = rex_sql::factory();
         $result_main->setQuery($query_main);
-        if (0 === (int) $result_main->getRows()) {
+        if (0 === $result_main->getRows()) {
             $query = 'DELETE FROM '. rex::getTablePrefix() .'d2u_news_news '
                 .'WHERE news_id = '. $this->news_id;
             $result = rex_sql::factory();

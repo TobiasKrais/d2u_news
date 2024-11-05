@@ -129,7 +129,7 @@ if (rex::isBackend()) {
                     echo '<time datetime="'. $nachricht->date .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time>';
 
                     if ('' != $nachricht->teaser) {
-                        echo d2u_addon_frontend_helper::prepareEditorField($nachricht->teaser);
+                        echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($nachricht->teaser);
                         if ('' != $nachricht->getUrl()) {
                             echo '<a href="'. $nachricht->getUrl() .'" class="d2u_module_40-1_more">['. $tag_open . 'd2u_news_details'. $tag_close .']</a>';
                         }

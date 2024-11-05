@@ -8,9 +8,9 @@ if (rex::isBackend() && is_object(rex::getUser())) {
 }
 
 if (rex::isBackend()) {
-    rex_extension::register('CLANG_DELETED', 'rex_d2u_news_clang_deleted');
-    rex_extension::register('MEDIA_IS_IN_USE', 'rex_d2u_news_media_is_in_use');
-    rex_extension::register('ART_PRE_DELETED', 'rex_d2u_news_article_is_in_use');
+    rex_extension::register('CLANG_DELETED', rex_d2u_news_clang_deleted(...));
+    rex_extension::register('MEDIA_IS_IN_USE', rex_d2u_news_media_is_in_use(...));
+    rex_extension::register('ART_PRE_DELETED', rex_d2u_news_article_is_in_use(...));
 }
 
 /**

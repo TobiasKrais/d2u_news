@@ -1,6 +1,6 @@
 <?php
 $func = rex_request('func', 'string');
-$entry_id = (int) rex_request('entry_id', 'int');
+$entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
 
 // Print comments
@@ -130,7 +130,7 @@ if ('edit' === $func || 'add' === $func) {
                                     $options_translations['yes'] = rex_i18n::msg('d2u_helper_translation_needs_update');
                                     $options_translations['no'] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
                                     $options_translations['delete'] = rex_i18n::msg('d2u_helper_translation_delete');
-                                    d2u_addon_backend_helper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$news->translation_needs_update], 1, false, $readonly_lang);
+                                    \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$news->translation_needs_update], 1, false, $readonly_lang);
                                 } else {
                                     echo '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
                                 }
@@ -148,9 +148,9 @@ if ('edit' === $func || 'add' === $func) {
 							</script>
 							<div id="details_clang_<?= $rex_clang->getId() ?>">
 								<?php
-                                    d2u_addon_backend_helper::form_input('d2u_news_name', 'form[lang]['. $rex_clang->getId() .'][name]', $news->name, $required, $readonly_lang, 'text');
-                                    d2u_addon_backend_helper::form_textarea('d2u_news_teaser', 'form[lang]['. $rex_clang->getId() .'][teaser]', $news->teaser, 5, false, $readonly_lang, true);
-                                    d2u_addon_backend_helper::form_checkbox('d2u_news_hide_this_lang', 'form[lang]['. $rex_clang->getId() .'][hide_this_lang]', 'true', $news->hide_this_lang, $readonly_lang);
+                                    \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_name', 'form[lang]['. $rex_clang->getId() .'][name]', $news->name, $required, $readonly_lang, 'text');
+                                    \TobiasKrais\D2UHelper\BackendHelper::form_textarea('d2u_news_teaser', 'form[lang]['. $rex_clang->getId() .'][teaser]', $news->teaser, 5, false, $readonly_lang, true);
+                                    \TobiasKrais\D2UHelper\BackendHelper::form_checkbox('d2u_news_hide_this_lang', 'form[lang]['. $rex_clang->getId() .'][hide_this_lang]', 'true', $news->hide_this_lang, $readonly_lang);
                                 ?>
 							</div>
 						</div>
@@ -169,7 +169,7 @@ if ('edit' === $func || 'add' === $func) {
                                 $readonly = false;
                             }
 
-                            d2u_addon_backend_helper::form_mediafield('d2u_helper_picture', '1', $news->picture, $readonly);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_mediafield('d2u_helper_picture', '1', $news->picture, $readonly);
 
                             $options_link_type = [];
                             $options_link_type['none'] = rex_i18n::msg('d2u_news_no_link');
@@ -181,14 +181,14 @@ if ('edit' === $func || 'add' === $func) {
                             if (\rex_addon::get('d2u_courses')->isAvailable() && count(D2U_Courses\Course::getAll(true)) > 0) {
                                 $options_link_type['course'] = rex_i18n::msg('d2u_courses_courses');
                             }
-                            d2u_addon_backend_helper::form_select('d2u_news_link_type', 'form[link_type]', $options_link_type, [$news->link_type], 1, false, $readonly_lang);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_news_link_type', 'form[link_type]', $options_link_type, [$news->link_type], 1, false, $readonly_lang);
 
                             if (\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll((int) rex_config::get('d2u_helper', 'default_lang'), true)) > 0) {
                                 $options_machines = [];
                                 foreach (Machine::getAll((int) rex_config::get('d2u_helper', 'default_lang'), true) as $machine) {
                                     $options_machines[$machine->machine_id] = $machine->name;
                                 }
-                                d2u_addon_backend_helper::form_select('d2u_news_machine', 'form[d2u_machines_machine_id]', $options_machines, [$news->d2u_machines_machine_id], 1, false, $readonly_lang);
+                                \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_news_machine', 'form[d2u_machines_machine_id]', $options_machines, [$news->d2u_machines_machine_id], 1, false, $readonly_lang);
                             }
                             if (\rex_addon::get('d2u_courses')->isAvailable() && count(D2U_Courses\Course::getAll(true)) > 0) {
                                 $options_courses = [];
@@ -199,17 +199,17 @@ if ('edit' === $func || 'add' === $func) {
                                         . $course->category->name .' → '. $course->name;
                                 }
                                 asort($options_courses);
-                                d2u_addon_backend_helper::form_select('d2u_courses_courses', 'form[d2u_courses_course_id]', $options_courses, [$news->d2u_courses_course_id], 1, false, $readonly_lang);
+                                \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_courses_courses', 'form[d2u_courses_course_id]', $options_courses, [$news->d2u_courses_course_id], 1, false, $readonly_lang);
                             }
-                            d2u_addon_backend_helper::form_linkfield('d2u_news_article', '1', $news->article_id, (int) rex_config::get('d2u_helper', 'default_lang', rex_clang::getStartId()));
-                            d2u_addon_backend_helper::form_input('d2u_news_url', 'form[url]', $news->url, false, $readonly, 'text');
-                            d2u_addon_backend_helper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $news->online_status, $readonly);
-                            d2u_addon_backend_helper::form_input('d2u_news_date', 'form[date]', $news->date, true, $readonly, 'date');
+                            \TobiasKrais\D2UHelper\BackendHelper::form_linkfield('d2u_news_article', '1', $news->article_id, (int) rex_config::get('d2u_helper', 'default_lang', rex_clang::getStartId()));
+                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_url', 'form[url]', $news->url, false, $readonly, 'text');
+                            \TobiasKrais\D2UHelper\BackendHelper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $news->online_status, $readonly);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_date', 'form[date]', $news->date, true, $readonly, 'date');
                             $options_categories = [];
                             foreach (\D2U_News\Category::getAll(rex_config::get('d2u_helper', 'default_lang'), false) as $category) {
                                 $options_categories[$category->category_id] = $category->name;
                             }
-                            d2u_addon_backend_helper::form_select('d2u_helper_categories', 'form[category_ids][]', $options_categories, count($news->categories) > 0 ? array_keys($news->categories) : [], 5, true, $readonly);
+                            \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_helper_categories', 'form[category_ids][]', $options_categories, count($news->categories) > 0 ? array_keys($news->categories) : [], 5, true, $readonly);
                         ?>
 						<script>
 							function changeType() {
@@ -249,7 +249,7 @@ if ('edit' === $func || 'add' === $func) {
                         foreach (D2U_News\Type::getAll((int) rex_config::get('d2u_helper', 'default_lang'), false) as $types) {
                             $options_types[$types->type_id] = $types->name;
                         }
-                        d2u_addon_backend_helper::form_select('d2u_news_types', 'form[type_ids][]', $options_types, count($news->types) > 0 ? array_keys($news->types) : [], 5, true, $readonly);
+                        \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_news_types', 'form[type_ids][]', $options_types, count($news->types) > 0 ? array_keys($news->types) : [], 5, true, $readonly);
                         echo '</div>';
                         echo '</fieldset>';
                     }
@@ -273,8 +273,8 @@ if ('edit' === $func || 'add' === $func) {
 	</form>
 	<br>
 	<?php
-        echo d2u_addon_backend_helper::getCSS();
-        echo d2u_addon_backend_helper::getJS();
+        echo \TobiasKrais\D2UHelper\BackendHelper::getCSS();
+        echo \TobiasKrais\D2UHelper\BackendHelper::getJS();
 }
 
 if ('' === $func) {

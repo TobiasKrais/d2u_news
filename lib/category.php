@@ -15,7 +15,7 @@ use rex_sql;
 /**
  * News Category.
  */
-class Category implements \D2U_Helper\ITranslationHelper
+class Category implements \TobiasKrais\D2UHelper\ITranslationHelper
 {
     /** @var int Database ID */
     public int $category_id = 0;
@@ -81,7 +81,7 @@ class Category implements \D2U_Helper\ITranslationHelper
             .'WHERE category_id = '. $this->category_id;
         $result_main = rex_sql::factory();
         $result_main->setQuery($query_main);
-        if (0 === (int) $result_main->getRows()) {
+        if (0 === $result_main->getRows()) {
             $query = 'DELETE FROM '. rex::getTablePrefix() .'d2u_news_categories '
                 .'WHERE category_id = '. $this->category_id;
             $result = rex_sql::factory();
@@ -251,7 +251,7 @@ class Category implements \D2U_Helper\ITranslationHelper
 
         // When prio is too high or was deleted, simply add at end
         if ($this->priority > $result->getRows() || $delete) {
-            $this->priority = (int) $result->getRows() + 1;
+            $this->priority = $result->getRows() + 1;
         }
 
         $categories = [];

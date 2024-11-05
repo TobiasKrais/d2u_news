@@ -38,7 +38,7 @@
     ->ensure();
 
 // Update language replacements
-if (!class_exists('d2u_news_lang_helper')) {
+if (!class_exists(d2u_news_lang_helper::class)) {
     // Load class in case addon is deactivated
     require_once 'lib/d2u_news_lang_helper.php';
 }
@@ -62,17 +62,17 @@ if ($this->hasConfig('default_lang')) {
     ->ensure();
 
 // Update modules
-if (class_exists('D2UModuleManager')) {
+if (class_exists(TobiasKrais\D2UHelper\ModuleManager::class)) {
     $modules = [];
-    $modules[] = new D2UModule('40-1',
+    $modules[] = new \TobiasKrais\D2UHelper\Module('40-1',
         'D2U News - Ausgabe News',
         7);
-    $modules[] = new D2UModule('40-2',
+    $modules[] = new \TobiasKrais\D2UHelper\Module('40-2',
         'D2U News - Ausgabe Messen',
         1);
-    $modules[] = new D2UModule('40-3',
+    $modules[] = new \TobiasKrais\D2UHelper\Module('40-3',
         'D2U News - Ausgabe News und Messen',
         6);
-    $d2u_module_manager = new D2UModuleManager($modules, '', 'd2u_news');
+    $d2u_module_manager = new \TobiasKrais\D2UHelper\ModuleManager($modules, '', 'd2u_news');
     $d2u_module_manager->autoupdate();
 }
