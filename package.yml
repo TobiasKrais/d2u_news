@@ -19,7 +19,11 @@ requires:
     packages:
         d2u_helper: '>=1.14.0'
         sprog: '>=1.0.0'
-        
+
+conflicts:
+    packages:
+        d2u_courses: '<3.5.0'
+
 default_config:
     default_sort: 'name'
 

@@ -1,4 +1,7 @@
 <?php
+
+use D2U_News\News;
+
 $func = rex_request('func', 'string');
 $entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
@@ -20,7 +23,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     $news = false;
     $news_id = $form['news_id'];
     foreach (rex_clang::getAll() as $rex_clang) {
-        if (false === $news) {
+        if (!$news instanceof News) {
             $news = new \D2U_News\News($news_id, $rex_clang->getId());
             $news->news_id = $news_id; // Ensure correct ID in case first language has no object
             $category_ids = $form['category_ids'] ?? [];
@@ -34,7 +37,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
             if (\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll((int) rex_config::get('d2u_helper', 'default_lang'), true)) > 0) {
                 $news->d2u_machines_machine_id = $form['d2u_machines_machine_id'];
             }
-            if (\rex_addon::get('d2u_courses')->isAvailable() && count(\D2U_Courses\Course::getAll(true)) > 0) {
+            if (\rex_addon::get('d2u_courses')->isAvailable() && count(\TobiasKrais\D2UCourses\Course::getAll(true)) > 0) {
                 $news->d2u_courses_course_id = $form['d2u_courses_course_id'];
             }
             $news->url = $form['url'];
@@ -178,7 +181,7 @@ if ('edit' === $func || 'add' === $func) {
                             if (\rex_addon::get('d2u_machinery')->isAvailable() && count(Machine::getAll((int) rex_config::get('d2u_helper', 'default_lang'), true)) > 0) {
                                 $options_link_type['machine'] = rex_i18n::msg('d2u_news_machine');
                             }
-                            if (\rex_addon::get('d2u_courses')->isAvailable() && count(D2U_Courses\Course::getAll(true)) > 0) {
+                            if (\rex_addon::get('d2u_courses')->isAvailable() && count(TobiasKrais\D2UCourses\Course::getAll(true)) > 0) {
                                 $options_link_type['course'] = rex_i18n::msg('d2u_courses_courses');
                             }
                             \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_news_link_type', 'form[link_type]', $options_link_type, [$news->link_type], 1, false, $readonly_lang);
@@ -190,9 +193,9 @@ if ('edit' === $func || 'add' === $func) {
                                 }
                                 \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_news_machine', 'form[d2u_machines_machine_id]', $options_machines, [$news->d2u_machines_machine_id], 1, false, $readonly_lang);
                             }
-                            if (\rex_addon::get('d2u_courses')->isAvailable() && count(D2U_Courses\Course::getAll(true)) > 0) {
+                            if (\rex_addon::get('d2u_courses')->isAvailable() && count(TobiasKrais\D2UCourses\Course::getAll(true)) > 0) {
                                 $options_courses = [];
-                                foreach (D2U_Courses\Course::getAll(true) as $course) {
+                                foreach (TobiasKrais\D2UCourses\Course::getAll(true) as $course) {
                                     $options_courses[$course->course_id] = ($course->category->parent_category && $course->category->parent_category->parent_category && $course->category->parent_category->parent_category->parent_category ? $course->category->parent_category->parent_category->parent_category->name .' → ' : '')
                                         . ($course->category->parent_category && $course->category->parent_category->parent_category ? $course->category->parent_category->parent_category->name .' → ' : '')
                                         . ($course->category->parent_category ? $course->category->parent_category->name .' → ' : '')
