@@ -27,11 +27,12 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_news" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
-<p>1.1.6-DEV:</p>
+<p>1.1.6:</p>
 <ul>
-	<li>Modul 40-1 "D2U News - Ausgabe News" Link mehr information entfernt, wenn News Hauptartikel der aktuelle Artikel ist.</li>
-	<li>Modul 40-1 "D2U News - Ausgabe News" Link mehr information für einzelne News hinzugefügt.</li>
+	<li>Modul 40-1 "D2U News - Ausgabe News" Link mehr Information entfernt, wenn News Hauptartikel der aktuelle Artikel ist.</li>
+	<li>Modul 40-1 "D2U News - Ausgabe News" Link mehr Information für einzelne News hinzugefügt.</li>
 	<li>Modul 40-1 "D2U News - Ausgabe News" Abstände zwischen News im CSS eingefügt.</li>
+	<li>Anpassungen an D2U Helper Addon >= 2.x.</li>
 </ul>
 <p>1.1.5:</p>
 <ul>
