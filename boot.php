@@ -160,23 +160,25 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
         ];
     }
 
-    $news_types = \D2U_News\Type::getTranslationHelperObjects($target_clang_id, $filter_type);
-    if (count($news_types) > 0) {
-        $html_news_types = '<ul>';
-        foreach ($news_types as $news_type) {
-            if ('' === $news_type->name) {
-                $news_type = new \D2U_News\Type($news_type->type_id, $source_clang_id);
+    if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
+        $news_types = \D2U_News\Type::getTranslationHelperObjects($target_clang_id, $filter_type);
+        if (count($news_types) > 0) {
+            $html_news_types = '<ul>';
+            foreach ($news_types as $news_type) {
+                if ('' === $news_type->name) {
+                    $news_type = new \D2U_News\Type($news_type->type_id, $source_clang_id);
+                }
+                $html_news_types .= '<li><a href="'. rex_url::backendPage('d2u_news/news_types', ['entry_id' => $news_type->type_id, 'func' => 'edit']) .'">'. $news_type->name .'</a></li>';
             }
-            $html_news_types .= '<li><a href="'. rex_url::backendPage('d2u_news/news_types', ['entry_id' => $news_type->type_id, 'func' => 'edit']) .'">'. $news_type->name .'</a></li>';
+            $html_news_types .= '</ul>';
+            $list_entry['pages'][] = [
+                'title' => rex_i18n::msg('d2u_news_types'),
+                'icon' => 'rex-icon fa-file-text-o',
+                'html' => $html_news_types
+            ];
         }
-        $html_news_types .= '</ul>';
-        $list_entry['pages'][] = [
-            'title' => rex_i18n::msg('d2u_news_types'),
-            'icon' => 'rex-icon fa-file-text-o',
-            'html' => $html_news_types
-        ];
     }
-
+    
     $list[] = $list_entry;
 
     return $list;

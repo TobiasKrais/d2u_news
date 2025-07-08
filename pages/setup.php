@@ -27,6 +27,10 @@ $d2u_module_manager->showManagerList();
 <h2>Support</h2>
 <p>Fehlermeldungen bitte im <a href="https://github.com/TobiasKrais/d2u_news" target="_blank">GitHub Repository</a> melden.</p>
 <h2>Changelog</h2>
+<p>1.1.7-DEV:</p>
+<ul>
+	<li>Bugfix: Extension Point für D2U Helper enthielt einen Fehler wenn das news_types Plugin nicht aktiviert war.</li>
+</ul>
 <p>1.1.6:</p>
 <ul>
 	<li>Modul 40-1 "D2U News - Ausgabe News" Link mehr Information entfernt, wenn News Hauptartikel der aktuelle Artikel ist.</li>
