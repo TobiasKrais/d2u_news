@@ -1,10 +1,13 @@
 <?php
+
+namespace TobiasKrais\D2UNews;
+
 /**
  * Class managing modules published by www.design-to-use.de.
  *
  * @author Tobias Krais
  */
-class D2UNewsModules
+class Module
 {
     /**
      * Get modules offered by this addon.

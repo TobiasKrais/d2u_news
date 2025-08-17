@@ -62,17 +62,6 @@ if ($this->hasConfig('default_lang')) {
     ->ensure();
 
 // Update modules
-if (class_exists(TobiasKrais\D2UHelper\ModuleManager::class)) {
-    $modules = [];
-    $modules[] = new \TobiasKrais\D2UHelper\Module('40-1',
-        'D2U News - Ausgabe News',
-        7);
-    $modules[] = new \TobiasKrais\D2UHelper\Module('40-2',
-        'D2U News - Ausgabe Messen',
-        1);
-    $modules[] = new \TobiasKrais\D2UHelper\Module('40-3',
-        'D2U News - Ausgabe News und Messen',
-        6);
-    $d2u_module_manager = new \TobiasKrais\D2UHelper\ModuleManager($modules, '', 'd2u_news');
-    $d2u_module_manager->autoupdate();
-}
+include __DIR__ . DIRECTORY_SEPARATOR .'lib'. DIRECTORY_SEPARATOR .'Module.php';
+$d2u_module_manager = new \TobiasKrais\D2UHelper\ModuleManager(\TobiasKrais\D2UNews\Module::getModules(), '', 'd2u_news');
+$d2u_module_manager->autoupdate();

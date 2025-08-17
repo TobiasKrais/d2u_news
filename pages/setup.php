@@ -2,7 +2,7 @@
 /*
  * Modules
  */
-$d2u_module_manager = new \TobiasKrais\D2UHelper\ModuleManager(D2UNewsModules::getModules(), 'modules/', 'd2u_news');
+$d2u_module_manager = new \TobiasKrais\D2UHelper\ModuleManager(\TobiasKrais\D2UNews\Module::getModules(), '', 'd2u_news');
 
 // \TobiasKrais\D2UHelper\ModuleManager actions
 $d2u_module_id = rex_request('d2u_module_id', 'string');
