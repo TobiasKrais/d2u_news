@@ -12,6 +12,12 @@ page:
         categories: { title: 'translate:d2u_helper_categories', icon: rex-icon rex-icon-open-category }
         setup: { title: 'translate:d2u_helper_setup', icon: rex-icon rex-icon-install, itemClass: pull-right, perm: 'd2u_news[settings]' }
         settings: { title: 'translate:d2u_helper_settings', icon: rex-icon rex-icon-system, itemClass: pull-right, perm: 'd2u_news[settings]' }
+        help:
+            title: ''
+            icon: rex-icon rex-icon-help
+            itemClass: pull-right
+            subpages:
+                changelog: { title: 'translate:d2u_helper_help_chapter_changelog' }
 
 requires:
     php: '>=8.0'
