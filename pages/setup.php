@@ -33,6 +33,15 @@ $d2u_module_manager->showManagerList();
 
 <?php if ($showChangelogOnly) { ?>
 <h2>Changelog</h2>
+<p>1.2.0-DEV:</p>
+<ul>
+	<li>Neue Module 40-4 bis 40-6 als Bootstrap-5-Varianten der bestehenden Beispielmodule hinzugefügt.</li>
+	<li>Module 40-1 bis 40-3 als "(BS4, deprecated)" markiert. Die BS4-Varianten werden im nächsten Major Release entfernt.</li>
+	<li>Benötigt d2u_helper &gt;= 2.1.0.</li>
+	<li>Bugfix: Prioritäten werden bei Kategorien und News-Typen nach dem Speichern wieder stabil neu durchnummeriert, auch wenn in der Datenbank bereits doppelte Werte vorhanden sind.</li>
+	<li>Backend-Listen sortierbar gemacht und Standardsortierungen von SQL-Queries auf <code>rex_list</code>-<code>defaultSort</code> umgestellt.</li>
+	<li>Die Priorität von Kategorien und News-Typen kann in den Backend-Listen jetzt direkt per Hoch-/Runter-Buttons geändert werden.</li>
+</ul>
 <p>1.1.7-DEV:</p>
 <ul>
 	<li>Bugfix: Extension Point für D2U Helper enthielt einen Fehler wenn das news_types Plugin nicht aktiviert war.</li>

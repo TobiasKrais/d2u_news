@@ -1,4 +1,6 @@
 <?php
+
+use TobiasKrais\D2UHelper\BackendHelper;
 $func = rex_request('func', 'string');
 $entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
@@ -78,6 +80,21 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
 
     $func = '';
 }
+elseif ('priority_down' === $func || 'priority_up' === $func) {
+    $type = new \D2U_News\Type($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+    $type->type_id = $entry_id; // Ensure correct ID in case language has no object
+
+    if ('priority_down' === $func) {
+        ++$type->priority;
+        $type->save();
+    } elseif ($type->priority > 1) {
+        --$type->priority;
+        $type->save();
+    }
+
+    header('Location: '. BackendHelper::getCurrentBackendPage(['message' => 'd2u_helper_priority_changed'], ['func', 'entry_id']));
+    exit;
+}
 
 // Eingabeformular
 if ('edit' === $func || 'add' === $func) {
@@ -106,7 +123,7 @@ if ('edit' === $func || 'add' === $func) {
                                     $options_translations['yes'] = rex_i18n::msg('d2u_helper_translation_needs_update');
                                     $options_translations['no'] = rex_i18n::msg('d2u_helper_translation_is_uptodate');
                                     $options_translations['delete'] = rex_i18n::msg('d2u_helper_translation_delete');
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$type->translation_needs_update], 1, false, $readonly_lang);
+                                    BackendHelper::form_select('d2u_helper_translation', 'form[lang]['. $rex_clang->getId() .'][translation_needs_update]', $options_translations, [$type->translation_needs_update], 1, false, $readonly_lang);
                                 } else {
                                     echo '<input type="hidden" name="form[lang]['. $rex_clang->getId() .'][translation_needs_update]" value="">';
                                 }
@@ -124,7 +141,7 @@ if ('edit' === $func || 'add' === $func) {
 							</script>
 							<div id="details_clang_<?= $rex_clang->getId() ?>">
 								<?php
-                                    \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $type->name, $required, $readonly_lang, 'text');
+                                    BackendHelper::form_input('d2u_helper_name', 'form[lang]['. $rex_clang->getId() .'][name]', $type->name, $required, $readonly_lang, 'text');
                                 ?>
 							</div>
 						</div>
@@ -143,7 +160,7 @@ if ('edit' === $func || 'add' === $func) {
                                 $readonly = false;
                             }
 
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('header_priority', 'form[priority]', $type->priority, true, $readonly, 'number');
+                            BackendHelper::form_input('header_priority', 'form[priority]', $type->priority, true, $readonly, 'number');
                         ?>
 					</div>
 				</fieldset>
@@ -166,21 +183,21 @@ if ('edit' === $func || 'add' === $func) {
 	</form>
 	<br>
 	<?php
-        echo \TobiasKrais\D2UHelper\BackendHelper::getCSS();
-        echo \TobiasKrais\D2UHelper\BackendHelper::getJS();
+        echo BackendHelper::getCSS();
+        echo BackendHelper::getJS();
 }
 
 if ('' === $func) {
-    $query = 'SELECT types.type_id, name, priority '
+    $query = 'SELECT types.type_id, name, priority, '
+        . '(SELECT MAX(priority) FROM '. \rex::getTablePrefix() .'d2u_news_types) AS max_priority '
         . 'FROM '. \rex::getTablePrefix() .'d2u_news_types AS types '
         . 'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_types_lang AS lang '
             . 'ON types.type_id = lang.type_id AND lang.clang_id = '. (int) rex_config::get('d2u_helper', 'default_lang') .' ';
+    $defaultSort = ['name' => 'ASC'];
     if ('priority' == $this->getConfig('default_type_sort')) {
-        $query .= 'ORDER BY priority ASC';
-    } else {
-        $query .= 'ORDER BY name ASC';
+        $defaultSort = ['priority' => 'ASC'];
     }
-    $list = rex_list::factory($query, 1000);
+    $list = rex_list::factory(query: $query, rowsPerPage: 1000, defaultSort: $defaultSort);
 
     $list->addTableAttribute('class', 'table-striped table-hover');
 
@@ -194,11 +211,25 @@ if ('' === $func) {
 
     $list->setColumnLabel('type_id', rex_i18n::msg('id'));
     $list->setColumnLayout('type_id', ['<th class="rex-table-id">###VALUE###</th>', '<td class="rex-table-id">###VALUE###</td>']);
+    $list->setColumnSortable('type_id');
 
     $list->setColumnLabel('name', rex_i18n::msg('d2u_news_name'));
     $list->setColumnParams('name', ['func' => 'edit', 'entry_id' => '###type_id###']);
+    $list->setColumnSortable('name');
 
     $list->setColumnLabel('priority', rex_i18n::msg('header_priority'));
+    $list->setColumnSortable('priority');
+    $list->setColumnFormat('priority', 'custom', static function ($params) {
+        $listParams = $params['list'];
+
+        return BackendHelper::getPriorityButtons(
+            (int) $listParams->getValue('type_id'),
+            (int) $listParams->getValue('priority'),
+            (int) $listParams->getValue('max_priority')
+        );
+    });
+
+    $list->removeColumn('max_priority');
 
     $list->addColumn(rex_i18n::msg('module_functions'), '<i class="rex-icon rex-icon-edit"></i> ' . rex_i18n::msg('edit'));
     $list->setColumnLayout(rex_i18n::msg('module_functions'), ['<th class="rex-table-action" colspan="2">###VALUE###</th>', '<td class="rex-table-action">###VALUE###</td>']);

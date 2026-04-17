@@ -1,5 +1,5 @@
 package: d2u_news
-version: '1.1.7'
+version: '1.2.0'
 author: Tobias Krais
 supportpage: http://github.com/tobiaskrais/d2u_news
 
@@ -23,12 +23,13 @@ requires:
     php: '>=8.0'
     redaxo: '>=5.10.0'
     packages:
-        d2u_helper: '>=1.14.0'
+        d2u_helper: '>=2.2.1'
         sprog: '>=1.0.0'
 
 conflicts:
     packages:
         d2u_courses: '<3.5.0'
+        d2u_machinery: '<1.6.0'
 
 default_config:
     default_sort: 'name'

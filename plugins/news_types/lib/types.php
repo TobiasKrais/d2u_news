@@ -238,8 +238,8 @@ class Type implements \TobiasKrais\D2UHelper\ITranslationHelper
     private function setPriority($delete = false): void
     {
         // Pull prios from database
-        $query = 'SELECT type_id, priority FROM '. rex::getTablePrefix() .'d2u_news_types '
-            .'WHERE type_id <> '. $this->type_id .' ORDER BY priority';
+        $query = 'SELECT type_id FROM '. rex::getTablePrefix() .'d2u_news_types '
+            .'WHERE type_id <> '. $this->type_id .' ORDER BY priority, type_id';
         $result = rex_sql::factory();
         $result->setQuery($query);
 
@@ -255,7 +255,7 @@ class Type implements \TobiasKrais\D2UHelper\ITranslationHelper
 
         $types = [];
         for ($i = 0; $i < $result->getRows(); ++$i) {
-            $types[$result->getValue('priority')] = $result->getValue('type_id');
+            $types[] = (int) $result->getValue('type_id');
             $result->next();
         }
         array_splice($types, $this->priority - 1, 0, [$this->type_id]);

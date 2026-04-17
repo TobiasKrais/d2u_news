@@ -1,4 +1,6 @@
 <?php
+
+use TobiasKrais\D2UHelper\BackendHelper;
 $func = rex_request('func', 'string');
 $entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
@@ -68,12 +70,12 @@ if ('edit' === $func || 'add' === $func) {
                                 $readonly = false;
                             }
 
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_name', 'form[name]', $fair->name, true, $readonly);
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_fairs_city', 'form[city]', $fair->city, true, $readonly);
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_fairs_country_code', 'form[country_code]', $fair->country_code, true, $readonly);
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_fairs_date_start', 'form[date_start]', $fair->date_start, true, $readonly, 'date');
-                            \TobiasKrais\D2UHelper\BackendHelper::form_input('d2u_news_house_date_end', 'form[date_end]', $fair->date_end, true, $readonly, 'date');
-                            \TobiasKrais\D2UHelper\BackendHelper::form_mediafield('d2u_helper_picture', '1', $fair->picture, $readonly);
+                            BackendHelper::form_input('d2u_news_name', 'form[name]', $fair->name, true, $readonly);
+                            BackendHelper::form_input('d2u_news_fairs_city', 'form[city]', $fair->city, true, $readonly);
+                            BackendHelper::form_input('d2u_news_fairs_country_code', 'form[country_code]', $fair->country_code, true, $readonly);
+                            BackendHelper::form_input('d2u_news_fairs_date_start', 'form[date_start]', $fair->date_start, true, $readonly, 'date');
+                            BackendHelper::form_input('d2u_news_house_date_end', 'form[date_end]', $fair->date_end, true, $readonly, 'date');
+                            BackendHelper::form_mediafield('d2u_helper_picture', '1', $fair->picture, $readonly);
                         ?>
 					</div>
 				</fieldset>
@@ -104,15 +106,14 @@ if ('edit' === $func || 'add' === $func) {
 		});
 	</script>
 	<?php
-        echo \TobiasKrais\D2UHelper\BackendHelper::getCSS();
-//		print \TobiasKrais\D2UHelper\BackendHelper::getJS();
+        echo BackendHelper::getCSS();
+    //		print BackendHelper::getJS();
 }
 
 if ('' === $func) {
     $query = 'SELECT fair_id, name, city, date_start, date_end '
-        . 'FROM '. rex::getTablePrefix() .'d2u_news_fairs '
-        . 'ORDER BY date_start DESC';
-    $list = rex_list::factory($query, 1000);
+        . 'FROM '. rex::getTablePrefix() .'d2u_news_fairs ';
+    $list = rex_list::factory(query: $query, rowsPerPage: 1000, defaultSort: ['date_start' => 'DESC']);
 
     $list->addTableAttribute('class', 'table-striped table-hover');
 
@@ -123,14 +124,20 @@ if ('' === $func) {
 
     $list->setColumnLabel('fair_id', rex_i18n::msg('id'));
     $list->setColumnLayout('fair_id', ['<th class="rex-table-id">###VALUE###</th>', '<td class="rex-table-id">###VALUE###</td>']);
+    $list->setColumnSortable('fair_id');
 
-    $list->setColumnLabel('firstname', rex_i18n::msg('d2u_news_fairs_firstname'));
-    $list->setColumnParams('firstname', ['func' => 'edit', 'entry_id' => '###fair_id###']);
+    $list->setColumnLabel('name', rex_i18n::msg('d2u_news_name'));
+    $list->setColumnParams('name', ['func' => 'edit', 'entry_id' => '###fair_id###']);
+    $list->setColumnSortable('name');
 
-    $list->setColumnLabel('lastname', rex_i18n::msg('d2u_news_fairs_lastname'));
-    $list->setColumnParams('lastname', ['func' => 'edit', 'entry_id' => '###fair_id###']);
+    $list->setColumnLabel('city', rex_i18n::msg('d2u_news_fairs_city'));
+    $list->setColumnSortable('city');
 
-    $list->setColumnLabel('company', rex_i18n::msg('d2u_news_fairs_company'));
+    $list->setColumnLabel('date_start', rex_i18n::msg('d2u_news_fairs_date_start'));
+    $list->setColumnSortable('date_start');
+
+    $list->setColumnLabel('date_end', rex_i18n::msg('d2u_news_fairs_date_end'));
+    $list->setColumnSortable('date_end');
 
     $list->addColumn(rex_i18n::msg('module_functions'), '<i class="rex-icon rex-icon-edit"></i> ' . rex_i18n::msg('edit'));
     $list->setColumnLayout(rex_i18n::msg('module_functions'), ['<th class="rex-table-action" colspan="2">###VALUE###</th>', '<td class="rex-table-action">###VALUE###</td>']);
