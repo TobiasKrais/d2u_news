@@ -1,0 +1,20 @@
+d2u_news = D2U News
+d2u_news_news_title = Nieuws
+
+d2u_news_article = Redaxo-artikel
+d2u_news_could_not_delete = Verwijderen mislukt.
+d2u_news_date = Datum
+d2u_news_hide_this_lang = Nieuws in deze taal verbergen
+d2u_news_link_type = Link naar ...
+d2u_news_name = Naam
+d2u_news_no_link = Geen link
+d2u_news_machine = D2U Machinery machine
+d2u_news_no_news_found = Er zijn nog geen nieuwsitems aangemaakt.
+d2u_news_news = Nieuwsbericht
+d2u_news_teaser = Korte beschrijving
+d2u_news_url = Externe URL
+
+d2u_news_rights = D2U News add-on
+d2u_news_rights_edit_data = D2U News add-on: bewerkingsrechten voor gegevens en taaloverstijgende inhoud
+d2u_news_rights_edit_lang = D2U News add-on: bewerkingsrechten voor vertalingen en taalspecifieke inhoud (de talen uit de rolinstellingen zijn van toepassing)
+d2u_news_rights_settings = D2U News add-on: instellingen
