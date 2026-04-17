@@ -7,7 +7,7 @@
 
 namespace D2U_News;
 
-use Machine;
+use TobiasKrais\D2UMachinery\Machine;
 use rex;
 use rex_addon;
 use rex_config;
