@@ -25,7 +25,7 @@ if (!function_exists('formatDate')) {
 
 
 // Messen ausgeben
-$fairs = \D2U_News\Fair::getAll();
+$fairs = \TobiasKrais\D2UNews\Fair::getAll();
 
 if (count($fairs) > 0) {
     echo '<div class="col-12">';

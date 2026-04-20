@@ -63,11 +63,11 @@
     ->ensure();
 
 // Update language replacements
-if (!class_exists(d2u_news_lang_helper::class)) {
+if (!class_exists(\TobiasKrais\D2UNews\LangHelper::class)) {
     // Load class in case addon is deactivated
-    require_once 'lib/d2u_news_lang_helper.php';
+    require_once 'lib/LangHelper.php';
 }
-d2u_news_lang_helper::factory()->install();
+\TobiasKrais\D2UNews\LangHelper::factory()->install();
 
 // remove default lang setting
 if ($this->hasConfig('default_lang')) {

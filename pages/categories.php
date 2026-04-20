@@ -22,7 +22,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     $category_id = $form['category_id'];
     foreach (rex_clang::getAll() as $rex_clang) {
         if (false === $category) {
-            $category = new \D2U_News\Category($category_id, $rex_clang->getId());
+            $category = new \TobiasKrais\D2UNews\Category($category_id, $rex_clang->getId());
             $category->category_id = $category_id; // Ensure correct ID in case first language has no object
             $category->priority = $form['priority'];
             $category->picture = $input_media[1];
@@ -63,7 +63,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
         $form = rex_post('form', 'array', []);
         $category_id = $form['category_id'];
     }
-    $category = new \D2U_News\Category($category_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+    $category = new \TobiasKrais\D2UNews\Category($category_id, (int) rex_config::get('d2u_helper', 'default_lang'));
     $category->category_id = $category_id; // Ensure correct ID in case language has no object
 
     // Check if category is used
@@ -85,7 +85,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
     $func = '';
 }
 elseif ('priority_down' === $func || 'priority_up' === $func) {
-    $category = new \D2U_News\Category($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+    $category = new \TobiasKrais\D2UNews\Category($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
     $category->category_id = $entry_id; // Ensure correct ID in case language has no object
 
     if ('priority_down' === $func) {
@@ -110,7 +110,7 @@ if ('edit' === $func || 'add' === $func) {
 				<input type="hidden" name="form[category_id]" value="<?= $entry_id ?>">
 				<?php
                     foreach (rex_clang::getAll() as $rex_clang) {
-                        $category = new \D2U_News\Category($entry_id, $rex_clang->getId());
+                        $category = new \TobiasKrais\D2UNews\Category($entry_id, $rex_clang->getId());
                         $required = $rex_clang->getId() === (int) (rex_config::get('d2u_helper', 'default_lang')) ? true : false;
 
                         $readonly_lang = true;
@@ -158,7 +158,7 @@ if ('edit' === $func || 'add' === $func) {
 					<div class="panel-body-wrapper slide">
 						<?php
                             // Do not use last object from translations, because you don't know if it exists in DB
-                            $category = new \D2U_News\Category($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+                            $category = new \TobiasKrais\D2UNews\Category($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
                             $readonly = true;
                             if (\rex::getUser() instanceof rex_user && (\rex::getUser()->isAdmin() || \rex::getUser()->hasPerm('d2u_news[edit_data]'))) {
                                 $readonly = false;

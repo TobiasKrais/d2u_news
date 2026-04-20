@@ -12,8 +12,8 @@ $sql->setQuery('DROP TABLE IF EXISTS ' . rex::getTablePrefix() . 'd2u_news_types
 $sql->setQuery('DROP TABLE IF EXISTS ' . rex::getTablePrefix() . 'd2u_news_fairs');
 
 // Delete language replacements
-if (!class_exists(d2u_news_lang_helper::class)) {
+if (!class_exists(\TobiasKrais\D2UNews\LangHelper::class)) {
     // Load class in case addon is deactivated
-    require_once 'lib/d2u_news_lang_helper.php';
+    require_once 'lib/LangHelper.php';
 }
-d2u_news_lang_helper::factory()->uninstall();
+\TobiasKrais\D2UNews\LangHelper::factory()->uninstall();

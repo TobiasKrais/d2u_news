@@ -17,7 +17,7 @@ if ('save' === filter_input(INPUT_POST, 'btn_save')) {
         echo rex_view::success(rex_i18n::msg('form_saved'));
 
         // Install / update language replacements
-        d2u_news_lang_helper::factory()->install();
+        \TobiasKrais\D2UNews\LangHelper::factory()->install();
     } else {
         echo rex_view::error(rex_i18n::msg('form_save_error'));
     }

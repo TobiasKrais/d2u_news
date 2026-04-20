@@ -1,5 +1,10 @@
 <?php
 
+use TobiasKrais\D2UNews\Category;
+use TobiasKrais\D2UNews\LangHelper;
+use TobiasKrais\D2UNews\News;
+use TobiasKrais\D2UNews\Type;
+
 if (rex::isBackend() && is_object(rex::getUser())) {
     rex_perm::register('d2u_news[]', rex_i18n::msg('d2u_news_rights'));
     rex_perm::register('d2u_news[edit_data]', rex_i18n::msg('d2u_news_rights_edit_data'), rex_perm::OPTIONS);
@@ -55,7 +60,7 @@ function rex_d2u_news_clang_deleted(rex_extension_point $ep)
     $clang_id = $params['id'];
 
     // Delete
-    $news = D2U_News\News::getAll($clang_id, 0, false);
+    $news = News::getAll($clang_id, 0, false);
     foreach ($news as $cur_news) {
         $cur_news->delete(false);
     }
@@ -65,7 +70,7 @@ function rex_d2u_news_clang_deleted(rex_extension_point $ep)
         rex_config::remove('d2u_news', 'lang_replacement_'. $clang_id);
     }
     // Delete language replacements
-    d2u_news_lang_helper::factory()->uninstall($clang_id);
+    LangHelper::factory()->uninstall($clang_id);
 
     return $warning;
 }
@@ -130,12 +135,12 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
         'pages' => []
     ];
 
-    $news_categories = \D2U_News\Category::getTranslationHelperObjects($target_clang_id, $filter_type);
+    $news_categories = Category::getTranslationHelperObjects($target_clang_id, $filter_type);
     if (count($news_categories) > 0) {
         $html_news_categories = '<ul>';
         foreach ($news_categories as $current_news_category) {
             if ('' === $current_news_category->name) {
-                $current_news_category = new \D2U_News\Category($current_news_category->category_id, $source_clang_id);
+                $current_news_category = new Category($current_news_category->category_id, $source_clang_id);
             }
             $html_news_categories .= '<li><a href="'. rex_url::backendPage('d2u_news/categories', ['entry_id' => $current_news_category->category_id, 'func' => 'edit']) .'">'. $current_news_category->name .'</a></li>';
         }
@@ -147,15 +152,15 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
         ];
     }
 
-    $news = \D2U_News\News::getTranslationHelperObjects($target_clang_id, $filter_type);
+    $news = News::getTranslationHelperObjects($target_clang_id, $filter_type);
     if (count($news) > 0) {
         $html_news = '<ul>';
         foreach ($news as $current_news) {
             if ('' === $current_news->name) {
-                $current_news = new \D2U_News\News($current_news->news_id, $source_clang_id);
+                $current_news = new News($current_news->news_id, $source_clang_id);
                 if ('' === $current_news->name) {
                     foreach (rex_clang::getAllIds() as $clang_id) {
-                        $current_news = new \D2U_News\News($current_news->news_id, $clang_id);
+                        $current_news = new News($current_news->news_id, $clang_id);
                         if ('' !== $current_news->name) {
                             break;
                         }
@@ -172,12 +177,12 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
         ];
     }
 
-    $news_types = \D2U_News\Type::getTranslationHelperObjects($target_clang_id, $filter_type);
+    $news_types = Type::getTranslationHelperObjects($target_clang_id, $filter_type);
     if (count($news_types) > 0) {
         $html_news_types = '<ul>';
         foreach ($news_types as $news_type) {
             if ('' === $news_type->name) {
-                $news_type = new \D2U_News\Type($news_type->type_id, $source_clang_id);
+                $news_type = new Type($news_type->type_id, $source_clang_id);
             }
             $html_news_types .= '<li><a href="'. rex_url::backendPage('d2u_news/news_types', ['entry_id' => $news_type->type_id, 'func' => 'edit']) .'">'. $news_type->name .'</a></li>';
         }

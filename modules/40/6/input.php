@@ -18,7 +18,7 @@
 	<div class="col-xs-12 col-sm-6">Welche News Kategorie soll angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
 		<?php
-            $categories = \D2U_News\Category::getAll(rex_clang::getCurrentId(), true);
+            $categories = \TobiasKrais\D2UNews\Category::getAll(rex_clang::getCurrentId(), true);
             if (!is_array($categories)) {
                 $categories = [];
             }
@@ -49,7 +49,7 @@
             if (!is_array($selected_types)) {
                 $selected_types = [];
             }
-            $types = \D2U_News\Type::getAll(rex_clang::getCurrentId(), true);
+            $types = \TobiasKrais\D2UNews\Type::getAll(rex_clang::getCurrentId(), true);
             if (!is_array($types)) {
                 $types = [];
             }

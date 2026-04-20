@@ -2,9 +2,24 @@
 
 ?>
 <h2>Changelog</h2>
-<p>1.2.0-DEV:</p>
+<p>1.2.0:</p>
 <ul>
 	<li>Plugins für Messetermine und Nachrichtenarten ins Hauptaddon integriert; die Funktionen stehen jetzt ohne separate Plugin-Installation direkt im Addon zur Verfügung.</li>
+	<li>Wichtige Hinweise
+		<ul>
+			<li>Die Klassen stehen jetzt im Namespace <code>TobiasKrais\D2UNews</code> zur Verfügung. Der bisherige Namespace <code>D2U_News</code>
+				und der alte globale Klassenname sind nur noch als deprecated Übergangsschicht vorhanden und werden mit Version 2.0.0 entfernt.</li>
+			<li>Folgende Klassen wurden umbenannt und stehen künftig unter diesen neuen Namen zur Verfügung:
+				<ul>
+					<li><code>D2U_News\Category</code> wird zu <code>TobiasKrais\D2UNews\Category</code>.</li>
+					<li><code>D2U_News\Fair</code> wird zu <code>TobiasKrais\D2UNews\Fair</code>.</li>
+					<li><code>D2U_News\News</code> wird zu <code>TobiasKrais\D2UNews\News</code>.</li>
+					<li><code>D2U_News\Type</code> wird zu <code>TobiasKrais\D2UNews\Type</code>.</li>
+					<li><code>d2u_news_lang_helper</code> wird zu <code>TobiasKrais\D2UNews\LangHelper</code>.</li>
+				</ul>
+			</li>
+		</ul>
+	</li>
 	<li>Neue Module 40-4 bis 40-6 als Bootstrap-5-Varianten der bestehenden Beispielmodule hinzugefügt.</li>
 	<li>Module 40-1 bis 40-3 als "(BS4, deprecated)" markiert. Die BS4-Varianten werden im nächsten Major Release entfernt.</li>
 	<li>Bugfix: Prioritäten werden bei Kategorien und News-Typen nach dem Speichern wieder stabil neu durchnummeriert, auch wenn in der Datenbank bereits doppelte Werte vorhanden sind.</li>

@@ -5,7 +5,7 @@
  * @author <a href="http://www.design-to-use.de">www.design-to-use.de</a>
  */
 
-namespace D2U_News;
+namespace TobiasKrais\D2UNews;
 
 use TobiasKrais\D2UMachinery\Machine;
 use rex;
@@ -38,10 +38,10 @@ class News implements \TobiasKrais\D2UHelper\ITranslationHelper
     /** @var string Picture file name */
     public string $picture = '';
 
-    /** @var array<int, \D2U_News\Category> array containing category objects */
+    /** @var array<int, \TobiasKrais\D2UNews\Category> array containing category objects */
     public array $categories = [];
 
-    /** @var array<int, \D2U_News\Type> array containing type objects */
+    /** @var array<int, \TobiasKrais\D2UNews\Type> array containing type objects */
     public array $types = [];
 
     /** @var string Type of link, either "none" (default), "article", "url" or "machine" */

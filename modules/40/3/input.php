@@ -18,7 +18,7 @@
 	<div class="col-xs-12 col-sm-6">Welche News Kategorie soll angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
 		<?php
-            $categories = \D2U_News\Category::getAll(rex_clang::getCurrentId(), true);
+            $categories = \TobiasKrais\D2UNews\Category::getAll(rex_clang::getCurrentId(), true);
             if (count($categories) > 0) {
                 echo '<select name="REX_INPUT_VALUE[2]" class="form-control">';
                 echo '<option value="0">Nachrichten aller Kategorien anzeigen</option>';
@@ -43,7 +43,7 @@
 	<div class="col-xs-12 col-sm-6">
 		<?php
             $selected_types = rex_var::toArray('REX_VALUE[3]');
-            $types = \D2U_News\Type::getAll(rex_clang::getCurrentId(), true);
+            $types = \TobiasKrais\D2UNews\Type::getAll(rex_clang::getCurrentId(), true);
             if (count($types) > 0) {
                 echo '<select name="REX_INPUT_VALUE[3][]" multiple="multiple" class="form-control">';
                 foreach ($types as $type) {

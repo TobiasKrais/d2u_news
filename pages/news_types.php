@@ -18,7 +18,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     $type_id = $form['type_id'];
     foreach (rex_clang::getAll() as $rex_clang) {
         if (false === $type) {
-            $type = new \D2U_News\Type($type_id, $rex_clang->getId());
+            $type = new \TobiasKrais\D2UNews\Type($type_id, $rex_clang->getId());
             $type->type_id = $type_id;
             $type->priority = $form['priority'];
         } else {
@@ -55,7 +55,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
         $form = rex_post('form', 'array', []);
         $type_id = $form['type_id'];
     }
-    $type = new \D2U_News\Type($type_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+    $type = new \TobiasKrais\D2UNews\Type($type_id, (int) rex_config::get('d2u_helper', 'default_lang'));
     $type->type_id = $type_id;
 
     $uses_news = $type->getNews(false);
@@ -73,7 +73,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
 
     $func = '';
 } elseif ('priority_down' === $func || 'priority_up' === $func) {
-    $type = new \D2U_News\Type($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+    $type = new \TobiasKrais\D2UNews\Type($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
     $type->type_id = $entry_id;
 
     if ('priority_down' === $func) {
@@ -97,7 +97,7 @@ if ('edit' === $func || 'add' === $func) {
 				<input type="hidden" name="form[type_id]" value="<?= $entry_id ?>">
 				<?php
                     foreach (rex_clang::getAll() as $rex_clang) {
-                        $type = new \D2U_News\Type($entry_id, $rex_clang->getId());
+                        $type = new \TobiasKrais\D2UNews\Type($entry_id, $rex_clang->getId());
                         $required = $rex_clang->getId() === (int) rex_config::get('d2u_helper', 'default_lang');
 
                         $readonly_lang = true;
@@ -140,7 +140,7 @@ if ('edit' === $func || 'add' === $func) {
 					<legend><?= rex_i18n::msg('d2u_helper_data_all_lang') ?></legend>
 					<div class="panel-body-wrapper slide">
 						<?php
-                            $type = new \D2U_News\Type($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+                            $type = new \TobiasKrais\D2UNews\Type($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
                             $readonly = true;
                             if (\rex::getUser() instanceof rex_user && (\rex::getUser()->isAdmin() || \rex::getUser()->hasPerm('d2u_news[edit_data]'))) {
                                 $readonly = false;

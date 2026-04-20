@@ -22,7 +22,7 @@ $counter_news = 'REX_VALUE[1]' == '' ? '5' : 'REX_VALUE[1]';
 $link_id_overview = (int) 'REX_LINK[id=1 output=id]';
 
 $category_id = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 0;
-$category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : false;
+$category = $category_id > 0 ? new \TobiasKrais\D2UNews\Category($category_id, rex_clang::getCurrentId()) : false;
 
 $heading = 'REX_VALUE[4]' != '' ? 'REX_VALUE[4]' : \Sprog\Wildcard::get('d2u_news_news');
 
@@ -32,7 +32,7 @@ if (!is_array($selected_news_type_ids)) {
     $selected_news_type_ids = [];
 }
 foreach ($selected_news_type_ids as $selected_news_type_id) {
-    $selected_news_types[] = new \D2U_News\Type($selected_news_type_id, rex_clang::getCurrentId());
+    $selected_news_types[] = new \TobiasKrais\D2UNews\Type($selected_news_type_id, rex_clang::getCurrentId());
 }
 
 if (rex::isBackend()) {
@@ -62,7 +62,7 @@ if (rex::isBackend()) {
     if (false !== $category) {
         $news = $category->getNews(true);
     } elseif (count($selected_news_types) > 0) {
-        $news = \D2U_News\News::getAll(rex_clang::getCurrentId());
+        $news = \TobiasKrais\D2UNews\News::getAll(rex_clang::getCurrentId());
         if (count($selected_news_types) > 0) {
             foreach ($news as $current_news) {
                 if (is_array($current_news->types) && count($current_news->types) > 0) {
@@ -76,7 +76,7 @@ if (rex::isBackend()) {
         }
     } else {
 
-        $news = \D2U_News\News::getAll(rex_clang::getCurrentId(), $counter_news, true);
+        $news = \TobiasKrais\D2UNews\News::getAll(rex_clang::getCurrentId(), $counter_news, true);
     }
 
     if (!is_array($news)) {

@@ -14,7 +14,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     $input_media = rex_post('REX_INPUT_MEDIA', 'array', []);
     $form = rex_post('form', 'array', []);
 
-    $fair = new \D2U_News\Fair($form['fair_id']);
+    $fair = new \TobiasKrais\D2UNews\Fair($form['fair_id']);
     $fair->name = $form['name'];
     $fair->city = $form['city'];
     $fair->country_code = $form['country_code'];
@@ -41,7 +41,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
         $form = rex_post('form', 'array', []);
         $fair_id = $form['fair_id'];
     }
-    $fair = new \D2U_News\Fair($fair_id);
+    $fair = new \TobiasKrais\D2UNews\Fair($fair_id);
     $fair->delete();
 
     $func = '';
@@ -58,7 +58,7 @@ if ('edit' === $func || 'add' === $func) {
 					<legend><?= rex_i18n::msg('d2u_news_fairs') ?></legend>
 					<div class="panel-body-wrapper slide">
 						<?php
-                            $fair = new \D2U_News\Fair($entry_id);
+                            $fair = new \TobiasKrais\D2UNews\Fair($entry_id);
                             $readonly = true;
                             if (rex::getUser() instanceof rex_user && (rex::getUser()->isAdmin() || rex::getUser()->hasPerm('d2u_news[edit_data]'))) {
                                 $readonly = false;

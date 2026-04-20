@@ -1,8 +1,14 @@
 <?php
+
+namespace TobiasKrais\D2UNews;
+
+use rex_clang;
+use rex_config;
+
 /**
  * Offers helper functions for language issues.
  */
-class d2u_news_lang_helper extends \TobiasKrais\D2UHelper\ALangHelper
+class LangHelper extends \TobiasKrais\D2UHelper\ALangHelper
 {
     /**
      * @var array<string,string> Array with english replacements. Key is the wildcard,
@@ -127,7 +133,7 @@ class d2u_news_lang_helper extends \TobiasKrais\D2UHelper\ALangHelper
 
     /**
      * Factory method.
-     * @return d2u_immo_lang_helper Object
+     * @return LangHelper Object
      */
     public static function factory()
     {
