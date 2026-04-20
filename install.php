@@ -4,6 +4,7 @@
     ->ensureColumn(new rex_sql_column('news_id', 'int(10) unsigned', false, null, 'auto_increment'))
     ->setPrimaryKey('news_id')
     ->ensureColumn(new \rex_sql_column('category_ids', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('type_ids', 'VARCHAR(255)'))
     ->ensureColumn(new \rex_sql_column('picture', 'VARCHAR(255)', true))
     ->ensureColumn(new \rex_sql_column('link_type', 'VARCHAR(15)'))
     ->ensureColumn(new \rex_sql_column('article_id', 'INT(10)', true, 0))
@@ -37,6 +38,30 @@
     ->ensureColumn(new \rex_sql_column('translation_needs_update', 'VARCHAR(7)'))
     ->ensure();
 
+\rex_sql_table::get(\rex::getTable('d2u_news_types'))
+    ->ensureColumn(new rex_sql_column('type_id', 'INT(11) unsigned', false, null, 'auto_increment'))
+    ->setPrimaryKey('type_id')
+    ->ensureColumn(new \rex_sql_column('priority', 'INT(10)', true))
+    ->ensure();
+\rex_sql_table::get(\rex::getTable('d2u_news_types_lang'))
+    ->ensureColumn(new rex_sql_column('type_id', 'INT(11)', false))
+    ->ensureColumn(new \rex_sql_column('clang_id', 'INT(11)', false, 1))
+    ->setPrimaryKey(['type_id', 'clang_id'])
+    ->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)'))
+    ->ensureColumn(new \rex_sql_column('translation_needs_update', 'VARCHAR(7)'))
+    ->ensure();
+
+\rex_sql_table::get(\rex::getTable('d2u_news_fairs'))
+    ->ensureColumn(new rex_sql_column('fair_id', 'int(10) unsigned', false, null, 'auto_increment'))
+    ->setPrimaryKey('fair_id')
+    ->ensureColumn(new \rex_sql_column('name', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('city', 'VARCHAR(255)', true))
+    ->ensureColumn(new \rex_sql_column('country_code', 'VARCHAR(3)'))
+    ->ensureColumn(new \rex_sql_column('date_start', 'VARCHAR(10)', true))
+    ->ensureColumn(new \rex_sql_column('date_end', 'VARCHAR(10)', true))
+    ->ensureColumn(new \rex_sql_column('picture', 'VARCHAR(255)'))
+    ->ensure();
+
 // Update language replacements
 if (!class_exists(d2u_news_lang_helper::class)) {
     // Load class in case addon is deactivated
@@ -57,6 +82,16 @@ if ($this->hasConfig('default_lang')) {
     ->ensure();
 \rex_sql_table::get(
     \rex::getTable('d2u_news_categories_lang'))
+    ->removeColumn('updatedate')
+    ->removeColumn('updateuser')
+    ->ensure();
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_types_lang'))
+    ->removeColumn('updatedate')
+    ->removeColumn('updateuser')
+    ->ensure();
+\rex_sql_table::get(
+    \rex::getTable('d2u_news_fairs'))
     ->removeColumn('updatedate')
     ->removeColumn('updateuser')
     ->ensure();

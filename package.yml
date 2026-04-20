@@ -10,6 +10,8 @@ page:
     subpages:
         news: { title: 'translate:d2u_news_news_title', icon: rex-icon fa-newspaper-o }
         categories: { title: 'translate:d2u_helper_categories', icon: rex-icon rex-icon-open-category }
+        news_types: { title: 'translate:d2u_news_types', icon: rex-icon fa-file-text-o, perm: 'd2u_news[edit_data]' }
+        fairs: { title: 'translate:d2u_news_fairs', icon: rex-icon fa-university, perm: 'd2u_news[edit_data]' }
         settings:
             icon: rex-icon rex-icon-system
             title: ''

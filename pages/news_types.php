@@ -1,16 +1,15 @@
 <?php
 
 use TobiasKrais\D2UHelper\BackendHelper;
+
 $func = rex_request('func', 'string');
 $entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
 
-// Print comments
 if ('' !== $message) {
     echo rex_view::success(rex_i18n::msg($message));
 }
 
-// save settings
 if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input(INPUT_POST, 'btn_apply')) {
     $form = rex_post('form', 'array', []);
 
@@ -20,7 +19,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     foreach (rex_clang::getAll() as $rex_clang) {
         if (false === $type) {
             $type = new \D2U_News\Type($type_id, $rex_clang->getId());
-            $type->type_id = $type_id; // Ensure correct ID in case first language has no object
+            $type->type_id = $type_id;
             $type->priority = $form['priority'];
         } else {
             $type->clang_id = $rex_clang->getId();
@@ -33,18 +32,15 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
         } elseif ($type->save() > 0) {
             $success = false;
         } else {
-            // remember id, for each database lang object needs same id
             $type_id = $type->type_id;
         }
     }
 
-    // message output
     $message = 'form_save_error';
     if ($success) {
         $message = 'form_saved';
     }
 
-    // Redirect to make reload and thus double save impossible
     if (1 === (int) filter_input(INPUT_POST, 'btn_apply', FILTER_VALIDATE_INT) && false !== $type) {
         header('Location: '. rex_url::currentBackendPage(['entry_id' => $type->type_id, 'func' => 'edit', 'message' => $message], false));
     } else {
@@ -52,7 +48,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     }
     exit;
 }
-// Delete
+
 if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || 'delete' === $func) {
     $type_id = $entry_id;
     if (0 === $type_id) {
@@ -60,12 +56,9 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
         $type_id = $form['type_id'];
     }
     $type = new \D2U_News\Type($type_id, (int) rex_config::get('d2u_helper', 'default_lang'));
-    $type->type_id = $type_id; // Ensure correct ID in case language has no object
+    $type->type_id = $type_id;
 
-    // Check if type is used
     $uses_news = $type->getNews(false);
-
-    // If not used, delete
     if (0 === count($uses_news)) {
         $type->delete(true);
     } else {
@@ -79,10 +72,9 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
     }
 
     $func = '';
-}
-elseif ('priority_down' === $func || 'priority_up' === $func) {
+} elseif ('priority_down' === $func || 'priority_up' === $func) {
     $type = new \D2U_News\Type($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
-    $type->type_id = $entry_id; // Ensure correct ID in case language has no object
+    $type->type_id = $entry_id;
 
     if ('priority_down' === $func) {
         ++$type->priority;
@@ -96,7 +88,6 @@ elseif ('priority_down' === $func || 'priority_up' === $func) {
     exit;
 }
 
-// Eingabeformular
 if ('edit' === $func || 'add' === $func) {
 ?>
 	<form action="<?= rex_url::currentBackendPage() ?>" method="post">
@@ -107,7 +98,7 @@ if ('edit' === $func || 'add' === $func) {
 				<?php
                     foreach (rex_clang::getAll() as $rex_clang) {
                         $type = new \D2U_News\Type($entry_id, $rex_clang->getId());
-                        $required = $rex_clang->getId() === (int) (rex_config::get('d2u_helper', 'default_lang')) ? true : false;
+                        $required = $rex_clang->getId() === (int) rex_config::get('d2u_helper', 'default_lang');
 
                         $readonly_lang = true;
                         if (\rex::getUser() instanceof rex_user && (\rex::getUser()->isAdmin() || (\rex::getUser()->hasPerm('d2u_news[edit_lang]') && \rex::getUser()->getComplexPerm('clang') instanceof rex_clang_perm && \rex::getUser()->getComplexPerm('clang')->hasPerm($rex_clang->getId())))) {
@@ -129,13 +120,11 @@ if ('edit' === $func || 'add' === $func) {
                                 }
                             ?>
 							<script>
-								// Hide on document load
 								$(document).ready(function() {
 									toggleClangDetailsView(<?= $rex_clang->getId() ?>);
 								});
 
-								// Hide on selection change
-								$("select[name='form[lang][<?= $rex_clang->getId() ?>][translation_needs_update]']").on('change', function(e) {
+								$("select[name='form[lang][<?= $rex_clang->getId() ?>][translation_needs_update]']").on('change', function() {
 									toggleClangDetailsView(<?= $rex_clang->getId() ?>);
 								});
 							</script>
@@ -146,14 +135,11 @@ if ('edit' === $func || 'add' === $func) {
 							</div>
 						</div>
 					</fieldset>
-				<?php
-                    }
-                ?>
+				<?php } ?>
 				<fieldset>
 					<legend><?= rex_i18n::msg('d2u_helper_data_all_lang') ?></legend>
 					<div class="panel-body-wrapper slide">
 						<?php
-                            // Do not use last object from translations, because you don't know if it exists in DB
                             $type = new \D2U_News\Type($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
                             $readonly = true;
                             if (\rex::getUser() instanceof rex_user && (\rex::getUser()->isAdmin() || \rex::getUser()->hasPerm('d2u_news[edit_data]'))) {
@@ -194,7 +180,7 @@ if ('' === $func) {
         . 'LEFT JOIN '. \rex::getTablePrefix() .'d2u_news_types_lang AS lang '
             . 'ON types.type_id = lang.type_id AND lang.clang_id = '. (int) rex_config::get('d2u_helper', 'default_lang') .' ';
     $defaultSort = ['name' => 'ASC'];
-    if ('priority' == $this->getConfig('default_type_sort')) {
+    if ('priority' == $this->getConfig('default_sort')) {
         $defaultSort = ['priority' => 'ASC'];
     }
     $list = rex_list::factory(query: $query, rowsPerPage: 1000, defaultSort: $defaultSort);

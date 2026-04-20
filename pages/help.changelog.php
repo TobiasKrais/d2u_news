@@ -4,6 +4,7 @@
 <h2>Changelog</h2>
 <p>1.2.0-DEV:</p>
 <ul>
+	<li>Plugins für Messetermine und Nachrichtenarten ins Hauptaddon integriert; die Funktionen stehen jetzt ohne separate Plugin-Installation direkt im Addon zur Verfügung.</li>
 	<li>Neue Module 40-4 bis 40-6 als Bootstrap-5-Varianten der bestehenden Beispielmodule hinzugefügt.</li>
 	<li>Module 40-1 bis 40-3 als "(BS4, deprecated)" markiert. Die BS4-Varianten werden im nächsten Major Release entfernt.</li>
 	<li>Bugfix: Prioritäten werden bei Kategorien und News-Typen nach dem Speichern wieder stabil neu durchnummeriert, auch wenn in der Datenbank bereits doppelte Werte vorhanden sind.</li>

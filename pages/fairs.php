@@ -1,20 +1,17 @@
 <?php
 
 use TobiasKrais\D2UHelper\BackendHelper;
+
 $func = rex_request('func', 'string');
 $entry_id = rex_request('entry_id', 'int');
 $message = rex_get('message', 'string');
 
-// Print comments
 if ('' !== $message) {
     echo rex_view::success(rex_i18n::msg($message));
 }
 
-// save settings
 if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input(INPUT_POST, 'btn_apply')) {
-    // Media fields and links need special treatment
     $input_media = rex_post('REX_INPUT_MEDIA', 'array', []);
-
     $form = rex_post('form', 'array', []);
 
     $fair = new \D2U_News\Fair($form['fair_id']);
@@ -25,13 +22,11 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     $fair->date_end = $form['date_end'];
     $fair->picture = $input_media[1];
 
-    // message output
     $message = 'form_save_error';
     if (0 == $fair->save()) {
         $message = 'form_saved';
     }
 
-    // Redirect to make reload and thus double save impossible
     if (1 === (int) filter_input(INPUT_POST, 'btn_apply', FILTER_VALIDATE_INT) && false !== $fair) {
         header('Location: '. rex_url::currentBackendPage(['entry_id' => $fair->fair_id, 'func' => 'edit', 'message' => $message], false));
     } else {
@@ -39,7 +34,7 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
     }
     exit;
 }
-// Delete
+
 if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || 'delete' === $func) {
     $fair_id = $entry_id;
     if (0 === $fair_id) {
@@ -52,7 +47,6 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT) || '
     $func = '';
 }
 
-// Eingabeformular
 if ('edit' === $func || 'add' === $func) {
 ?>
 	<form action="<?= rex_url::currentBackendPage() ?>" method="post">
@@ -74,7 +68,7 @@ if ('edit' === $func || 'add' === $func) {
                             BackendHelper::form_input('d2u_news_fairs_city', 'form[city]', $fair->city, true, $readonly);
                             BackendHelper::form_input('d2u_news_fairs_country_code', 'form[country_code]', $fair->country_code, true, $readonly);
                             BackendHelper::form_input('d2u_news_fairs_date_start', 'form[date_start]', $fair->date_start, true, $readonly, 'date');
-                            BackendHelper::form_input('d2u_news_house_date_end', 'form[date_end]', $fair->date_end, true, $readonly, 'date');
+                            BackendHelper::form_input('d2u_news_fairs_date_end', 'form[date_end]', $fair->date_end, true, $readonly, 'date');
                             BackendHelper::form_mediafield('d2u_helper_picture', '1', $fair->picture, $readonly);
                         ?>
 					</div>
@@ -107,7 +101,6 @@ if ('edit' === $func || 'add' === $func) {
 	</script>
 	<?php
         echo BackendHelper::getCSS();
-    //		print BackendHelper::getJS();
 }
 
 if ('' === $func) {

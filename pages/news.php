@@ -45,12 +45,10 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input
             $news->url = $form['url'];
             $news->date = $form['date'];
             $news->online_status = array_key_exists('online_status', $form) ? 'online' : 'offline';
-            if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-                $type_ids = $form['type_ids'] ?? [];
-                $news->types = [];
-                foreach ($type_ids as $type_id) {
-                    $news->types[$type_id] = new \D2U_News\Type($type_id, $rex_clang->getId());
-                }
+            $type_ids = $form['type_ids'] ?? [];
+            $news->types = [];
+            foreach ($type_ids as $type_id) {
+                $news->types[$type_id] = new \D2U_News\Type($type_id, $rex_clang->getId());
             }
         } else {
             $news->clang_id = $rex_clang->getId();
@@ -245,19 +243,17 @@ if ('edit' === $func || 'add' === $func) {
 						</script>
 					</div>
 				</fieldset>
-				<?php
-                    if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-                        echo '<fieldset>';
-                        echo '<legend><small><i class="rex-icon fa-file-text-o"></i></small> '. rex_i18n::msg('d2u_news_types') .'</legend>';
-                        echo '<div class="panel-body-wrapper slide">';
-                        $options_types = [];
-                        foreach (D2U_News\Type::getAll((int) rex_config::get('d2u_helper', 'default_lang'), false) as $types) {
-                            $options_types[$types->type_id] = $types->name;
-                        }
-                        BackendHelper::form_select('d2u_news_types', 'form[type_ids][]', $options_types, count($news->types) > 0 ? array_keys($news->types) : [], 5, true, $readonly);
-                        echo '</div>';
-                        echo '</fieldset>';
+                <?php
+                    echo '<fieldset>';
+                    echo '<legend><small><i class="rex-icon fa-file-text-o"></i></small> '. rex_i18n::msg('d2u_news_types') .'</legend>';
+                    echo '<div class="panel-body-wrapper slide">';
+                    $options_types = [];
+                    foreach (D2U_News\Type::getAll((int) rex_config::get('d2u_helper', 'default_lang'), false) as $types) {
+                        $options_types[$types->type_id] = $types->name;
                     }
+                    BackendHelper::form_select('d2u_news_types', 'form[type_ids][]', $options_types, count($news->types) > 0 ? array_keys($news->types) : [], 5, true, $readonly);
+                    echo '</div>';
+                    echo '</fieldset>';
                 ?>
 			</div>
 			<footer class="panel-footer">

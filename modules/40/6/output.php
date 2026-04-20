@@ -33,16 +33,13 @@ $tabFairsId = $moduleId . '_tab_fairs';
 $category_id = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 0;
 $category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::getCurrentId()) : false;
 
-// If News Types Plugin is activated
 $selected_news_types = [];
-if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-    $selected_news_type_ids = rex_var::toArray('REX_VALUE[3]');
-    if (!is_array($selected_news_type_ids)) {
-        $selected_news_type_ids = [];
-    }
-    foreach ($selected_news_type_ids as $selected_news_type_id) {
-        $selected_news_types[] = new \D2U_News\Type($selected_news_type_id, rex_clang::getCurrentId());
-    }
+$selected_news_type_ids = rex_var::toArray('REX_VALUE[3]');
+if (!is_array($selected_news_type_ids)) {
+    $selected_news_type_ids = [];
+}
+foreach ($selected_news_type_ids as $selected_news_type_id) {
+    $selected_news_types[] = new \D2U_News\Type($selected_news_type_id, rex_clang::getCurrentId());
 }
 
 if (rex::isBackend()) {
@@ -73,8 +70,7 @@ if (rex::isBackend()) {
     $news = [];
     if (false !== $category) {
         $news = $category->getNews(true);
-    } elseif (rex_plugin::get('d2u_news', 'news_types') instanceof rex_plugin && rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-        // If News Types Plugin is activated: filter
+    } elseif (count($selected_news_types) > 0) {
         $news = \D2U_News\News::getAll(rex_clang::getCurrentId());
         if (count($selected_news_types) > 0) {
             foreach ($news as $current_news) {
@@ -99,12 +95,9 @@ if (rex::isBackend()) {
     // Only predefined number of news
     $news = array_slice($news, 0, $counter_news);
 
-    $fairs = [];
-    if (rex_plugin::get('d2u_news', 'fairs')->isAvailable()) {
-        $fairs = \D2U_News\Fair::getAll(true);
-        if (!is_array($fairs)) {
-            $fairs = [];
-        }
+    $fairs = \D2U_News\Fair::getAll(true);
+    if (!is_array($fairs)) {
+        $fairs = [];
     }
 
     if (count($news) > 0 || count($fairs) > 0) {

@@ -16,29 +16,29 @@ use rex_sql;
 class Fair
 {
     /** @var int Database ID */
-    public $fair_id = 0;
+    public int $fair_id = 0;
 
     /** @var string name */
-    public $name = '';
+    public string $name = '';
 
     /** @var string city */
-    public $city = '';
+    public string $city = '';
 
     /** @var string 3 digit country code */
-    public $country_code = '';
+    public string $country_code = '';
 
     /** @var string start date, format YYYY-MM-DD */
-    public $date_start = '';
+    public string $date_start = '';
 
     /** @var string end date, format YYYY-MM-DD */
-    public $date_end = '';
+    public string $date_end = '';
 
     /** @var string picture */
-    public $picture = '';
+    public string $picture = '';
 
     /**
-     * Constructor. Reads a contact stored in database.
-     * @param int $fair_id contact ID
+     * Constructor. Reads a fair stored in database.
+     * @param int $fair_id fair ID
      */
     public function __construct($fair_id)
     {
@@ -46,16 +46,15 @@ class Fair
                 .'WHERE fair_id = '. $fair_id;
         $result = rex_sql::factory();
         $result->setQuery($query);
-        $num_rows = $result->getRows();
 
-        if ($num_rows > 0) {
-            $this->fair_id = $result->getValue('fair_id');
-            $this->name = stripslashes($result->getValue('name'));
-            $this->city = stripslashes($result->getValue('city'));
-            $this->country_code = $result->getValue('country_code');
-            $this->date_start = $result->getValue('date_start');
-            $this->date_end = $result->getValue('date_end');
-            $this->picture = $result->getValue('picture');
+        if ($result->getRows() > 0) {
+            $this->fair_id = (int) $result->getValue('fair_id');
+            $this->name = stripslashes((string) $result->getValue('name'));
+            $this->city = stripslashes((string) $result->getValue('city'));
+            $this->country_code = (string) $result->getValue('country_code');
+            $this->date_start = (string) $result->getValue('date_start');
+            $this->date_end = (string) $result->getValue('date_end');
+            $this->picture = (string) $result->getValue('picture');
         }
     }
 
@@ -71,9 +70,9 @@ class Fair
     }
 
     /**
-     * Get all contacts.
+     * Get all fairs.
      * @param bool $current_only only fairs in future, not in past
-     * @return Fair[] array with Contact objects
+     * @return Fair[] array with Fair objects
      */
     public static function getAll($current_only = true)
     {
@@ -81,7 +80,7 @@ class Fair
         if ($current_only) {
             $query .= "WHERE date_end > '". date('Y-m-d') ."'";
         }
-        $query .= 'ORDER BY date_start, date_end';
+        $query .= ' ORDER BY date_start, date_end';
         $result = rex_sql::factory();
         $result->setQuery($query);
 
@@ -90,12 +89,13 @@ class Fair
             $fairs[] = new self($result->getValue('fair_id'));
             $result->next();
         }
+
         return $fairs;
     }
 
     /**
      * Updates or inserts the object into database.
-     * @return in error code if error occurs
+     * @return bool true if error occurs
      */
     public function save()
     {

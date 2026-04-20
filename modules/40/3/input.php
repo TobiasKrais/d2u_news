@@ -1,6 +1,3 @@
-<?php
-    if (rex_plugin::get('d2u_news', 'fairs')) {
-?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">In welchem Artikel ist eine komplette Übersicht der Messen zu finden?</div>
 	<div class="col-xs-12 col-sm-6">REX_LINK[id=1 widget=1]</div>
@@ -8,9 +5,6 @@
 <div class="row">
 	<div class="col-xs-12"><br></div>
 </div>
-<?php
-    }
-?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Wie viele News sollen angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
@@ -44,9 +38,6 @@
 <div class="row">
 	<div class="col-xs-12"><br></div>
 </div>
-<?php
-if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Welche Nachrichtenarten sollen herausgefiltert werden?<br>(Ohne Auswahl werden alle Nachrichten angezeigt.)</div>
 	<div class="col-xs-12 col-sm-6">
@@ -71,9 +62,6 @@ if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 <div class="row">
 	<div class="col-xs-12"><br></div>
 </div>
-<?php
-}
-?>
 <div class="row">
 	<div class="col-xs-12">
 		<p>Alle weiteren Änderungen bitte im <a href="index.php?page=d2u_news/news">D2U News Addon</a> vornehmen.</p>

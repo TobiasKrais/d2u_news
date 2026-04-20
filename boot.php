@@ -98,6 +98,18 @@ function rex_d2u_news_media_is_in_use(rex_extension_point $ep)
         $sql_news->next();
     }
 
+    $sql_fairs = rex_sql::factory();
+    $sql_fairs->setQuery('SELECT fair_id, name FROM `' . rex::getTablePrefix() . 'd2u_news_fairs` '
+        .'WHERE picture = "'. $filename .'"');
+    for ($i = 0; $i < $sql_fairs->getRows(); ++$i) {
+        $message = '<a href="javascript:openPage(\'index.php?page=d2u_news/fairs&func=edit&entry_id='.
+            $sql_fairs->getValue('fair_id') .'\')">'. rex_i18n::msg('d2u_news_rights') .' - '. rex_i18n::msg('d2u_news_fairs') .': '. $sql_fairs->getValue('name') .'</a>';
+        if (!in_array($message, $warning, true)) {
+            $warning[] = $message;
+        }
+        $sql_fairs->next();
+    }
+
     return $warning;
 }
 
@@ -160,23 +172,21 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
         ];
     }
 
-    if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-        $news_types = \D2U_News\Type::getTranslationHelperObjects($target_clang_id, $filter_type);
-        if (count($news_types) > 0) {
-            $html_news_types = '<ul>';
-            foreach ($news_types as $news_type) {
-                if ('' === $news_type->name) {
-                    $news_type = new \D2U_News\Type($news_type->type_id, $source_clang_id);
-                }
-                $html_news_types .= '<li><a href="'. rex_url::backendPage('d2u_news/news_types', ['entry_id' => $news_type->type_id, 'func' => 'edit']) .'">'. $news_type->name .'</a></li>';
+    $news_types = \D2U_News\Type::getTranslationHelperObjects($target_clang_id, $filter_type);
+    if (count($news_types) > 0) {
+        $html_news_types = '<ul>';
+        foreach ($news_types as $news_type) {
+            if ('' === $news_type->name) {
+                $news_type = new \D2U_News\Type($news_type->type_id, $source_clang_id);
             }
-            $html_news_types .= '</ul>';
-            $list_entry['pages'][] = [
-                'title' => rex_i18n::msg('d2u_news_types'),
-                'icon' => 'rex-icon fa-file-text-o',
-                'html' => $html_news_types
-            ];
+            $html_news_types .= '<li><a href="'. rex_url::backendPage('d2u_news/news_types', ['entry_id' => $news_type->type_id, 'func' => 'edit']) .'">'. $news_type->name .'</a></li>';
         }
+        $html_news_types .= '</ul>';
+        $list_entry['pages'][] = [
+            'title' => rex_i18n::msg('d2u_news_types'),
+            'icon' => 'rex-icon fa-file-text-o',
+            'html' => $html_news_types
+        ];
     }
     
     $list[] = $list_entry;

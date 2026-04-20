@@ -11,7 +11,6 @@ use TobiasKrais\D2UMachinery\Machine;
 use rex;
 use rex_addon;
 use rex_config;
-use rex_plugin;
 use rex_sql;
 
 use function is_array;
@@ -111,12 +110,10 @@ class News implements \TobiasKrais\D2UHelper\ITranslationHelper
             }
             $this->date = (string) $result->getValue('date');
 
-            if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-                $type_ids = preg_grep('/^\s*$/s', explode('|', (string) $result->getValue('type_ids')), PREG_GREP_INVERT);
-                $type_ids = is_array($category_ids) ? array_map('intval', $category_ids) : [];
-                foreach ($type_ids as $type_id) {
-                    $this->types[$type_id] = new Type($type_id, $clang_id);
-                }
+            $type_ids = preg_grep('/^\s*$/s', explode('|', (string) $result->getValue('type_ids')), PREG_GREP_INVERT);
+            $type_ids = is_array($type_ids) ? array_map('intval', $type_ids) : [];
+            foreach ($type_ids as $type_id) {
+                $this->types[$type_id] = new Type($type_id, $clang_id);
             }
         }
     }
@@ -281,9 +278,7 @@ class News implements \TobiasKrais\D2UHelper\ITranslationHelper
                     .'d2u_machines_machine_id = '. $this->d2u_machines_machine_id .', '
                     .'d2u_courses_course_id = '. $this->d2u_courses_course_id .', '
                     ."`date` = '". $this->date ."' ";
-            if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-                $query .= ", type_ids = '|". implode('|', array_keys($this->types)) ."|' ";
-            }
+            $query .= ", type_ids = '|". implode('|', array_keys($this->types)) ."|' ";
 
             if (0 === $this->news_id) {
                 $query = 'INSERT INTO '. $query;

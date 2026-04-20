@@ -26,16 +26,13 @@ $category = $category_id > 0 ? new \D2U_News\Category($category_id, rex_clang::g
 
 $heading = 'REX_VALUE[4]' != '' ? 'REX_VALUE[4]' : \Sprog\Wildcard::get('d2u_news_news');
 
-// If News Types Plugin is activated
 $selected_news_types = [];
-if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-    $selected_news_type_ids = rex_var::toArray('REX_VALUE[3]');
-    if (!is_array($selected_news_type_ids)) {
-        $selected_news_type_ids = [];
-    }
-    foreach ($selected_news_type_ids as $selected_news_type_id) {
-        $selected_news_types[] = new \D2U_News\Type($selected_news_type_id, rex_clang::getCurrentId());
-    }
+$selected_news_type_ids = rex_var::toArray('REX_VALUE[3]');
+if (!is_array($selected_news_type_ids)) {
+    $selected_news_type_ids = [];
+}
+foreach ($selected_news_type_ids as $selected_news_type_id) {
+    $selected_news_types[] = new \D2U_News\Type($selected_news_type_id, rex_clang::getCurrentId());
 }
 
 if (rex::isBackend()) {
@@ -64,8 +61,7 @@ if (rex::isBackend()) {
     $news = [];
     if (false !== $category) {
         $news = $category->getNews(true);
-    } elseif (rex_plugin::get('d2u_news', 'news_types') instanceof rex_plugin && \rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
-        // If News Types Plugin is activated: filter
+    } elseif (count($selected_news_types) > 0) {
         $news = \D2U_News\News::getAll(rex_clang::getCurrentId());
         if (count($selected_news_types) > 0) {
             foreach ($news as $current_news) {
