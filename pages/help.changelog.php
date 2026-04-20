@@ -1,7 +1,9 @@
-<?php
 
-?>
 <h2>Changelog</h2>
+<p>1.2.1-DEV:</p>
+<ul>
+	<li>...</li>
+</ul>
 <p>1.2.0:</p>
 <ul>
 	<li>Plugins für Messetermine und Nachrichtenarten ins Hauptaddon integriert; die Funktionen stehen jetzt ohne separate Plugin-Installation direkt im Addon zur Verfügung.</li>
