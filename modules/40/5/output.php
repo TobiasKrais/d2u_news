@@ -27,31 +27,24 @@ if (!function_exists('formatDate')) {
 // Messen ausgeben
 $fairs = \D2U_News\Fair::getAll();
 
+if (!is_array($fairs)) {
+    $fairs = [];
+}
+
 if (count($fairs) > 0) {
     echo '<div class="col-12">';
     echo '<h2>'. \Sprog\Wildcard::get('d2u_news_fair_dates') .'</h2>';
 
-    echo '<div class="row">';
-    echo '<div class="col-sm-6">';
-    echo '<ul class="dates hyphens">';
-    $faircounter = 0;
+    echo '<div class="row d2u-news-fair-grid">';
     foreach ($fairs as $fair) {
-        echo '<li>';
-        echo formatDate($fair->date_start, rex_clang::getCurrentId()) .' - '. formatDate($fair->date_end, rex_clang::getCurrentId());
-        echo ' <strong>'. $fair->name .' | '. $fair->city .', '. $fair->country_code .'</strong>';
-        echo '</li>';
-
-        ++$faircounter;
-        if ($faircounter == round(count($fairs) / 2)) {
-            echo '</ul>';
-            echo '</div>';
-            echo '<div class="col-sm-6">';
-            echo '<ul class="dates hyphens">';
-        }
+        echo '<div class="col-12 col-lg-6 d2u-news-fair-grid__item">';
+        echo '<div class="d2u-news-fair-card">';
+        echo '<div class="d2u-news-fair-card__date">'. formatDate($fair->date_start, rex_clang::getCurrentId()) .' - '. formatDate($fair->date_end, rex_clang::getCurrentId()) .'</div>';
+        echo '<h2 class="d2u-news-fair-card__title">'. $fair->name .'</h2>';
+        echo '<div class="d2u-news-fair-card__location">'. $fair->city .' | '. $fair->country_code .'</div>';
+        echo '</div>';
+        echo '</div>';
     }
-    echo '</ul>';
-    echo '</div>';
-    echo '</div>';
     echo '</div>';
     echo '</div>';
 }

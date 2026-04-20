@@ -10,8 +10,13 @@ page:
     subpages:
         news: { title: 'translate:d2u_news_news_title', icon: rex-icon fa-newspaper-o }
         categories: { title: 'translate:d2u_helper_categories', icon: rex-icon rex-icon-open-category }
-        setup: { title: 'translate:d2u_helper_setup', icon: rex-icon rex-icon-install, itemClass: pull-right, perm: 'd2u_news[settings]' }
-        settings: { title: 'translate:d2u_helper_settings', icon: rex-icon rex-icon-system, itemClass: pull-right, perm: 'd2u_news[settings]' }
+        settings:
+            icon: rex-icon rex-icon-system
+            title: ''
+            itemClass: pull-right
+            subpages:
+                settings: { title: 'translate:d2u_helper_settings', icon: rex-icon rex-icon-system, perm: 'd2u_news[settings]' }
+                setup: { title: 'translate:d2u_helper_setup', icon: rex-icon rex-icon-install, perm: 'd2u_news[settings]' }
         help:
             title: ''
             icon: rex-icon rex-icon-help

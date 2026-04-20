@@ -22,9 +22,6 @@ if (!function_exists('formatDate')) {
     }
 }
 
-$sprog = rex_addon::get('sprog');
-$tag_open = $sprog->getConfig('wildcard_open_tag');
-$tag_close = $sprog->getConfig('wildcard_close_tag');
 
 $counter_news = 'REX_VALUE[1]' == '' ? '5' : 'REX_VALUE[1]';
 $link_id_fairs = 'REX_LINK[id=1 output=id]';
@@ -44,7 +41,7 @@ if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 if (rex::isBackend()) {
     // Ausgabe im BACKEND
 ?>
-	<h1 style="font-size: 1.5em;">News</h1>
+    <h2 style="font-size: 1.5em;">News</h2>
 	Anzahl auszugebender News: REX_VALUE[1]
 	<p>Gewählte Kategorie: <?= false !== $category ? $category->name : 'Alle Kategorien' ?></p>
 	<p>Gewählte Nachrichtenarten:
@@ -96,7 +93,7 @@ if (rex::isBackend()) {
 	<div class="col-12 col-lg-8">
 		<div class="row">
 			<div class="col-12">
-				<h1><?= $tag_open . 'd2u_news_news'. $tag_close ?></h1>
+                <h2><?= \Sprog\Wildcard::get('d2u_news_news') ?></h2>
 			</div>
 		</div>
 		<div class="row">
@@ -116,7 +113,7 @@ if (rex::isBackend()) {
             ?>
 				<div class="col-12 col-sm-10">
 					<?php
-                        echo '<h1>';
+                        echo '<h2>';
                         if ('' != $nachricht->getUrl()) {
                             echo '<a href="'. $nachricht->getUrl() .'">';
                         }
@@ -124,7 +121,7 @@ if (rex::isBackend()) {
                         if ('' != $nachricht->getUrl()) {
                             echo '</a>';
                         }
-                        echo '</h1>';
+                        echo '</h2>';
                         echo '<p><time datetime="'. $nachricht->date .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
                     ?>
 					<p class="text">
@@ -146,7 +143,7 @@ if (rex::isBackend()) {
                 echo '<div class="col-12 col-lg-4">';
                 echo '<div class="row">';
                 echo '<div class="col-12">';
-                echo '<h1>'. $tag_open . 'd2u_news_fair_dates'. $tag_close .'</h1>';
+                echo '<h2>'. \Sprog\Wildcard::get('d2u_news_fair_dates') .'</h2>';
                 echo '</div>';
                 echo '</div>';
                 echo '<div class="row">';
@@ -166,7 +163,7 @@ if (rex::isBackend()) {
                 }
                 echo '</ul>';
                 if ($link_id_fairs > 0) {
-                    echo '<a href="'. rex_getUrl($link_id_fairs) .'" class="arrow">'. $tag_open . 'd2u_news_fairs_all'. $tag_close .'</a>';
+                    echo '<a href="'. rex_getUrl($link_id_fairs) .'" class="arrow">'. \Sprog\Wildcard::get('d2u_news_fairs_all') .'</a>';
                 }
                 echo '</div>';
                 echo '</div>';

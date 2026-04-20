@@ -118,7 +118,7 @@ if (rex::isBackend()) {
 
                         echo '<div class="col-12 col-sm-8">';
                     } else {
-                        echo '<div class="col-12">';
+                        echo '<div class="col-12 col-sm-8 offset-sm-4">';
                     }
 
                     echo '<h3 class="news">';

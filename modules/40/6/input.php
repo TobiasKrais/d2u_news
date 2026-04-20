@@ -1,51 +1,46 @@
 <?php
-    ?>
+    if (rex_plugin::get('d2u_news', 'fairs')) {
+?>
 <div class="row">
-	<div class="col-xs-12 col-sm-6">Überschrift (optional, Standard: "<?= \Sprog\Wildcard::get('d2u_news_news') ?>")</div>
-	<div class="col-xs-12 col-sm-6">
-		<input type="text" name="REX_INPUT_VALUE[4]" value="REX_VALUE[4]" class="form-control" />
-	</div>
-</div>
-<div class="row">
-	<div class="col-xs-12"><br></div>
-</div>
-<div class="row">
-	<div class="col-xs-12 col-sm-6">In welchem Artikel ist eine komplette Übersicht über News und Messen zu finden?</div>
+	<div class="col-xs-12 col-sm-6">In welchem Artikel ist eine komplette Übersicht der Messen zu finden?</div>
 	<div class="col-xs-12 col-sm-6">REX_LINK[id=1 widget=1]</div>
 </div>
 <div class="row">
 	<div class="col-xs-12"><br></div>
 </div>
+<?php
+    }
+?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Wie viele News sollen angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
-		<input type="number" size="3" name="REX_INPUT_VALUE[1]" value="REX_VALUE[1]" class="form-control" style="max-width: 100px"/>
+		<input type="number" class="form-control" size="3" name="REX_INPUT_VALUE[1]" value="REX_VALUE[1]"/>
 	</div>
 </div>
 <div class="row">
 	<div class="col-xs-12"><br></div>
 </div>
-<?php
-    $categories = \D2U_News\Category::getAll(rex_clang::getCurrentId(), true);
-    if (!is_array($categories)) {
-        $categories = [];
-    }
-    if (count($categories) > 0) {
-?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Welche News Kategorie soll angezeigt werden?</div>
 	<div class="col-xs-12 col-sm-6">
 		<?php
-            echo '<select name="REX_INPUT_VALUE[2]" class="form-control">';
-            echo '<option value="0">Nachrichten aller Kategorien anzeigen</option>';
-            foreach ($categories as $category) {
-                echo '<option value="'. $category->category_id .'" ';
-                if ('REX_VALUE[2]' == $category->category_id) {
-                    echo 'selected="selected" ';
-                }
-                echo '>'. $category->name .'</option>';
+            $categories = \D2U_News\Category::getAll(rex_clang::getCurrentId(), true);
+            if (!is_array($categories)) {
+                $categories = [];
             }
-            echo '</select>';
+            if (count($categories) > 0) {
+                echo '<select name="REX_INPUT_VALUE[2]" class="form-control">';
+                echo '<option value="0">Nachrichten aller Kategorien anzeigen</option>';
+                foreach ($categories as $category) {
+                    echo '<option value="'. $category->category_id .'" ';
+
+                    if ('REX_VALUE[2]' == $category->category_id) {
+                        echo 'selected="selected" ';
+                    }
+                    echo '>'. $category->name .'</option>';
+                }
+                echo '</select>';
+            }
         ?>
 	</div>
 </div>
@@ -53,8 +48,7 @@
 	<div class="col-xs-12"><br></div>
 </div>
 <?php
-    }
-    if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
+if (rex_plugin::get('d2u_news', 'news_types')->isAvailable()) {
 ?>
 <div class="row">
 	<div class="col-xs-12 col-sm-6">Welche Nachrichtenarten sollen herausgefiltert werden?<br>(Ohne Auswahl werden alle Nachrichten angezeigt.)</div>
@@ -87,7 +81,7 @@
 	<div class="col-xs-12"><br></div>
 </div>
 <?php
-    }
+}
 ?>
 <div class="row">
 	<div class="col-xs-12">

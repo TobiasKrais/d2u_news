@@ -51,3 +51,60 @@
 .tags:before {
 	content: "\f02c";
 }
+
+.d2u-news-tabs {
+	border-bottom: none;
+	margin-bottom: 0;
+}
+
+.d2u-news-tabs .nav-link {
+	border-left: 1px solid var(--navi-color-bg);
+	border-radius: 0.25rem 0.25rem 0 0;
+	border-right: 1px solid var(--navi-color-bg);
+	border-top: 1px solid var(--navi-color-bg);
+	color: var(--bs-body-color);
+	padding: 0.75em 1rem;
+}
+
+.d2u-news-tabs .nav-link:hover,
+.d2u-news-tabs .nav-link:focus {
+	color: var(--bs-body-color);
+}
+
+.d2u-news-tabs .nav-link.active {
+	background-color: var(--navi-color-bg);
+	color: var(--navi-color-font);
+}
+
+.d2u-news-item {
+	padding-bottom: 1rem;
+}
+
+.d2u-news-fair-grid {
+	row-gap: 1rem;
+}
+
+.d2u-news-fair-card {
+	background-color: var(--article-color-box);
+	border-radius: 0.5rem;
+	height: 100%;
+	padding: 1rem;
+}
+
+.d2u-news-fair-card__date {
+	font-size: 0.9rem;
+	margin-bottom: 0.5rem;
+}
+
+.d2u-news-fair-card__title {
+	font-size: 1.1rem;
+	margin: 0 0 0.5rem;
+}
+
+.d2u-news-fair-card__location {
+	font-weight: 600;
+}
+.tab-content.d2u-news-tab-content {
+  border: 1px solid var(--article-color-h);
+  padding: 1em;
+}
