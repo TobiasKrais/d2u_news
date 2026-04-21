@@ -35,7 +35,7 @@ requires:
 
 conflicts:
     packages:
-        d2u_courses: '<3.5.0'
+        d2u_courses: '<3.6.0'
         d2u_machinery: '<1.6.0'
 
 default_config:
