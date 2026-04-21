@@ -15,7 +15,7 @@ class LangHelper extends \TobiasKrais\D2UHelper\ALangHelper
      * value the replacement.
      */
     public $replacements_english = [
-        'd2u_news_details' => 'more Information',
+        'd2u_news_details' => 'More information',
         'd2u_news_fair_dates' => 'Fair dates',
         'd2u_news_fairs_all' => 'All Fair dates',
         'd2u_news_news' => 'News',
