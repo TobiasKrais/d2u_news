@@ -3,7 +3,7 @@
 <p>1.2.1-DEV:</p>
 <ul>
 	<li>Backend: CSRF-Schutz fuer Speichern-, Loesch- und Statusaktionen der Newsverwaltung ergaenzt.</li>
-	<li>...</li>
+	<li>Backend: CSRF-Schutz fuer Modul-Installation, -Update und -Deinstallation auf der Setup-Seite ergaenzt.</li>
 </ul>
 <p>1.2.0:</p>
 <ul>
