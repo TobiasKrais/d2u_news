@@ -268,29 +268,26 @@ class News implements \TobiasKrais\D2UHelper\ITranslationHelper
         $pre_save_news = new self($this->news_id, $this->clang_id);
 
         if (0 === $this->news_id || $pre_save_news != $this) {
-            $query = rex::getTablePrefix() .'d2u_news_news SET '
-                    ."online_status = '". $this->online_status ."', "
-                    ."category_ids = '|". implode('|', array_keys($this->categories)) ."|', "
-                    ."picture = '". $this->picture ."', "
-                    ."link_type = '". $this->link_type ."', "
-                    .'article_id = '. (int) $this->article_id .', '
-                    ."url = '". $this->url ."', "
-                    .'d2u_machines_machine_id = '. $this->d2u_machines_machine_id .', '
-                    .'d2u_courses_course_id = '. $this->d2u_courses_course_id .', '
-                    ."`date` = '". $this->date ."' ";
-            $query .= ", type_ids = '|". implode('|', array_keys($this->types)) ."|' ";
-
-            if (0 === $this->news_id) {
-                $query = 'INSERT INTO '. $query;
-            } else {
-                $query = 'UPDATE '. $query .' WHERE news_id = '. $this->news_id;
-            }
-
             $result = rex_sql::factory();
-            $result->setQuery($query);
+            $result->setTable(rex::getTablePrefix() .'d2u_news_news');
+            $result->setValue('online_status', $this->online_status);
+            $result->setValue('category_ids', '|'. implode('|', array_keys($this->categories)) .'|');
+            $result->setValue('picture', $this->picture);
+            $result->setValue('link_type', $this->link_type);
+            $result->setValue('article_id', (int) $this->article_id);
+            $result->setValue('url', $this->url);
+            $result->setValue('d2u_machines_machine_id', (int) $this->d2u_machines_machine_id);
+            $result->setValue('d2u_courses_course_id', (int) $this->d2u_courses_course_id);
+            $result->setValue('date', $this->date);
+            $result->setValue('type_ids', '|'. implode('|', array_keys($this->types)) .'|');
+
             if (0 === $this->news_id) {
+                $result->insert();
                 $this->news_id = (int) $result->getLastId();
                 $error = $result->hasError();
+            } else {
+                $result->setWhere('news_id = :id', [':id' => $this->news_id]);
+                $result->update();
             }
         }
 
@@ -298,15 +295,15 @@ class News implements \TobiasKrais\D2UHelper\ITranslationHelper
             // Save the language specific part
             $pre_save_news = new self($this->news_id, $this->clang_id);
             if ($pre_save_news != $this) {
-                $query = 'REPLACE INTO '. rex::getTablePrefix() .'d2u_news_news_lang SET '
-                        .'news_id = '. $this->news_id .', '
-                        .'clang_id = '. $this->clang_id .', '
-                        ."name = '". addslashes($this->name) ."', "
-                        ."teaser = '". addslashes(htmlspecialchars($this->teaser)) ."', "
-                        .'hide_this_lang = '. (int) $this->hide_this_lang .', '
-                        ."translation_needs_update = '". $this->translation_needs_update ."' ";
                 $result = rex_sql::factory();
-                $result->setQuery($query);
+                $result->setTable(rex::getTablePrefix() .'d2u_news_news_lang');
+                $result->setValue('news_id', $this->news_id);
+                $result->setValue('clang_id', $this->clang_id);
+                $result->setValue('name', $this->name);
+                $result->setValue('teaser', htmlspecialchars($this->teaser));
+                $result->setValue('hide_this_lang', (int) $this->hide_this_lang);
+                $result->setValue('translation_needs_update', $this->translation_needs_update);
+                $result->replace();
                 $error = $result->hasError();
             }
         }

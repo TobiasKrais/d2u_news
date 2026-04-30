@@ -4,6 +4,8 @@
 <ul>
 	<li>Backend: CSRF-Schutz fuer Speichern-, Loesch- und Statusaktionen der Newsverwaltung ergaenzt.</li>
 	<li>Backend: CSRF-Schutz fuer Modul-Installation, -Update und -Deinstallation auf der Setup-Seite ergaenzt.</li>
+	<li>Security: SQL-Injection-Härtung in <code>News::save()</code>, <code>Category::save()</code>, <code>Type::save()</code>, <code>Fair::save()</code> sowie im Media-In-Use-Extension-Point in <code>boot.php</code>; Werte werden jetzt über <code>rex_sql</code> Bind-Parameter bzw. <code>setValue()</code> übergeben statt per <code>addslashes</code>/Stringkonkatenation.</li>
+	<li>Security XSS Module 40-1 bis 40-6: Backend-Heading, News-Titel, Bildunterschriften, Mediennamen, Messennamen/Stadt/Länderkennung, Kategorie- und Typennamen sowie URLs werden jetzt durchgängig über <code>rex_escape()</code> bzw. <code>rex_escape(..., 'html_attr')</code> escaped. Bildquellen werden zusätzlich über <code>rawurlencode</code> abgesichert. <code>REX_VALUE</code>-Zähler werden strikt nach <code>int</code> gecastet.</li>
 </ul>
 <p>1.2.0:</p>
 <ul>

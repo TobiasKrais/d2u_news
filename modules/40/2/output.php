@@ -37,8 +37,8 @@ if (count($fairs) > 0) {
     $faircounter = 0;
     foreach ($fairs as $fair) {
         echo '<li>';
-        echo formatDate($fair->date_start, rex_clang::getCurrentId()) .' - '. formatDate($fair->date_end, rex_clang::getCurrentId());
-        echo ' <strong>'. $fair->name .' | '. $fair->city .', '. $fair->country_code .'</strong>';
+        echo rex_escape(formatDate($fair->date_start, rex_clang::getCurrentId())) .' - '. rex_escape(formatDate($fair->date_end, rex_clang::getCurrentId()));
+        echo ' <strong>'. rex_escape($fair->name) .' | '. rex_escape($fair->city) .', '. rex_escape($fair->country_code) .'</strong>';
         echo '</li>';
 
         ++$faircounter;

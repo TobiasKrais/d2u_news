@@ -18,10 +18,10 @@ if (!function_exists('formatDate')) {
 }
 
 
-$counter_news = 'REX_VALUE[1]' == '' ? '5' : 'REX_VALUE[1]';
+$counter_news = 'REX_VALUE[1]' == '' ? 5 : (int) 'REX_VALUE[1]';
 $link_id_overview = (int) 'REX_LINK[id=1 output=id]';
 
-$category_id = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 0;
+$category_id = 'REX_VALUE[2]' > 0 ? (int) 'REX_VALUE[2]' : 0;
 $category = $category_id > 0 ? new \TobiasKrais\D2UNews\Category($category_id, rex_clang::getCurrentId()) : false;
 
 $heading = 'REX_VALUE[4]' != '' ? 'REX_VALUE[4]' : \Sprog\Wildcard::get('d2u_news_news');
@@ -38,9 +38,9 @@ foreach ($selected_news_type_ids as $selected_news_type_id) {
 if (rex::isBackend()) {
     // Ausgabe im BACKEND
 ?>
-	<h2 style="font-size: 1.5em;"><?= $heading ?></h2>
-	<p>Anzahl auszugebender News: REX_VALUE[1]</p>
-	<p>Gewählte Kategorie: <?= false !== $category ? $category->name : 'Alle Kategorien' ?></p>
+	<h2 style="font-size: 1.5em;"><?= rex_escape($heading) ?></h2>
+	<p>Anzahl auszugebender News: <?= (int) 'REX_VALUE[1]' ?></p>
+	<p>Gewählte Kategorie: <?= false !== $category ? rex_escape($category->name) : 'Alle Kategorien' ?></p>
 	<p>Gewählte Nachrichtenarten:
 		<?php
             $first_type = true;
@@ -50,9 +50,9 @@ if (rex::isBackend()) {
                 } else {
                     echo ', ';
                 }
-                echo $selected_news_type->name;
+                echo rex_escape($selected_news_type->name);
             }
-        echo false !== $category ? $category->name : 'Alle Kategorien';
+        echo false !== $category ? rex_escape($category->name) : 'Alle Kategorien';
         ?>
 	</p>
 <?php
@@ -91,11 +91,12 @@ if (rex::isBackend()) {
 		<div class="col-12">
 			<div class="row">
 				<div class="col-12">
-					<h2 class="h2-news"><?= $heading ?></h2>
+					<h2 class="h2-news"><?= rex_escape($heading) ?></h2>
 				</div>
 			</div>
 			<?php
                 foreach ($news as $nachricht) {
+                    $newsUrl = (string) $nachricht->getUrl();
                     echo '<div class="row news">';
                     echo '<div class="col-12">';
                     echo '<div class="d2u_module_40-1_news_container news-box">';
@@ -103,11 +104,11 @@ if (rex::isBackend()) {
 
                     if ('' != $nachricht->picture) {
                         echo '<div class="col-12 col-sm-4">';
-                        if ('' != $nachricht->getUrl()) {
-                            echo '<a href="'. $nachricht->getUrl() .'">';
+                        if ('' != $newsUrl) {
+                            echo '<a href="'. rex_escape($newsUrl, 'html_attr') .'">';
                         }
-                        echo '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt="'. $nachricht->name .'" class="listpic">';
-                        if ('' != $nachricht->getUrl()) {
+                        echo '<img src="index.php?rex_media_type=news_preview&rex_media_file='. rex_escape(rawurlencode($nachricht->picture), 'html_attr') .'" alt="'. rex_escape($nachricht->name, 'html_attr') .'" class="listpic">';
+                        if ('' != $newsUrl) {
                             echo '</a>';
                         }
                         echo '</div>';
@@ -118,23 +119,23 @@ if (rex::isBackend()) {
                     }
 
                     echo '<h3 class="news">';
-                    if ('' != $nachricht->getUrl()) {
-                        echo '<a href="'. $nachricht->getUrl() .'">';
+                    if ('' != $newsUrl) {
+                        echo '<a href="'. rex_escape($newsUrl, 'html_attr') .'">';
                     }
-                    echo $nachricht->name;
-                    if ('' != $nachricht->getUrl()) {
+                    echo rex_escape($nachricht->name);
+                    if ('' != $newsUrl) {
                         echo '</a>';
                     }
                     echo '</h3>';
-                    echo '<time datetime="'. $nachricht->date .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time>';
+                    echo '<time datetime="'. rex_escape($nachricht->date, 'html_attr') .'">'. rex_escape(formatDate($nachricht->date, rex_clang::getCurrentId())) .'</time>';
 
                     if ('' != $nachricht->teaser) {
                         echo TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($nachricht->teaser);
-                        if ('' != $nachricht->getUrl()) {
-                            echo '<a href="'. $nachricht->getUrl() .'" class="d2u_module_40-1_more">['. \Sprog\Wildcard::get('d2u_news_details') .']</a>';
+                        if ('' != $newsUrl) {
+                            echo '<a href="'. rex_escape($newsUrl, 'html_attr') .'" class="d2u_module_40-1_more">['. rex_escape(\Sprog\Wildcard::get('d2u_news_details')) .']</a>';
                         }
-                    } elseif ('' != $nachricht->getUrl()) {
-                        echo '<p class="text"><a href="'. $nachricht->getUrl() .'">'. $nachricht->getUrl() .'</a></p>';
+                    } elseif ('' != $newsUrl) {
+                        echo '<p class="text"><a href="'. rex_escape($newsUrl, 'html_attr') .'">'. rex_escape($newsUrl) .'</a></p>';
                     }
                     echo '</div>';
                     echo '</div>';
@@ -146,7 +147,7 @@ if (rex::isBackend()) {
                 if ($link_id_overview > 0 && $link_id_overview !== rex_article::getCurrentId()) {
                     echo '<div class="row">';
                     echo '<div class="col-12">';
-                    echo '<a href="'. rex_getUrl($link_id_overview) .'">'. \Sprog\Wildcard::get('d2u_news_details') .'</a>';
+                    echo '<a href="'. rex_escape(rex_getUrl($link_id_overview), 'html_attr') .'">'. rex_escape(\Sprog\Wildcard::get('d2u_news_details')) .'</a>';
                     echo '</div>';
                     echo '</div>';
                 }

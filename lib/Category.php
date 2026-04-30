@@ -195,21 +195,18 @@ class Category implements \TobiasKrais\D2UHelper\ITranslationHelper
         }
 
         if (0 === $this->category_id || $pre_save_category !== $this) {
-            $query = rex::getTablePrefix() .'d2u_news_categories SET '
-                    .'priority = '. $this->priority .', '
-                    ."picture = '". $this->picture ."' ";
-
-            if (0 === $this->category_id) {
-                $query = 'INSERT INTO '. $query;
-            } else {
-                $query = 'UPDATE '. $query .' WHERE category_id = '. $this->category_id;
-            }
-
             $result = rex_sql::factory();
-            $result->setQuery($query);
+            $result->setTable(rex::getTablePrefix() .'d2u_news_categories');
+            $result->setValue('priority', (int) $this->priority);
+            $result->setValue('picture', $this->picture);
+
             if (0 === $this->category_id) {
+                $result->insert();
                 $this->category_id = (int) $result->getLastId();
                 $error = $result->hasError();
+            } else {
+                $result->setWhere('category_id = :id', [':id' => $this->category_id]);
+                $result->update();
             }
         }
 
@@ -217,14 +214,13 @@ class Category implements \TobiasKrais\D2UHelper\ITranslationHelper
             // Save the language specific part
             $pre_save_category = new self($this->category_id, $this->clang_id);
             if ($pre_save_category !== $this) {
-                $query = 'REPLACE INTO '. rex::getTablePrefix() .'d2u_news_categories_lang SET '
-                        ."category_id = '". $this->category_id ."', "
-                        ."clang_id = '". $this->clang_id ."', "
-                        ."name = '". addslashes($this->name) ."', "
-                        ."translation_needs_update = '". $this->translation_needs_update ."' ";
-
                 $result = rex_sql::factory();
-                $result->setQuery($query);
+                $result->setTable(rex::getTablePrefix() .'d2u_news_categories_lang');
+                $result->setValue('category_id', (int) $this->category_id);
+                $result->setValue('clang_id', (int) $this->clang_id);
+                $result->setValue('name', $this->name);
+                $result->setValue('translation_needs_update', $this->translation_needs_update);
+                $result->replace();
                 $error = $result->hasError();
             }
         }

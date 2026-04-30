@@ -84,13 +84,13 @@ function rex_d2u_news_media_is_in_use(rex_extension_point $ep)
 {
     $warning = $ep->getSubject();
     $params = $ep->getParams();
-    $filename = addslashes($params['filename']);
+    $filename = (string) $params['filename'];
 
     // News
     $sql_news = rex_sql::factory();
     $sql_news->setQuery('SELECT lang.news_id, name FROM `' . rex::getTablePrefix() . 'd2u_news_news_lang` AS lang '
         .'LEFT JOIN `' . rex::getTablePrefix() . 'd2u_news_news` AS news ON lang.news_id = news.news_id '
-        .'WHERE picture = "'. $filename .'"');
+        .'WHERE picture = :filename', [':filename' => $filename]);
 
     // Prepare warnings
     // News
@@ -105,7 +105,7 @@ function rex_d2u_news_media_is_in_use(rex_extension_point $ep)
 
     $sql_fairs = rex_sql::factory();
     $sql_fairs->setQuery('SELECT fair_id, name FROM `' . rex::getTablePrefix() . 'd2u_news_fairs` '
-        .'WHERE picture = "'. $filename .'"');
+        .'WHERE picture = :filename', [':filename' => $filename]);
     for ($i = 0; $i < $sql_fairs->getRows(); ++$i) {
         $message = '<a href="javascript:openPage(\'index.php?page=d2u_news/fairs&func=edit&entry_id='.
             $sql_fairs->getValue('fair_id') .'\')">'. rex_i18n::msg('d2u_news_rights') .' - '. rex_i18n::msg('d2u_news_fairs') .': '. $sql_fairs->getValue('name') .'</a>';

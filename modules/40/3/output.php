@@ -23,10 +23,10 @@ if (!function_exists('formatDate')) {
 }
 
 
-$counter_news = 'REX_VALUE[1]' == '' ? '5' : 'REX_VALUE[1]';
-$link_id_fairs = 'REX_LINK[id=1 output=id]';
+$counter_news = 'REX_VALUE[1]' == '' ? 5 : (int) 'REX_VALUE[1]';
+$link_id_fairs = (int) 'REX_LINK[id=1 output=id]';
 
-$category_id = 'REX_VALUE[2]' > 0 ? 'REX_VALUE[2]' : 0;
+$category_id = 'REX_VALUE[2]' > 0 ? (int) 'REX_VALUE[2]' : 0;
 $category = $category_id > 0 ? new \TobiasKrais\D2UNews\Category($category_id, rex_clang::getCurrentId()) : false;
 
 $selected_news_types = [];
@@ -42,8 +42,8 @@ if (rex::isBackend()) {
     // Ausgabe im BACKEND
 ?>
     <h2 style="font-size: 1.5em;">News</h2>
-	Anzahl auszugebender News: REX_VALUE[1]
-	<p>Gewählte Kategorie: <?= false !== $category ? $category->name : 'Alle Kategorien' ?></p>
+	Anzahl auszugebender News: <?= (int) 'REX_VALUE[1]' ?>
+	<p>Gewählte Kategorie: <?= false !== $category ? rex_escape($category->name) : 'Alle Kategorien' ?></p>
 	<p>Gewählte Nachrichtenarten:
 		<?php
             $first_type = true;
@@ -53,9 +53,9 @@ if (rex::isBackend()) {
                 } else {
                     echo ', ';
                 }
-                echo $selected_news_type->name;
+                echo rex_escape($selected_news_type->name);
             }
-        echo false !== $category ? $category->name : 'Alle Kategorien';
+        echo false !== $category ? rex_escape($category->name) : 'Alle Kategorien';
         ?>
 	</p>
 <?php
@@ -98,13 +98,14 @@ if (rex::isBackend()) {
 		<div class="row">
 			<?php
                 foreach ($news as $nachricht) {
+                    $newsUrl = (string) $nachricht->getUrl();
                     if ($show_pic && '' != $nachricht->picture) {
                         echo '<aside class="col-12 col-sm-2">';
-                        if ('' != $nachricht->getUrl()) {
-                            echo '<a href="'. $nachricht->getUrl() .'">';
+                        if ('' != $newsUrl) {
+                            echo '<a href="'. rex_escape($newsUrl, 'html_attr') .'">';
                         }
-                        echo '<img src="index.php?rex_media_type=news_preview&rex_media_file='. $nachricht->picture .'" alt="'. $nachricht->name .'" class="listpic">';
-                        if ('' != $nachricht->getUrl()) {
+                        echo '<img src="index.php?rex_media_type=news_preview&rex_media_file='. rex_escape(rawurlencode($nachricht->picture), 'html_attr') .'" alt="'. rex_escape($nachricht->name, 'html_attr') .'" class="listpic">';
+                        if ('' != $newsUrl) {
                             echo '</a>';
                         }
                         echo '</aside>';
@@ -113,15 +114,15 @@ if (rex::isBackend()) {
 				<div class="col-12 col-sm-10">
 					<?php
                         echo '<h2>';
-                        if ('' != $nachricht->getUrl()) {
-                            echo '<a href="'. $nachricht->getUrl() .'">';
+                        if ('' != $newsUrl) {
+                            echo '<a href="'. rex_escape($newsUrl, 'html_attr') .'">';
                         }
-                        echo $nachricht->name;
-                        if ('' != $nachricht->getUrl()) {
+                        echo rex_escape($nachricht->name);
+                        if ('' != $newsUrl) {
                             echo '</a>';
                         }
                         echo '</h2>';
-                        echo '<p><time datetime="'. $nachricht->date .'">'. formatDate($nachricht->date, rex_clang::getCurrentId()) .'</time></p>';
+                        echo '<p><time datetime="'. rex_escape($nachricht->date, 'html_attr') .'">'. rex_escape(formatDate($nachricht->date, rex_clang::getCurrentId())) .'</time></p>';
                     ?>
 					<p class="text">
 						<?= TobiasKrais\D2UHelper\FrontendHelper::prepareEditorField($nachricht->teaser);
@@ -150,8 +151,8 @@ if (rex::isBackend()) {
             $fair_counter = 0;
             foreach ($fairs as $fair) {
                 echo '<li>';
-                echo '<h5>'. $fair->name .' | '. $fair->city .', '. $fair->country_code .'</h5>';
-                echo formatDate($fair->date_start, rex_clang::getCurrentId()) .' - '. formatDate($fair->date_end, rex_clang::getCurrentId());
+                echo '<h5>'. rex_escape($fair->name) .' | '. rex_escape($fair->city) .', '. rex_escape($fair->country_code) .'</h5>';
+                echo rex_escape(formatDate($fair->date_start, rex_clang::getCurrentId())) .' - '. rex_escape(formatDate($fair->date_end, rex_clang::getCurrentId()));
                 echo '</li>';
                 ++$fair_counter;
                 if ($fair_counter > 4) {
@@ -160,7 +161,7 @@ if (rex::isBackend()) {
             }
             echo '</ul>';
             if ($link_id_fairs > 0 && count($fairs) > 5) {
-                echo '<a href="'. rex_getUrl($link_id_fairs) .'" class="arrow">'. \Sprog\Wildcard::get('d2u_news_fairs_all') .'</a>';
+                echo '<a href="'. rex_escape(rex_getUrl($link_id_fairs), 'html_attr') .'" class="arrow">'. rex_escape(\Sprog\Wildcard::get('d2u_news_fairs_all')) .'</a>';
             }
             echo '</div>';
             echo '</div>';

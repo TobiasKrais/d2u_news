@@ -187,34 +187,30 @@ class Type implements \TobiasKrais\D2UHelper\ITranslationHelper
         }
 
         if (0 === $this->type_id || $pre_save_type !== $this) {
-            $query = rex::getTablePrefix() .'d2u_news_types SET '
-                    .'priority = '. $this->priority .' ';
-
-            if (0 === $this->type_id) {
-                $query = 'INSERT INTO '. $query;
-            } else {
-                $query = 'UPDATE '. $query .' WHERE type_id = '. $this->type_id;
-            }
-
             $result = rex_sql::factory();
-            $result->setQuery($query);
+            $result->setTable(rex::getTablePrefix() .'d2u_news_types');
+            $result->setValue('priority', (int) $this->priority);
+
             if (0 === $this->type_id) {
+                $result->insert();
                 $this->type_id = (int) $result->getLastId();
                 $error = $result->hasError();
+            } else {
+                $result->setWhere('type_id = :id', [':id' => $this->type_id]);
+                $result->update();
             }
         }
 
         if (!$error) {
             $pre_save_type = new self($this->type_id, $this->clang_id);
             if ($pre_save_type !== $this) {
-                $query = 'REPLACE INTO '. rex::getTablePrefix() .'d2u_news_types_lang SET '
-                        ."type_id = '". $this->type_id ."', "
-                        ."clang_id = '". $this->clang_id ."', "
-                        ."name = '". addslashes($this->name) ."', "
-                        ."translation_needs_update = '". $this->translation_needs_update ."'";
-
                 $result = rex_sql::factory();
-                $result->setQuery($query);
+                $result->setTable(rex::getTablePrefix() .'d2u_news_types_lang');
+                $result->setValue('type_id', (int) $this->type_id);
+                $result->setValue('clang_id', (int) $this->clang_id);
+                $result->setValue('name', $this->name);
+                $result->setValue('translation_needs_update', $this->translation_needs_update);
+                $result->replace();
                 $error = $result->hasError();
             }
         }

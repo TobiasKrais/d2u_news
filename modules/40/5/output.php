@@ -39,9 +39,9 @@ if (count($fairs) > 0) {
     foreach ($fairs as $fair) {
         echo '<div class="col-12 col-lg-6 d2u-news-fair-grid__item">';
         echo '<div class="d2u-news-fair-card">';
-        echo '<div class="d2u-news-fair-card__date">'. formatDate($fair->date_start, rex_clang::getCurrentId()) .' - '. formatDate($fair->date_end, rex_clang::getCurrentId()) .'</div>';
-        echo '<h2 class="d2u-news-fair-card__title">'. $fair->name .'</h2>';
-        echo '<div class="d2u-news-fair-card__location">'. $fair->city .' | '. $fair->country_code .'</div>';
+        echo '<div class="d2u-news-fair-card__date">'. rex_escape(formatDate($fair->date_start, rex_clang::getCurrentId())) .' - '. rex_escape(formatDate($fair->date_end, rex_clang::getCurrentId())) .'</div>';
+        echo '<h2 class="d2u-news-fair-card__title">'. rex_escape($fair->name) .'</h2>';
+        echo '<div class="d2u-news-fair-card__location">'. rex_escape($fair->city) .' | '. rex_escape($fair->country_code) .'</div>';
         echo '</div>';
         echo '</div>';
     }

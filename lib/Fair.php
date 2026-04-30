@@ -101,25 +101,22 @@ class Fair
     {
         $error = false;
 
-        $query = rex::getTablePrefix() .'d2u_news_fairs SET '
-                ."name = '". addslashes($this->name) ."', "
-                ."city = '". addslashes($this->city) ."', "
-                ."country_code = '". $this->country_code ."', "
-                ."date_start = '". $this->date_start ."', "
-                ."date_end = '". $this->date_end ."', "
-                ."picture = '". $this->picture ."' ";
-
-        if (0 === $this->fair_id) {
-            $query = 'INSERT INTO '. $query;
-        } else {
-            $query = 'UPDATE '. $query .' WHERE fair_id = '. $this->fair_id;
-        }
-
         $result = rex_sql::factory();
-        $result->setQuery($query);
+        $result->setTable(rex::getTablePrefix() .'d2u_news_fairs');
+        $result->setValue('name', $this->name);
+        $result->setValue('city', $this->city);
+        $result->setValue('country_code', $this->country_code);
+        $result->setValue('date_start', $this->date_start);
+        $result->setValue('date_end', $this->date_end);
+        $result->setValue('picture', $this->picture);
+
         if (0 === $this->fair_id) {
+            $result->insert();
             $this->fair_id = (int) $result->getLastId();
             $error = $result->hasError();
+        } else {
+            $result->setWhere('fair_id = :id', [':id' => $this->fair_id]);
+            $result->update();
         }
 
         return $error;

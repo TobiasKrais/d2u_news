@@ -18,22 +18,22 @@ class Module
         $modules = [];
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-1',
             'D2U News - Ausgabe News (BS4, deprecated)',
-            7);
+            8);
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-2',
             'D2U News - Ausgabe Messen (BS4, deprecated)',
-            1);
+            2);
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-3',
             'D2U News - Ausgabe News und Messen (BS4, deprecated)',
-            6);
+            7);
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-4',
             'D2U News - Ausgabe News (BS5)',
-            1);
+            2);
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-5',
             'D2U News - Ausgabe Messen (BS5)',
-            1);
+            2);
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-6',
             'D2U News - Ausgabe News und Messen (BS5)',
-            1);
+            2);
         return $modules;
     }
 }
