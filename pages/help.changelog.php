@@ -2,6 +2,7 @@
 <h2>Changelog</h2>
 <p>1.2.1-DEV:</p>
 <ul>
+	<li>Backend: Abbrechen-Buttons in News-, Kategorien-, Messen- und Newsartenformularen fuehren jetzt wieder zur Liste.</li>
 	<li>Backend: CSRF-Schutz fuer Speichern-, Loesch- und Statusaktionen der Newsverwaltung ergaenzt.</li>
 	<li>Backend: CSRF-Schutz fuer Modul-Installation, -Update und -Deinstallation auf der Setup-Seite ergaenzt.</li>
 	<li>Security: SQL-Injection-Härtung in <code>News::save()</code>, <code>Category::save()</code>, <code>Type::save()</code>, <code>Fair::save()</code> sowie im Media-In-Use-Extension-Point in <code>boot.php</code>; Werte werden jetzt über <code>rex_sql</code> Bind-Parameter bzw. <code>setValue()</code> übergeben statt per <code>addslashes</code>/Stringkonkatenation.</li>
