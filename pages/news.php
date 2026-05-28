@@ -14,6 +14,7 @@ if ((
     1 === (int) filter_input(INPUT_POST, 'btn_save')
     || 1 === (int) filter_input(INPUT_POST, 'btn_apply')
     || 1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT)
+    || 1 === (int) filter_input(INPUT_POST, 'btn_delete_confirmed', FILTER_VALIDATE_INT)
     || in_array($func, ['delete', 'changestatus'], true)
 ) && !$csrfToken->isValid()) {
     echo rex_view::error(rex_i18n::msg('csrf_token_invalid'));
@@ -32,6 +33,17 @@ if (1 === (int) filter_input(INPUT_POST, 'btn_abort', FILTER_VALIDATE_INT)) {
     header('Location: '. BackendHelper::getCurrentBackendPage([], ['entry_id', 'func', 'message', 'message_type']));
     exit;
 }
+
+$canDeleteLinkedArticle = static function (?rex_article $linkedArticle): bool {
+    $user = rex::getUser();
+
+    return $linkedArticle instanceof rex_article
+        && $user instanceof rex_user
+        && (
+            $user->isAdmin()
+            || ($user->hasPerm('deleteArticle[]') && $user->getComplexPerm('structure')->hasCategoryPerm($linkedArticle->getCategoryId()))
+        );
+};
 
 // save settings
 if (!$invalidCsrf && (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === (int) filter_input(INPUT_POST, 'btn_apply'))) {
@@ -103,7 +115,11 @@ if (!$invalidCsrf && (1 === (int) filter_input(INPUT_POST, 'btn_save') || 1 === 
     exit;
 }
 // Delete
-if ((!$invalidCsrf && 1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT)) || 'delete' === $func) {
+if (
+    (!$invalidCsrf && 1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_VALIDATE_INT))
+    || 'delete' === $func
+    || (!$invalidCsrf && 1 === (int) filter_input(INPUT_POST, 'btn_delete_confirmed', FILTER_VALIDATE_INT))
+) {
     $news_id = $entry_id;
     if (0 === $news_id) {
         $form = rex_post('form', 'array', []);
@@ -111,9 +127,27 @@ if ((!$invalidCsrf && 1 === (int) filter_input(INPUT_POST, 'btn_delete', FILTER_
     }
     $news = new \TobiasKrais\D2UNews\News($news_id, (int) rex_config::get('d2u_helper', 'default_lang'));
     $news->news_id = $news_id; // Ensure correct ID in case first language has no object
-    $news->delete();
-
-    $func = '';
+    $linkedArticle = 'article' === $news->link_type && $news->article_id > 0 ? rex_article::get($news->article_id) : null;
+    if (1 !== (int) filter_input(INPUT_POST, 'btn_delete_confirmed', FILTER_VALIDATE_INT) && $linkedArticle instanceof rex_article) {
+        $func = 'confirm_delete';
+        $entry_id = $news_id;
+    } else {
+        $deleteFailed = false;
+        if ($canDeleteLinkedArticle($linkedArticle) && 1 === (int) filter_input(INPUT_POST, 'delete_linked_article', FILTER_VALIDATE_INT)) {
+            try {
+                rex_article_service::deleteArticle($news->article_id);
+            } catch (rex_api_exception $exception) {
+                echo rex_view::error($exception->getMessage());
+                $deleteFailed = true;
+                $func = 'confirm_delete';
+                $entry_id = $news_id;
+            }
+        }
+        if (!$deleteFailed) {
+            $news->delete();
+            $func = '';
+        }
+    }
 }
 // Change online status of news
 elseif ('changestatus' === $func) {
@@ -124,6 +158,41 @@ elseif ('changestatus' === $func) {
 
     header('Location: '. rex_url::currentBackendPage());
     exit;
+}
+
+// Delete confirmation
+if ('confirm_delete' === $func) {
+    $news = new \TobiasKrais\D2UNews\News($entry_id, (int) rex_config::get('d2u_helper', 'default_lang'));
+    $linkedArticle = 'article' === $news->link_type && $news->article_id > 0 ? rex_article::get($news->article_id) : null;
+    ?>
+    <form action="<?= BackendHelper::getCurrentBackendPage([], ['message', 'message_type']) ?>" method="post">
+        <?= $csrfToken->getHiddenField() ?>
+        <div class="panel panel-edit">
+            <header class="panel-heading"><div class="panel-title"><?= rex_i18n::msg('d2u_news_delete_news') ?></div></header>
+            <div class="panel-body">
+                <input type="hidden" name="form[news_id]" value="<?= $entry_id ?>">
+                <p><?= rex_i18n::msg('d2u_news_confirm_delete_news', rex_escape($news->name)) ?></p>
+                <?php if ($canDeleteLinkedArticle($linkedArticle)) { ?>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="delete_linked_article" value="1">
+                            <?= rex_i18n::msg('d2u_news_delete_linked_article', rex_escape($linkedArticle->getName())) ?>
+                        </label>
+                    </div>
+                <?php } ?>
+            </div>
+            <footer class="panel-footer">
+                <div class="rex-form-panel-footer">
+                    <div class="btn-toolbar">
+                        <button class="btn btn-delete rex-form-aligned" type="submit" name="btn_delete_confirmed" value="1"><?= rex_i18n::msg('form_delete') ?></button>
+                        <button class="btn btn-abort" type="submit" name="btn_abort" formnovalidate="formnovalidate" value="1"><?= rex_i18n::msg('form_abort') ?></button>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </form>
+    <br>
+    <?php
 }
 
 // Form

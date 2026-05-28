@@ -3,6 +3,9 @@ d2u_news_news_title = Nieuws
 
 d2u_news_article = Redaxo-artikel
 d2u_news_could_not_delete = Verwijderen mislukt.
+d2u_news_delete_news = Nieuws verwijderen
+d2u_news_confirm_delete_news = Nieuws "{0}" echt verwijderen?
+d2u_news_delete_linked_article = Gekoppeld REDAXO-artikel "{0}" ook verwijderen
 d2u_news_date = Datum
 d2u_news_fairs = Beurzen
 d2u_news_fairs_city = Plaats

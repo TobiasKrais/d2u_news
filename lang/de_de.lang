@@ -3,6 +3,9 @@ d2u_news_news_title = Nachrichten
 
 d2u_news_article = Redaxo Artikel
 d2u_news_could_not_delete = Löschen fehlgeschlagen.
+d2u_news_delete_news = News löschen
+d2u_news_confirm_delete_news = News "{0}" wirklich löschen?
+d2u_news_delete_linked_article = Verlinkten REDAXO-Artikel "{0}" ebenfalls löschen
 d2u_news_date = Datum
 d2u_news_fairs = Messen
 d2u_news_fairs_city = Ort
