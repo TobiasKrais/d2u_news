@@ -1,5 +1,9 @@
 
 <h2>Changelog</h2>
+<p>1.2.3-DEV:</p>
+<ul>
+	<li>...</li>
+</ul>
 <p>1.2.2:</p>
 <ul>
 	<li>Security XSS Modul 40-4 (Backend-Konfiguration): Die Kategorie- und Nachrichtenarten-Namen in den Auswahl-Dropdowns (<code>&lt;option&gt;</code>) der Modul-Eingabemaske werden jetzt mit <code>rex_escape()</code> ausgegeben.</li>
