@@ -19,6 +19,8 @@ if (!function_exists('formatDate')) {
                 return strtoupper(date('d/m/Y', $unix));
 
         }
+
+        return '';
     }
 }
 

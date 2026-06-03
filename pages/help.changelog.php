@@ -1,5 +1,12 @@
 
 <h2>Changelog</h2>
+<p>1.2.2-DEV:</p>
+<ul>
+	<li>Security XSS Modul 40-4 (Backend-Konfiguration): Die Kategorie- und Nachrichtenarten-Namen in den Auswahl-Dropdowns (<code>&lt;option&gt;</code>) der Modul-Eingabemaske werden jetzt mit <code>rex_escape()</code> ausgegeben.</li>
+	<li>Intern: In den Modulen 40-1 bis 40-6 liefert die Hilfsfunktion <code>formatDate()</code> jetzt für leere Datumswerte einen leeren String zurück und der Docblock-Parametername wurde korrigiert (Typsicherheit, keine Verhaltensänderung).</li>
+	<li>Intern: Überzählige Argumente bei <code>Category::getAll()</code>/<code>Type::getAll()</code> in den Modul-Eingabemasken 40-1, 40-3, 40-4 und 40-6 entfernt (wurden zur Laufzeit ignoriert, keine Verhaltensänderung).</li>
+	<li>Intern: Überzählige <code>getAll()</code>-Argumente auch in der News-Backendseite (<code>pages/news.php</code>) entfernt sowie der Docblock-Rückgabetyp von <code>rex_d2u_news_article_is_in_use()</code> auf <code>string</code> korrigiert (keine Verhaltensänderung).</li>
+</ul>
 <p>1.2.1:</p>
 <ul>
 	<li>Backend: Abbrechen-Buttons in News-, Kategorien-, Messen- und Newsartenformularen fuehren jetzt wieder zur Liste.</li>

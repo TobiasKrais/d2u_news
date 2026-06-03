@@ -299,7 +299,7 @@ if ('edit' === $func || 'add' === $func) {
                             BackendHelper::form_checkbox('d2u_helper_online_status', 'form[online_status]', 'online', 'online' === $news->online_status, $readonly);
                             BackendHelper::form_input('d2u_news_date', 'form[date]', $news->date, true, $readonly, 'date');
                             $options_categories = [];
-                            foreach (\TobiasKrais\D2UNews\Category::getAll(rex_config::get('d2u_helper', 'default_lang'), false) as $category) {
+                            foreach (\TobiasKrais\D2UNews\Category::getAll(rex_config::get('d2u_helper', 'default_lang')) as $category) {
                                 $options_categories[$category->category_id] = $category->name;
                             }
                             BackendHelper::form_select('d2u_helper_categories', 'form[category_ids][]', $options_categories, count($news->categories) > 0 ? array_keys($news->categories) : [], 5, true, $readonly);
@@ -338,7 +338,7 @@ if ('edit' === $func || 'add' === $func) {
                     echo '<legend><small><i class="rex-icon fa-file-text-o"></i></small> '. rex_i18n::msg('d2u_news_types') .'</legend>';
                     echo '<div class="panel-body-wrapper slide">';
                     $options_types = [];
-                    foreach (TobiasKrais\D2UNews\Type::getAll((int) rex_config::get('d2u_helper', 'default_lang'), false) as $types) {
+                    foreach (TobiasKrais\D2UNews\Type::getAll((int) rex_config::get('d2u_helper', 'default_lang')) as $types) {
                         $options_types[$types->type_id] = $types->name;
                     }
                     BackendHelper::form_select('d2u_news_types', 'form[type_ids][]', $options_types, count($news->types) > 0 ? array_keys($news->types) : [], 5, true, $readonly);

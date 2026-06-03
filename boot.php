@@ -21,7 +21,7 @@ if (rex::isBackend() && is_object(rex::getUser())) {
  * Checks if article is used by this addon.
  * @param rex_extension_point<string> $ep Redaxo extension point
  * @throws rex_api_exception If article is used
- * @return array<string> Warning message as array
+ * @return string Warning message
  */
 function rex_d2u_news_article_is_in_use(rex_extension_point $ep)
 {

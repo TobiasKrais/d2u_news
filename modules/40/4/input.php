@@ -26,7 +26,7 @@
 	<div class="col-xs-12"><br></div>
 </div>
 <?php
-    $categories = \TobiasKrais\D2UNews\Category::getAll(rex_clang::getCurrentId(), true);
+    $categories = \TobiasKrais\D2UNews\Category::getAll(rex_clang::getCurrentId());
     if (!is_array($categories)) {
         $categories = [];
     }
@@ -43,7 +43,7 @@
                 if ('REX_VALUE[2]' == $category->category_id) {
                     echo 'selected="selected" ';
                 }
-                echo '>'. $category->name .'</option>';
+                echo '>'. rex_escape($category->name) .'</option>';
             }
             echo '</select>';
         ?>
@@ -63,7 +63,7 @@
             if (!is_array($selected_types)) {
                 $selected_types = [];
             }
-            $types = \TobiasKrais\D2UNews\Type::getAll(rex_clang::getCurrentId(), true);
+            $types = \TobiasKrais\D2UNews\Type::getAll(rex_clang::getCurrentId());
             if (!is_array($types)) {
                 $types = [];
             }
@@ -75,7 +75,7 @@
                     if (in_array($type->type_id, $selected_types)) {
                         echo 'selected="selected" ';
                     }
-                    echo '>'. $type->name .'</option>';
+                    echo '>'. rex_escape($type->name) .'</option>';
                 }
                 echo '</select>';
             }

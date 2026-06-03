@@ -2,7 +2,7 @@
 if (!function_exists('formatDate')) {
     /**
      * Formats the date for language specific options.
-     * @param string $date DAte in Format YYYY-MM-TT
+     * @param string $datum DAte in Format YYYY-MM-TT
      * @param int $clang_id Redaxo clang id
      * @return string Formated date
      */
@@ -14,6 +14,8 @@ if (!function_exists('formatDate')) {
 
             return date('d.m.Y', $unix);
         }
+
+        return '';
     }
 }
 
