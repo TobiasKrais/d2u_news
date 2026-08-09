@@ -1,6 +1,6 @@
 
 <h2>Changelog</h2>
-<p>1.2.3-DEV:</p>
+<p>1.2.3:</p>
 <ul>
 	<li>Bugfix: Der Online/Offline-Schalter in der Backend-Liste funktioniert wieder. Beim Erzeugen des CSRF-geschützten Status-Links wurde der Platzhalter für die Datensatz-ID URL-kodiert und dadurch nicht mehr durch die echte ID ersetzt.</li>
 </ul>
