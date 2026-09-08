@@ -15,7 +15,7 @@ use rex_sql;
 /**
  * News Type.
  */
-class Type implements \TobiasKrais\D2UHelper\ITranslationHelper
+class Type implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKrais\D2UHelper\ITranslateable
 {
     /** @var int Database ID */
     public int $type_id = 0;
@@ -170,6 +170,38 @@ class Type implements \TobiasKrais\D2UHelper\ITranslationHelper
         }
 
         return $objects;
+    }
+
+    /**
+     * Translate this type from a source language into its own (target) language
+     * using ai_platform and store the result.
+     * @param int $sourceClangId Redaxo clang id of the source language
+     * @return bool true on success
+     */
+    public function translateFrom(int $sourceClangId): bool
+    {
+        if ($this->type_id <= 0 || $sourceClangId === $this->clang_id) {
+            return false;
+        }
+
+        $source = new self($this->type_id, $sourceClangId);
+        if ('' === $source->name) {
+            return false;
+        }
+
+        try {
+            $translated = \TobiasKrais\D2UHelper\AiTranslationHelper::translateFields([
+                'name' => ['value' => $source->name, 'html' => false],
+            ], $sourceClangId, $this->clang_id);
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        $this->name = $translated['name'];
+        $this->translation_needs_update = 'no';
+
+        // save() returns the error flag (true on error), so success is its negation.
+        return false === $this->save();
     }
 
     /**

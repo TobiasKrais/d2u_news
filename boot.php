@@ -14,6 +14,7 @@ if (rex::isBackend() && is_object(rex::getUser())) {
     rex_extension::register('ART_PRE_DELETED', rex_d2u_news_article_is_in_use(...));
     rex_extension::register('CLANG_DELETED', rex_d2u_news_clang_deleted(...));
     rex_extension::register('D2U_HELPER_TRANSLATION_LIST', rex_d2u_news_translation_list(...));
+    rex_extension::register('D2U_HELPER_TRANSLATE_OBJECT', rex_d2u_news_translate_object(...));
     rex_extension::register('MEDIA_IS_IN_USE', rex_d2u_news_media_is_in_use(...));
 }
 
@@ -142,7 +143,7 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
             if ('' === $current_news_category->name) {
                 $current_news_category = new Category($current_news_category->category_id, $source_clang_id);
             }
-            $html_news_categories .= '<li><a href="'. rex_url::backendPage('d2u_news/categories', ['entry_id' => $current_news_category->category_id, 'func' => 'edit']) .'">'. $current_news_category->name .'</a></li>';
+            $html_news_categories .= \TobiasKrais\D2UHelper\BackendHelper::getTranslationItem('d2u_news', 'category', $current_news_category->category_id, $current_news_category->name, rex_url::backendPage('d2u_news/categories', ['entry_id' => $current_news_category->category_id, 'func' => 'edit']));
         }
         $html_news_categories .= '</ul>';
         $list_entry['pages'][] = [
@@ -167,7 +168,7 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
                     }
                 }
             }
-            $html_news .= '<li><a href="'. rex_url::backendPage('d2u_news/news', ['entry_id' => $current_news->news_id, 'func' => 'edit']) .'">'. $current_news->name .'</a></li>';
+            $html_news .= \TobiasKrais\D2UHelper\BackendHelper::getTranslationItem('d2u_news', 'news', $current_news->news_id, $current_news->name, rex_url::backendPage('d2u_news/news', ['entry_id' => $current_news->news_id, 'func' => 'edit']));
         }
         $html_news .= '</ul>';
         $list_entry['pages'][] = [
@@ -184,7 +185,7 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
             if ('' === $news_type->name) {
                 $news_type = new Type($news_type->type_id, $source_clang_id);
             }
-            $html_news_types .= '<li><a href="'. rex_url::backendPage('d2u_news/news_types', ['entry_id' => $news_type->type_id, 'func' => 'edit']) .'">'. $news_type->name .'</a></li>';
+            $html_news_types .= \TobiasKrais\D2UHelper\BackendHelper::getTranslationItem('d2u_news', 'type', $news_type->type_id, $news_type->name, rex_url::backendPage('d2u_news/news_types', ['entry_id' => $news_type->type_id, 'func' => 'edit']));
         }
         $html_news_types .= '</ul>';
         $list_entry['pages'][] = [
@@ -197,4 +198,52 @@ function rex_d2u_news_translation_list(rex_extension_point $ep) {
     $list[] = $list_entry;
 
     return $list;
+}
+
+/**
+ * Translate a single d2u_news object with AI (D2U_HELPER_TRANSLATE_OBJECT).
+ * @param rex_extension_point<array<string,mixed>> $ep Redaxo extension point
+ * @return array<string,mixed> Result array with success, name and message
+ */
+function rex_d2u_news_translate_object(rex_extension_point $ep)
+{
+    $params = $ep->getParams();
+    if ('d2u_news' !== ($params['addon'] ?? '')) {
+        return $ep->getSubject();
+    }
+
+    $type = (string) ($params['type'] ?? '');
+    $id = (int) ($params['id'] ?? 0);
+    $source_clang_id = (int) ($params['source_clang_id'] ?? 0);
+    $target_clang_id = (int) ($params['target_clang_id'] ?? 0);
+
+    $object = null;
+    switch ($type) {
+        case 'news':
+            $news = new News($id, $target_clang_id);
+            $object = $news->news_id > 0 ? $news : null;
+            break;
+        case 'category':
+            $category = new Category($id, $target_clang_id);
+            $object = $category->category_id > 0 ? $category : null;
+            break;
+        case 'type':
+            $news_type = new Type($id, $target_clang_id);
+            $object = $news_type->type_id > 0 ? $news_type : null;
+            break;
+        default:
+            return $ep->getSubject();
+    }
+
+    if (!$object instanceof \TobiasKrais\D2UHelper\ITranslateable) {
+        return ['success' => false, 'name' => '', 'message' => rex_i18n::msg('d2u_helper_translations_ai_error')];
+    }
+
+    $success = $object->translateFrom($source_clang_id);
+
+    return [
+        'success' => $success,
+        'name' => $object->name,
+        'message' => $success ? '' : rex_i18n::msg('d2u_helper_translations_ai_error'),
+    ];
 }

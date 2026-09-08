@@ -18,7 +18,7 @@ use function is_array;
 /**
  * News.
  */
-class News implements \TobiasKrais\D2UHelper\ITranslationHelper
+class News implements \TobiasKrais\D2UHelper\ITranslationHelper, \TobiasKrais\D2UHelper\ITranslateable
 {
     /** @var int Database ID */
     public int $news_id = 0;
@@ -232,6 +232,41 @@ class News implements \TobiasKrais\D2UHelper\ITranslationHelper
         }
 
         return $objects;
+    }
+
+    /**
+     * Translate this news from a source language into its own (target) language
+     * using ai_platform and store the result.
+     * @param int $sourceClangId Redaxo clang id of the source language
+     * @return bool true on success
+     */
+    public function translateFrom(int $sourceClangId): bool
+    {
+        if ($this->news_id <= 0 || $sourceClangId === $this->clang_id) {
+            return false;
+        }
+
+        $source = new self($this->news_id, $sourceClangId);
+        if ('' === $source->name && '' === $source->teaser) {
+            return false;
+        }
+
+        try {
+            $translated = \TobiasKrais\D2UHelper\AiTranslationHelper::translateFields([
+                'name' => ['value' => $source->name, 'html' => false],
+                'teaser' => ['value' => $source->teaser, 'html' => true],
+            ], $sourceClangId, $this->clang_id);
+        } catch (\Throwable $e) {
+            return false;
+        }
+
+        $this->name = $translated['name'];
+        $this->teaser = $translated['teaser'];
+        $this->hide_this_lang = false;
+        $this->translation_needs_update = 'no';
+
+        // save() returns the error flag (true on error), so success is its negation.
+        return false === $this->save();
     }
 
     /**
