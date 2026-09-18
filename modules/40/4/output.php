@@ -1,4 +1,5 @@
 <?php
+/* d2u_translate: 4:text */
 if (!function_exists('formatDate')) {
     /**
      * Formats the date for language specific options.

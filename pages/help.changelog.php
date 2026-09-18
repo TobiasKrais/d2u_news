@@ -3,6 +3,7 @@
 <p>1.2.4-DEV:</p>
 <ul>
 	<li>Neu: KI-Übersetzung in der Übersetzungshilfe von d2u_helper. Ist das Addon <code>ai_platform</code> installiert und ein Standard-Textprofil konfiguriert, lassen sich fehlende oder zu aktualisierende Übersetzungen von Nachrichten, Kategorien und Nachrichtenarten direkt in der Übersetzungshilfe automatisch übersetzen (einzeln oder alle auf einmal). Dazu implementieren <code>News</code>, <code>Category</code> und <code>Type</code> das neue Interface <code>TobiasKrais\D2UHelper\ITranslateable</code> und die <code>boot.php</code> beantwortet den Extension Point <code>D2U_HELPER_TRANSLATE_OBJECT</code>.</li>
+	<li>Neu: Module mit übersetzbarem Textinhalt tragen einen <code>d2u_translate</code>-Marker im Modul-Code. In Verbindung mit d2u_helper (Slice-Übersetzung) erscheint dadurch im Content-Editor an übersetzbaren Slices ein KI-Übersetzen-Button, der die deklarierten Felder aus der Ausgangssprache übersetzt. Betrifft die Module „Ausgabe News“ (BS5 und BS4).</li>
 </ul>
 <p>1.2.3:</p>
 <ul>

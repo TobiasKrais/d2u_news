@@ -18,7 +18,7 @@ class Module
         $modules = [];
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-1',
             'D2U News - Ausgabe News (BS4, deprecated)',
-            8);
+            9);
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-2',
             'D2U News - Ausgabe Messen (BS4, deprecated)',
             2);
@@ -27,7 +27,7 @@ class Module
             7);
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-4',
             'D2U News - Ausgabe News (BS5)',
-            3);
+            4);
         $modules[] = new \TobiasKrais\D2UHelper\Module('40-5',
             'D2U News - Ausgabe Messen (BS5)',
             2);
