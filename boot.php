@@ -221,14 +221,27 @@ function rex_d2u_news_translate_object(rex_extension_point $ep)
     switch ($type) {
         case 'news':
             $news = new News($id, $target_clang_id);
+            if ($news->news_id <= 0) {
+                // No target-language row yet: load the source and retarget it.
+                $news = new News($id, $source_clang_id);
+                $news->clang_id = $target_clang_id;
+            }
             $object = $news->news_id > 0 ? $news : null;
             break;
         case 'category':
             $category = new Category($id, $target_clang_id);
+            if ($category->category_id <= 0) {
+                $category = new Category($id, $source_clang_id);
+                $category->clang_id = $target_clang_id;
+            }
             $object = $category->category_id > 0 ? $category : null;
             break;
         case 'type':
             $news_type = new Type($id, $target_clang_id);
+            if ($news_type->type_id <= 0) {
+                $news_type = new Type($id, $source_clang_id);
+                $news_type->clang_id = $target_clang_id;
+            }
             $object = $news_type->type_id > 0 ? $news_type : null;
             break;
         default:
